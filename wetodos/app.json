@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/welcome/welcome",
+    "pages/calendar/index",
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "tabBar": {
+    "color": "#666",
+    "selectedColor": "#31a030",
+    "backgroundColor": "#FFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/welcome/welcome",
+        "text": "今日阅读",
+        "iconPath": "images/book1.png",
+        "selectedIconPath": "images/book2.png"
+      },
+      {
+        "pagePath": "pages/calendar/index",
+        "text": "计划",
+        "iconPath": "images/calendar1.png",
+        "selectedIconPath": "images/calendar2.png"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "我的",
+        "iconPath": "images/profile1.png",
+        "selectedIconPath": "images/profile2.png"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "简道阅读",
+    "navigationBarTextStyle": "black"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
+  },
+  "debug": true
+}
