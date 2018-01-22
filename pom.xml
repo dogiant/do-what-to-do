@@ -6,15 +6,15 @@
     <artifactId>dcvendor-setting</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>dcvendor-common</module>
-        <module>dcvendor-api</module>
-        <module>dcvendor-web</module>
-        <module>dcvendor-ui</module>
+        <module>demo-common</module>
+        <module>demo-api</module>
+        <module>demo-web</module>
+        <module>demo-ui</module>
     </modules>
     <packaging>pom</packaging>
 
-    <name>dcvendor</name>
-    <description>区域默认下单供应商</description>
+    <name>demo</name>
+    <description>demo</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,13 +29,7 @@
         <mybatis.version>3.2.8</mybatis.version>
         <mybatis-spring.version>1.2.2</mybatis-spring.version>
 
-        <com.jd.jsf.version>1.6.3</com.jd.jsf.version>
-        <com.jd.ump.version>4.0.5</com.jd.ump.version>
-        <com.jd.ump.jannotation.version>2.1.0</com.jd.ump.jannotation.version>
 
-        <jd.redis.version>1.3.1</jd.redis.version>
-
-        <ams.common.sso>1.1-SNAPSHOT</ams.common.sso>
         <cxf.version>2.2.4</cxf.version>
 
         <junit.version>4.12</junit.version>
@@ -100,18 +94,6 @@
                 <scope>test</scope>
             </dependency>
 
-            <!--UMP-->
-            <dependency>
-                <groupId>com.jd.ump</groupId>
-                <artifactId>profiler</artifactId>
-                <version>${com.jd.ump.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.jd.ump</groupId>
-                <artifactId>jannotation</artifactId>
-                <version>${com.jd.ump.jannotation.version}</version>
-                <scope>compile</scope>
-            </dependency>
             <!--Mybatis-->
             <dependency>
                 <groupId>org.mybatis</groupId>
@@ -129,18 +111,7 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector-java.version}</version>
             </dependency>
-            <!--JSF-->
-            <dependency>
-                <groupId>com.jd</groupId>
-                <artifactId>jsf</artifactId>
-                <version>${com.jd.jsf.version}</version>
-            </dependency>
-            <!--SSO-->
-            <dependency>
-                <groupId>com.jd.common</groupId>
-                <artifactId>sso-uim-spring</artifactId>
-                <version>1.0.0-SNAPSHOT</version>
-            </dependency>
+            
             <!--DBCP-->
             <dependency>
                 <groupId>commons-dbcp</groupId>
@@ -253,39 +224,6 @@
                 <version>3.14</version>
             </dependency>
 
-            <!--jss-->
-            <dependency>
-                <groupId>com.jcloud</groupId>
-                <artifactId>jss-sdk-java</artifactId>
-                <version>1.2.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.jd.sdac</groupId>
-                <artifactId>util</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.jd.sdac</groupId>
-                <artifactId>cache</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.jd.jim.cli</groupId>
-                <artifactId>jim-cli-api</artifactId>
-                <version>1.4.5-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>com.jd.jim.cli</groupId>
-                <artifactId>jim-cli-jedis</artifactId>
-                <version>1.4.5-SNAPSHOT</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.jd.vss.analytics</groupId>
-                <artifactId>vc3-analytics-filter</artifactId>
-                <version>2.0-SNAPSHOT</version>
-            </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
@@ -324,22 +262,7 @@
             </plugin>
         </plugins>
     </build>
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>central</id>
-            <name>libs-releases</name>
-            <url>http://artifactory.jd.com/libs-releases</url>
-        </repository>
-        <repository>
-            <snapshots/>
-            <id>snapshots</id>
-            <name>libs-snapshots</name>
-            <url>http://artifactory.jd.com/libs-snapshots</url>
-        </repository>
-    </repositories>
+
     <profiles>
         <!--dev env properties-->
         <profile>
@@ -351,31 +274,8 @@
             	<!-- 数据库连接 -->
 				<mvn.basicdb.jdbc.user>admin</mvn.basicdb.jdbc.user>
 				<mvn.basicdb.jdbc.password>bk_test_*()</mvn.basicdb.jdbc.password>
-				<mvn.basicdb.jdbc.url>jdbc:mysql://192.168.166.17:3306,192.168.166.17:3306/dcvendor?useUnicode=true&amp;characterEncoding=UTF-8</mvn.basicdb.jdbc.url>
+				<mvn.basicdb.jdbc.url>jdbc:mysql://192.168.166.17:3306,192.168.166.17:3306/demo?useUnicode=true&amp;characterEncoding=UTF-8</mvn.basicdb.jdbc.url>
 				
-            	<!-- 文件上传路径 -->
-				<mvn.upload.local.path.prefix>/export/Data/upload/files/</mvn.upload.local.path.prefix>
-				
-				<!-- 单点登录配置 -->
-				<mvn.authen.sso.auth.cookie.domain>.jd.com</mvn.authen.sso.auth.cookie.domain>
-				<mvn.authen.sso.exclude.path>/static</mvn.authen.sso.exclude.path>
-				<mvn.authen.webapp.domain.name>gbs.jd.com</mvn.authen.webapp.domain.name>
-				<mvn.authen.login.address>http://test.ssa.jd.com/sso/login</mvn.authen.login.address>
-				<mvn.authen.logout.address>http://test.ssa.jd.com/sso/logout</mvn.authen.logout.address>
-
-				<pom.jmq.address>jmq-testcluster.jd.local:50088</pom.jmq.address>
-				<pom.jmq.user>DcvendorSetting</pom.jmq.user>
-				<pom.jmq.password>E4BB76FB</pom.jmq.password>
-				<pom.jmq.consumer.app>DcvendorSetting</pom.jmq.consumer.app>
-				<pom.jmq.epoll>true</pom.jmq.epoll>
-				
-				<pom.organizationMappingService.appCode>001</pom.organizationMappingService.appCode>
-				<pom.organizationMappingService.businessId>002</pom.organizationMappingService.businessId>
-				<pom.organizationMappingService.safetyKey>abc123</pom.organizationMappingService.safetyKey>
-				
-				<!-- 邮件smtp -->
-				<mvn.mail.smtp>smtp.jd.com</mvn.mail.smtp>
-				<mvn.bookDeptId>P003</mvn.bookDeptId>
             </properties>
         </profile>
         <!--test env properties-->
@@ -390,29 +290,6 @@
 				<mvn.basicdb.jdbc.password>bk_test_*()</mvn.basicdb.jdbc.password>
 				<mvn.basicdb.jdbc.url>jdbc:mysql://192.168.166.17:3306,192.168.166.17:3306/dcvendor?useUnicode=true&amp;characterEncoding=UTF-8</mvn.basicdb.jdbc.url>
 				
-            	<!-- 文件上传路径 -->
-				<mvn.upload.local.path.prefix>/export/Data/upload/files/</mvn.upload.local.path.prefix>
-				
-				<!-- 单点登录配置 -->
-				<mvn.authen.sso.auth.cookie.domain>.jd.com</mvn.authen.sso.auth.cookie.domain>
-				<mvn.authen.sso.exclude.path>/static</mvn.authen.sso.exclude.path>
-				<mvn.authen.webapp.domain.name>gbs.jd.com</mvn.authen.webapp.domain.name>
-				<mvn.authen.login.address>http://test.ssa.jd.com/sso/login</mvn.authen.login.address>
-				<mvn.authen.logout.address>http://test.ssa.jd.com/sso/logout</mvn.authen.logout.address>
-				
-				<pom.jmq.address>jmq-testcluster.jd.local:50088</pom.jmq.address>
-				<pom.jmq.user>DcvendorSetting</pom.jmq.user>
-				<pom.jmq.password>E4BB76FB</pom.jmq.password>
-				<pom.jmq.consumer.app>DcvendorSetting</pom.jmq.consumer.app>
-				<pom.jmq.epoll>true</pom.jmq.epoll>
-				
-				<pom.organizationMappingService.appCode>001</pom.organizationMappingService.appCode>
-				<pom.organizationMappingService.businessId>002</pom.organizationMappingService.businessId>
-				<pom.organizationMappingService.safetyKey>abc123</pom.organizationMappingService.safetyKey>
-				
-				<!-- 邮件smtp -->
-				<mvn.mail.smtp>smtp.jd.com</mvn.mail.smtp>
-				<mvn.bookDeptId>P003</mvn.bookDeptId>
             </properties>
         </profile>
         <!--product env properties-->
@@ -423,31 +300,6 @@
             </activation>
             <properties>
             
-				<mvn.basicdb.jdbc.url>jdbc:mysql://my12594m.mysql.jddb.com:3358,my12594sa.mysql.jddb.com:3358/dcvendor?useUnicode=true&amp;characterEncoding=UTF-8</mvn.basicdb.jdbc.url>
-            	
-            	<!-- 文件上传路径 -->
-				<mvn.upload.local.path.prefix>/export/Data/upload/files/</mvn.upload.local.path.prefix>
-				
-				<!-- 单点登录配置 -->
-				<mvn.authen.sso.auth.cookie.domain>.jd.com</mvn.authen.sso.auth.cookie.domain>
-				<mvn.authen.sso.exclude.path>/static</mvn.authen.sso.exclude.path>
-				<mvn.authen.webapp.domain.name>gbs.jd.com</mvn.authen.webapp.domain.name>
-				<mvn.authen.login.address>http://ssa.jd.com/sso/login</mvn.authen.login.address>
-				<mvn.authen.logout.address>http://ssa.jd.com/sso/logout</mvn.authen.logout.address>
-				
-				<pom.jmq.address>jmq-cluster.jd.local:80</pom.jmq.address>
-				<pom.jmq.user>DcvendorSetting</pom.jmq.user>
-				<pom.jmq.password>D8BDDD13</pom.jmq.password>
-				<pom.jmq.consumer.app>DcvendorSetting</pom.jmq.consumer.app>
-				<pom.jmq.epoll>true</pom.jmq.epoll>
-				
-				<pom.organizationMappingService.appCode>ls-vcs</pom.organizationMappingService.appCode>
-				<pom.organizationMappingService.businessId>ls-vcs</pom.organizationMappingService.businessId>
-				<pom.organizationMappingService.safetyKey>6EBN5028369FHB8PE869</pom.organizationMappingService.safetyKey>
-				
-				<!-- 邮件smtp -->
-				<mvn.mail.smtp>mx.jd.local</mvn.mail.smtp>
-				<mvn.bookDeptId>P005</mvn.bookDeptId>
             </properties>
         </profile>
     </profiles>
