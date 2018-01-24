@@ -1,1 +1,1 @@
-/* pages/welcome/welcome.wxss */
+@import "../common/index.wxss";
