@@ -1,8 +1,13 @@
 /* pages/content/content.wxss */
 .container{
+  display: flex;
+  flex-direction: column;
   text-align: center
 }
 .header {
+  padding-bottom: 50rpx;
+}
+.content {
   padding-bottom: 50rpx;
 }
 .content image{

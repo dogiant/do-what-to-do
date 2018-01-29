@@ -8,6 +8,9 @@
       <text>
         {{article.content}}
       </text>
-      
     </view> 
+
+    <view >
+      <button type="primary" bindtap='showQuestion'>回答每日一问</button>
+    </view>
 </view>

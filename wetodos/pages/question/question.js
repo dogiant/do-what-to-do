@@ -1,16 +1,22 @@
-// pages/content/content.js
+// pages/question/question.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    article:{
-      title:"赠汪伦",
-      dynasty:"唐",
-      author:"李白",
-      photo:"/images/poem/zengwanglun.png",
-      content: "李白乘舟将欲行，忽闻岸上踏歌声。\r\n桃花潭水深千尺，不及汪伦送我情。"
+    question:{
+      subject:"赠王伦一诗中描写王伦送李白的场面的句子是：",
+      answers:[{
+        "serial" : "A",
+        "content":"李白乘舟将欲行, 忽闻岸上踏歌声。",
+        "trueOrFalse":true
+      },
+      {
+          "serial": "B",
+          "content": "桃花潭水深千尺，不及汪伦送我情",
+          "trueOrFalse": false
+      }]
     }
   
   },
@@ -19,7 +25,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options);
+  
   },
 
   /**
@@ -69,10 +75,5 @@ Page({
    */
   onShareAppMessage: function () {
   
-  },
-  showQuestion: function(){
-    wx.navigateTo({
-      url: '/pages/question/question',
-    })
   }
 })

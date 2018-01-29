@@ -4,7 +4,8 @@
     "pages/calendar/index",
     "pages/index/index",
     "pages/logs/logs",
-    "pages/content/content"
+    "pages/content/content",
+    "pages/question/question"
   ],
   "tabBar": {
     "color": "#666",
