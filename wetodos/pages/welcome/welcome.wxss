@@ -1,1 +1,49 @@
 @import "../common/index.wxss";
+
+.index-head {
+  padding-top: 0rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.index-banner {
+  width: 750rpx;
+  height: 420rpx;
+}
+
+.index-text {
+  font-size: 18px;
+  padding-top: 40rpx;
+}
+
+.reading-status {
+  font-size: 14px;
+  margin: 50rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.todays-task-list {
+  padding: 50rpx 30rpx 40rpx;
+}
+
+.task-item {
+  display: flex;
+  flex-direction: row;
+  padding-top: 50rpx;
+  padding-left: 50rpx;
+  padding-right: 50rpx;
+}
+
+.task-status{
+  vertical-align: center;
+  font-size: 10px;
+}
+
+.task-status text{
+  padding-top: 10rpx;
+  padding-left: 5rpx;
+  float: right;
+}

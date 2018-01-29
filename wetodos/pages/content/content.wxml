@@ -1,0 +1,13 @@
+<view class="container">
+    <view class="header">
+        <text>{{article.title}}</text>
+        <view><text>{{article.dynasty}}  {{article.author}}</text></view>
+    </view>
+    <view class="content">
+      <image src="{{article.photo}}" class="art-img"/>
+      <text>
+        {{article.content}}
+      </text>
+      
+    </view> 
+</view>

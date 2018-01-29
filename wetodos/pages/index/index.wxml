@@ -10,7 +10,4 @@
   <view class="usermotto">
     <text class="user-motto">{{motto}}</text>
   </view>
-  <view>
-    <map longitude="北京经度" latitude="北京纬度"></map>
-  </view>
 </view>
