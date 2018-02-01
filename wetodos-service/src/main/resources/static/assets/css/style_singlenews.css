@@ -1,0 +1,28 @@
+/* 单图文消息预览*/
+.upload_preview {
+	margin-top: 10px;
+}
+.upload_preview img {
+	max-width: 100px;
+	max-height: 100px;
+}
+#buttons img {
+	max-width: 100px;
+	max-height: 100px;
+}
+
+#news_thumbnail{
+	max-width:290px; 
+}
+#news_thumbnail  h4{
+	font-weight: 400;font-style: normal;font-size: 16px;line-height: 28px;word-wrap: break-word;word-break: break-all;
+}
+#cover_wrapper{
+	height: 160px;overflow: hidden;
+}
+#cover_wrapper i{
+	display:block;color: #c0c0c0;text-align: center;line-height: 160px;font-weight: 400;font-style: normal;background-color: #ececec;font-size: 22px;	
+}
+#news_digest{
+	padding: 5px 0 10px;word-wrap: break-word;word-break: break-all;
+}
