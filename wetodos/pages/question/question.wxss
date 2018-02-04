@@ -1,1 +1,51 @@
 /* pages/question/question.wxss */
+
+.questionPanel {
+  background: white;
+  padding: 50prx;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  margin:20px;
+}
+.title {
+  color: green;
+  font-size: 20px;
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
+}
+.questionRow {
+  display: flex;
+  flex-direction: row;
+  padding: 50prx;
+}
+.currentQuestionSerial {
+  color: green;
+}
+.question {
+  padding-left: 10rpx;
+  padding-bottom: 20rpx;
+}
+
+.answersPanel {
+  background-color: whitesmoke;
+  display: flex;
+  flex-direction: column;
+  padding: 60rpx;
+}
+.answer {
+  background-color: white;
+  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  padding: 25px 0 25px 0;
+  margin: 10px 0 12px 0;
+}
+.serial {
+  color: green;
+}
+.answer text {
+  font-size: 14px;
+  padding: 10rpx;
+}

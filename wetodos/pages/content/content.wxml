@@ -10,7 +10,7 @@
       </text>
     </view> 
 
-    <view >
-      <button type="primary" bindtap='showQuestion'>回答每日一问</button>
+    <view class="taskButtons">
+      <button type="primary" bindtap='showQuestions'>回答每日一问</button>
     </view>
 </view>

@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    question:{
+    questions:[{
       subject:"赠王伦一诗中描写王伦送李白的场面的句子是：",
       answers:[{
         "serial" : "A",
@@ -14,10 +14,10 @@ Page({
       },
       {
           "serial": "B",
-          "content": "桃花潭水深千尺，不及汪伦送我情",
+          "content": "桃花潭水深千尺，不及汪伦送我情。",
           "trueOrFalse": false
       }]
-    }
+    }]
   
   },
 

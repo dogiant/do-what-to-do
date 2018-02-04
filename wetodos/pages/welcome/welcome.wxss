@@ -7,11 +7,6 @@
   flex-direction: column;
 }
 
-.index-banner {
-  width: 750rpx;
-  height: 420rpx;
-}
-
 .index-text {
   font-size: 18px;
   padding-top: 40rpx;

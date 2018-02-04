@@ -1,2 +1,22 @@
 <!--pages/question/question.wxml-->
-<text>pages/question/question.wxml</text>
+
+<view class='questionPanel'>
+  <text class='title'>问题(QUESTIONS)</text>
+  <view class='questionRow'>
+    <text class='currentQuestionSerial'>1</text>
+    <text>/</text>
+    <text class='totalQuestionsNum'>5</text>
+    <text class='question'>{{questions[0].subject}}</text>
+  </view>
+</view>
+
+
+<view class='answersPanel'>
+  <view class='answer'>
+    <text class='serial'>{{questions[0].answers[0].serial}} :</text>
+    <text>{{questions[0].answers[0].content}}</text> </view>
+  <view class='answer'>
+    <text class='serial'>{{questions[0].answers[1].serial}} :</text>
+    <text>{{questions[0].answers[1].content}}</text> </view>
+
+</view>

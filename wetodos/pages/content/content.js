@@ -70,7 +70,7 @@ Page({
   onShareAppMessage: function () {
   
   },
-  showQuestion: function(){
+  showQuestions: function(){
     wx.navigateTo({
       url: '/pages/question/question',
     })

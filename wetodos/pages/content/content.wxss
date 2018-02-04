@@ -2,9 +2,12 @@
 .container{
   display: flex;
   flex-direction: column;
-  text-align: center
+  text-align: center;
+  vertical-align: top;
+  padding-top: 50rpx;
 }
 .header {
+  padding-top: 0rpx;
   padding-bottom: 50rpx;
 }
 .content {
@@ -12,4 +15,9 @@
 }
 .content image{
   padding-bottom: 30rpx;
+}
+
+.taskButtons {
+  display: flex;
+  flex-direction: row;
 }

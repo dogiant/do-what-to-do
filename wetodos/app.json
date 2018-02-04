@@ -2,7 +2,7 @@
   "pages": [
     "pages/welcome/welcome",
     "pages/calendar/index",
-    "pages/index/index",
+    "pages/profile/index",
     "pages/logs/logs",
     "pages/content/content",
     "pages/question/question"
@@ -26,7 +26,7 @@
         "selectedIconPath": "images/calendar2.png"
       },
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/profile/index",
         "text": "我的",
         "iconPath": "images/profile1.png",
         "selectedIconPath": "images/profile2.png"
