@@ -1,9 +1,9 @@
 {
   "pages": [
-      "pages/profile/index",
+ 
     "pages/task/task",
     "pages/welcome/welcome",
-
+    "pages/profile/index",
     "pages/calendar/index",
  
     "pages/logs/logs",

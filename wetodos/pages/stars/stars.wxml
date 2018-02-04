@@ -1,0 +1,13 @@
+<!--pages/stars/stars.wxml-->
+<template name="starsTemplate">
+  <view class='stars-container'>
+    <view class='stars'>
+        <image src='/images/star.png'></image>
+        <image src='/images/star.png'></image>
+        <image src='/images/star.png'></image>
+        <image src='/images/star.png'></image>
+        <image src='/images/star-white.png'></image>
+    </view>
+    <text class='star-score'>8.0</text>  
+  </view>
+</template>

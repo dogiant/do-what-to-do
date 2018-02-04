@@ -1,0 +1,42 @@
+/* pages/book/book.wxss */
+@import "../stars/stars.wxss";
+
+.book-box {
+  margin-top: 20rpx;
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx 22rpx;
+}
+.book-cover{
+  width: 200rpx;
+  height: 270rpx;
+  padding-bottom: 20rpx;
+}
+.book-img {
+  width: 200rpx;
+  height: 270rpx;
+  padding-bottom: 20rpx;
+}
+.book-select-button{
+  position: relative;
+  left: 150rpx;
+  top: -80rpx;
+}
+
+.task-days{
+  font-size: 24rpx;
+  text-align: center;
+  position: relative;
+  top: 40rpx;
+  left: 5rpx;
+  width: 100%;
+  background-color: #fff;
+  filter:alpha(opacity:60);
+  opacity:0.6;  
+  -moz-opacity:0.6;
+  -khtml-opacity: 0.6;
+}
+.book-title {
+  margin-bottom: 16rpx;
+  font-size: 24rpx;
+}

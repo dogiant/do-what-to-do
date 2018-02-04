@@ -1,0 +1,20 @@
+<!--pages/book/book.wxml-->
+<import src="../stars/stars.wxml" />
+<template name="bookTemplate">
+  <view class='book-box'>
+    <view class='book-cover'>
+      <view class='task-days'>
+        <text>10日任务</text>
+      </view>
+      <image class='book-img' src='https://img3.doubanio.com/lpic/s29658310.jpg' mode="aspectFit" lazy-load="true"></image>
+      <view class='book-select-button'>
+        <icon size='20' type="success" />
+      </view>
+    </view>
+
+    <view class='book-title'>
+      <text>每天画一只小动物</text>
+    </view>
+    <template is="starsTemplate" />
+  </view>
+</template>
