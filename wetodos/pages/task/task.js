@@ -1,30 +1,46 @@
-// pages/welcome/welcome.js
+// pages/task/task.js
+const util = require('../../utils/util.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    inThePlan:false
-  },
-  todayReadTask : function(e){
-    wx.navigateTo({
-      url: '/pages/content/content'
-    })
-  },
-  createReadTask: function (e) {
-    wx.navigateTo({
-      url: '/pages/task/task'
-    })
+    startDate:null,
+    endDate:null,
+    selectedDate:null,
+    books:[{
+      name:"成语故事大全",
+      days:100,
+      imageUrl:"https://img3.doubanio.com/lpic/s29658310.jpg"
+    }, {
+      name: "成语故事大全",
+      days: 100,
+      imageUrl: "https://img3.doubanio.com/lpic/s29658310.jpg"
+    }]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("加载");
+    const date = new Date();
+    const startDate = util.formatDate(date);
+    console.log(startDate)
+    const endDate = util.formatDate(date);
+    console.log(endDate)
+    this.setData({
+      startDate : startDate,
+      endDate : endDate,
+      selectedDate: startDate
+    })
   },
-
+  bindDateChange : function(event){
+    console.log(event);
+    this.setData({
+      selectedDate : event.detail.value
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

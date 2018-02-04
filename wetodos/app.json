@@ -1,11 +1,15 @@
 {
   "pages": [
+      "pages/profile/index",
+    "pages/task/task",
     "pages/welcome/welcome",
+
     "pages/calendar/index",
-    "pages/profile/index",
+ 
     "pages/logs/logs",
     "pages/content/content",
-    "pages/question/question"
+    "pages/question/question",
+    "pages/upload/upload"
   ],
   "tabBar": {
     "color": "#666",

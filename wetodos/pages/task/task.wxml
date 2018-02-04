@@ -1,0 +1,46 @@
+<!--pages/task/task.wxml-->
+<view class="container">
+
+  <form bindsubmit="bindSave">
+    <view class="section">
+      <view class="book_selection">1、选择图书</view>
+
+      <view class="serarch-content">
+        <image src="/images/search-pic.png" class="search-icon" />
+        <input placeholder="请输入图书名称" class="search-input" maxlength="30" confirm-type="搜索" bindinput='listenerSearchInput' bindconfirm='toSearch'>
+        </input>
+        <button class='search-btn' bindtap="toSearch">搜索
+        </button>
+      </view>
+
+      <view class="books-container">
+        <view class="books-box" wx:for-items="{{books}}" wx:key="{{index}}" bindtap="toDetailsTap" data-id="{{item.id}}">
+          <view class="img-box">
+            <image src="{{item.imageUrl}}" mode="aspectFit" lazy-load="true" />
+          </view>
+          <view class="book-title">{{item.name}}</view>
+          <view style='display:flex;'>
+            <view class="book-days"> {{item.days}} 天可读完</view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+    <view class="section">
+      <view class="start_date_selection">2、选择开始日期</view>
+      <view>
+        <picker mode="date" value="{{selectedDate}}" start="{{startDate}}" end="{{endDate}}" bindchange="bindDateChange">
+          <view class="picker-row">
+            <view class="label">日期:</view>
+            <view class="date-input">
+              <input name="startDate" class="input" type="text" placeholder="{{selectedDate}}" value="{{selectedDate}}"/>
+            </view>
+          </view>
+        </picker>
+      </view>
+
+    </view>
+    <button type="primary" class="save-btn" bindtap="saveReadTask">创建阅读任务</button>
+  </form>
+</view>

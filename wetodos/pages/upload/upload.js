@@ -1,28 +1,18 @@
-// pages/welcome/welcome.js
+// pages/upload/upload.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    inThePlan:false
-  },
-  todayReadTask : function(e){
-    wx.navigateTo({
-      url: '/pages/content/content'
-    })
-  },
-  createReadTask: function (e) {
-    wx.navigateTo({
-      url: '/pages/task/task'
-    })
+  
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("加载");
+  
   },
 
   /**

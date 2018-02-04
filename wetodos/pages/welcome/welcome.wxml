@@ -2,21 +2,51 @@
 
   <view class="index-head">
     <image class="index-banner" src="resources/pic/1.jpg"></image>
-    <text class="index-text">不积跬步，无以至千里。</text>
+    <text class="index-text">不积跬步 无以至千里</text>
   </view>
 
-  <view class="reading-status">
-    <view class="reading-now">正在阅读《古诗文75首》</view>
-    <view class="days">第66天</view>
-  </view>
-
-  <view class="todays-task-list">
-    <view class="task-item" catchtap='onTodayReadTask' data-id="1">
-      <view class="kind-list-text">今日文章</view>
-      <view class='task-status'><icon type="warn" size='24'></icon><text>未完成</text></view>
+  <view wx:if="{{!inThePlan}}" class="index-preface">
+    <scroll-view scroll-y style="height: 268px;">
+      <text>
+          想要去远方\r\n
+          只要一步一步的迈出脚步\r\n
+          必然会有到达的那一天\r\n
+          要读完一本书\r\n
+          只要坚持每日读几页\r\n
+          终能读完\r\n
+          这就是简道阅读的方法论\r\n
+          把大目标分解成每日任务\r\n
+          自律的去完成\r\n
+          终有一天暮然回首\r\n
+          你一定会有轻舟已过万重山的感觉\r\n
+          大目标已经在不知不觉中实现了\r\n
+          希望未来有一天\r\n
+          你会感谢现在坚持的自己\r\n
+          让我们一起努力！\r\n
+        </text>
+    </scroll-view>
+    <view>
+      <button type="primary" bindtap='createReadTask'>去创建阅读任务</button>
     </view>
-    <view class="task-item">
-      <view class="kind-list-text">随堂笔记</view>
+  </view>
+
+  <view wx:else>
+    <view class="reading-status">
+      <view class="reading-now">正在阅读《古诗文75首》</view>
+      <view class="days">第66天</view>
+    </view>
+
+    <view class="todays-task-list">
+      <view class="task-item" catchtap='todayReadTask' data-id="1">
+        <view class="kind-list-text">今日文章</view>
+        <view class='task-status'>
+          <icon type="warn" size='24'></icon>
+          <text>未完成</text>
+        </view>
+      </view>
+      <view class="task-item">
+        <view class="kind-list-text">随堂笔记</view>
+      </view>
     </view>
   </view>
 

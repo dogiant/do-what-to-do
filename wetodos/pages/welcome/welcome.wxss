@@ -12,6 +12,17 @@
   padding-top: 40rpx;
 }
 
+.index-preface{
+  padding: 20rpx;
+  font-size: 14px;
+  text-align: center;
+  line-height: 18px;
+}
+
+.index-preface text{
+  padding: 20rpx;
+}
+
 .reading-status {
   font-size: 14px;
   margin: 50rpx;

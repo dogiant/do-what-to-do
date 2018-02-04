@@ -11,6 +11,7 @@
     </view> 
 
     <view class="taskButtons">
+      <button type="primary" bindtap='uploadNotes'>上传笔记</button>
       <button type="primary" bindtap='showQuestions'>回答每日一问</button>
     </view>
 </view>
