@@ -2,10 +2,9 @@
 @import "../stars/stars.wxss";
 
 .book-box {
-  margin-top: 20rpx;
   display: flex;
   flex-direction: column;
-  padding: 20rpx 22rpx;
+  padding: 5rpx 18rpx;
 }
 .book-cover{
   width: 200rpx;
@@ -37,6 +36,10 @@
   -khtml-opacity: 0.6;
 }
 .book-title {
-  margin-bottom: 16rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   font-size: 24rpx;
+  padding: 24rpx 0 0 0;
+  color:#000;
 }

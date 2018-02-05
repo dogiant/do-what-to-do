@@ -6,7 +6,7 @@
     <view class="section">
       <view class="book_selection">1、选择图书</view>
 
-      <view class="serarch-content">
+      <view class="serarch-controller">
         <image src="/images/search-pic.png" class="search-icon" />
         <input placeholder="请输入图书名称" class="search-input" maxlength="30" confirm-type="搜索" bindinput='listenerSearchInput' bindconfirm='toSearch'>
         </input>
@@ -14,9 +14,25 @@
         </button>
       </view>
       <view class='book-grid'>
-        <template is="bookTemplate" />
-        <template is="bookTemplate" />
-        <template is="bookTemplate" />
+        <view class='book-box-wrap'>
+          <template is="bookTemplate" />
+        </view>
+        <view class='book-box-wrap'>
+          <template is="bookTemplate" />
+        </view>
+        <view class='book-box-wrap'>
+          <template is="bookTemplate" />
+        </view>
+        <view class='book-box-wrap'>
+          <template is="bookTemplate" />
+        </view>
+        <view class='book-box-wrap'>
+          <template is="bookTemplate" />
+        </view>
+        <view class='book-box-wrap'>
+
+        </view>
+
       </view>
 
     </view>
@@ -35,6 +51,9 @@
       </view>
 
     </view>
-    <button type="primary" class="save-btn" bindtap="saveReadTask">创建阅读任务</button>
+    <view class="section">
+      <button type="primary" class="save-btn" bindtap="saveReadTask">创建阅读任务</button>
+    </view>
   </form>
+        
 </view>
