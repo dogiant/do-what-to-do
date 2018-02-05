@@ -1,11 +1,11 @@
 {
   "pages": [
  
-    "pages/task/task",
+
     "pages/welcome/welcome",
     "pages/profile/index",
     "pages/calendar/index",
- 
+    "pages/task/task",
     "pages/logs/logs",
     "pages/content/content",
     "pages/question/question",
