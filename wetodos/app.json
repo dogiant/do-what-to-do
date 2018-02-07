@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/question/question",
     "pages/myprofile/myprofile",
     "pages/welcome/welcome",
     "pages/profile/index",
@@ -7,7 +8,7 @@
     "pages/task/task",
     "pages/logs/logs",
     "pages/content/content",
-    "pages/question/question",
+
     "pages/schedule/schedule",
     "pages/upload/upload"
 
@@ -31,7 +32,7 @@
         "selectedIconPath": "images/calendar2.png"
       },
       {
-        "pagePath": "pages/profile/index",
+        "pagePath": "pages/myprofile/myprofile",
         "text": "我的",
         "iconPath": "images/profile1.png",
         "selectedIconPath": "images/profile2.png"
