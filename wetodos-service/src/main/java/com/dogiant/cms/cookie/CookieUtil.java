@@ -27,7 +27,7 @@ public class CookieUtil {
 	private static final String SPLITER = "#||#";
 	private static final String SPLITER_REGEX = "#\\|\\|#";
 	private static final int COOKIE_LIVE_DAYS = 90;
-	public static final String DOMAIN = "admin.feilongshiliugongge.com";
+	public static final String DOMAIN = "admin.dogiant.com";
 	public static final int COOKIE_LIVE_ONE_DAY = 60 * 60 * 24;
 	public static final int COOKIE_LIVE_SESSION = -1;
 

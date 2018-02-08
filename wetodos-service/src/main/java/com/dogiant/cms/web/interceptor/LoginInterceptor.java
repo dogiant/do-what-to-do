@@ -21,8 +21,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 			throws Exception {
 		Map<String, Object> userInfoMap = CookieUtil.getUserFromCookie(request);
 		StringBuffer url = request.getRequestURL();
+		System.out.println(url.toString());
 		String contextUrl = url.delete(url.length() - request.getRequestURI().length(), url.length())
 				.append(request.getServletContext().getContextPath()).append("/").toString();
+		System.out.println(contextUrl);
 		if (userInfoMap != null) {
 			AdminUserInfo userInfo = (AdminUserInfo) userInfoMap.get("user");
 			request.setAttribute("userId", userInfo.getUserId());
