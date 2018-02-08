@@ -1,1 +1,92 @@
 /* pages/schedule/schedule.wxss */
+
+.container {
+  padding: 20rpx;
+  background: white;
+}
+
+.current-day {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 18px;
+  color: gray;
+}
+
+.days {
+  font-family: Arial, Helvetica, sans-serif;
+  color: green;
+}
+
+.task-status {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.current-task {
+  display: flex;
+  flex-direction: row;
+  margin-top: 18rpx;
+  font-size: 14px;
+}
+
+.triangle {
+  margin-left: 16rpx;
+  margin-top: 16rpx;
+  width: 0;
+  height: 0;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.legend {
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+  vertical-align: center;
+  justify-content: center;
+}
+
+.legend .dot {
+  font-size: 24px;
+}
+
+.dot-green {
+  color: green;
+}
+
+.dot-yellow {
+  color: darkorange;
+}
+
+.dot-grey {
+  color: grey;
+}
+
+.desc{
+  padding: 10rpx;
+}
+
+.week-day{
+  display: flex;
+  flex-direction: row;
+  text-justify:  auto;
+  justify-content: space-between;
+}
+
+.per-month{
+  color: grey;
+  font-size: 14px;
+  margin-bottom: 20rpx;
+}
+
+.month{
+  padding-left: 20rpx;
+}
+
+.line{
+  margin-top: -18px;
+  height: 3px;
+}

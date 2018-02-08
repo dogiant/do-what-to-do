@@ -1,2 +1,67 @@
 <!--pages/schedule/schedule.wxml-->
-<text>pages/schedule/schedule.wxml</text>
+<view class='container'>
+  <view class='current-day'>
+    <text class='days'>Day 9</text>
+    <text>点击日期进入当日任务</text>
+  </view>
+  <view class='task-status'>
+    <view class='current-task'>
+      <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+        <view class="picker">
+          {{array[index]}}
+        </view>
+      </picker>
+      <view class='triangle'>
+      </view>
+    </view>
+
+    <view class='legend'>
+      <view>
+        <text class='dot dot-green'>●</text><text class='desc'>当日完成</text></view>
+      <view>
+        <text class='dot dot-yellow'>●</text><text class='desc'>补录</text></view>
+      <view>
+        <text class='dot dot-grey'>●</text><text class='desc'>未完成</text></view>
+    </view>
+  </view>
+  <view class='week-day'>
+    <view>一</view>
+    <view>二</view>
+    <view>三</view>
+    <view>四</view>
+    <view>五</view>
+    <view>六</view>
+    <view>日</view>
+  </view>
+
+  <view class='calendar'>
+
+    <view class='per-month'>
+      <view class='month'>2018年02月</view>
+      <view class='line'>_____________</view>
+    </view>
+    
+    <view>
+
+      <view>1</view>
+      <view>2</view>
+      <view>3</view>
+      <view>4</view>
+      <view>5</view>
+      <view>6</view>
+      <view>7</view>
+      <view>8</view>
+      <view>9</view>
+      <view>10</view>
+      <view>11</view>
+      <view>12</view>
+      <view>13</view>
+      <view>14</view>
+
+    
+    </view>
+  
+  
+  </view>
+
+</view>
