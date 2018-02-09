@@ -91,12 +91,17 @@
       <text>学习资源</text>
       <text class='resources-desc'>点击学习资源跳转到对应学习日期</text>
     </view>
-    <scroll-view class='book-container' scroll-x >
+    <scroll-view class='book-container' scroll-x style="width: 100%">
+      <view class='books'>
         <template is="bookTemplate" />
+
         <template is="bookTemplate" />
+
         <template is="bookTemplate" />
+
         <template is="bookTemplate" />
-        <template is="bookTemplate" />
+      </view>
+
     </scroll-view>
 
   </view>
