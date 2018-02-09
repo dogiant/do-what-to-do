@@ -1,10 +1,11 @@
 {
   "pages": [
     "pages/schedule/schedule",
+    "pages/profile/index",
     "pages/question/question",
     "pages/myprofile/myprofile",
     "pages/welcome/welcome",
-    "pages/profile/index",
+
     "pages/calendar/index",
     "pages/task/task",
     "pages/logs/logs",
@@ -22,12 +23,12 @@
     "list": [
       {
         "pagePath": "pages/welcome/welcome",
-        "text": "今日阅读",
+        "text": "今日学习",
         "iconPath": "images/book1.png",
         "selectedIconPath": "images/book2.png"
       },
       {
-        "pagePath": "pages/calendar/index",
+        "pagePath": "pages/schedule/schedule",
         "text": "计划",
         "iconPath": "images/calendar1.png",
         "selectedIconPath": "images/calendar2.png"
@@ -43,7 +44,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "简道阅读",
+    "navigationBarTitleText": "简道学习",
     "navigationBarTextStyle": "black"
   },
   "networkTimeout": {

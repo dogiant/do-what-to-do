@@ -38,7 +38,7 @@
 
     <view class="todays-task-list">
       <view class="task-item" catchtap='todayReadTask' data-id="1">
-        <view class="kind-list-text">今日文章</view>
+        <view class="kind-list-text">今日学习</view>
         <view class='task-status'>
           <icon type="warn" size='24'></icon>
           <text>未完成</text>

@@ -6,7 +6,44 @@ Page({
    */
   data: {
     array:['古诗72首','九成宫字帖临摹'],
-    index:1
+    index:1,
+
+    days:[
+      { day: "", status: 0 },
+      { day: "", status: 0 },
+      { day: "", status: 0 },
+      { day: 1, status: 1 },
+      { day: 2, status: -1 },
+      { day: 3, status: 2 },
+      { day: 4, status: 2 },
+      { day: 5, status: 1 },
+      { day: 6, status: -1 },
+      { day: 7, status: 2 },
+      { day: 8, status: 1 },
+      { day: 9, status: 2 },
+      { day: 10, status: 1 },
+      { day: 11, status: 2 },
+      { day: 12, status: -1 },
+      { day: 13, status: 1 },
+      { day: 15, status: 2 },
+      { day: 16, status: 0 },
+      { day: 17, status: 0 },
+      { day: 18, status: 0 },
+      { day: 19, status: 0 },
+      { day: 20, status: 0 },
+      { day: 21, status: 0 },
+      { day: 22, status: 0 },
+      { day: 23, status: 0 },
+      { day: 24, status: 0 },
+      { day: 25, status: 0 }, 
+      { day: 26, status: 0 },
+      { day: 27, status: 0 },
+      { day: 28, status: 0 },
+      { day: 29, status: 0 },
+      { day: 30, status: 0 },
+      { day: 31, status: 0 },
+
+    ]
   },
 
   /**

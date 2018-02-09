@@ -1,7 +1,9 @@
 /* pages/myprofile/myprofile.wxss */
 .center{
   margin-top: 20rpx;
-  margin-left: 166rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content:  center;
 }
 .copyright {
   font-size: 28rpx;
