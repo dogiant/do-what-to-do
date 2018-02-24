@@ -1,10 +1,19 @@
 package com.dogiant.cms.domain.todos;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 章节中的段落组成
@@ -75,6 +84,9 @@ public class Phase implements Serializable {
 	 */
 	private Integer status;
 
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
 		return id;
 	}
@@ -83,6 +95,7 @@ public class Phase implements Serializable {
 		this.id = id;
 	}
 
+	@Column(name = "book_id")
 	public Long getBookId() {
 		return bookId;
 	}
@@ -91,6 +104,7 @@ public class Phase implements Serializable {
 		this.bookId = bookId;
 	}
 
+	@Column(name = "chapter_id")
 	public Long getChapterId() {
 		return chapterId;
 	}
@@ -99,6 +113,7 @@ public class Phase implements Serializable {
 		this.chapterId = chapterId;
 	}
 
+	@Column(name = "chapter_id")
 	public Long getOrder() {
 		return order;
 	}
@@ -107,6 +122,7 @@ public class Phase implements Serializable {
 		this.order = order;
 	}
 
+	@Column(name = "content_type", length = 32)
 	public String getContentType() {
 		return contentType;
 	}
@@ -115,6 +131,7 @@ public class Phase implements Serializable {
 		this.contentType = contentType;
 	}
 
+	@Column(name = "content", length = 1024)
 	public String getContent() {
 		return content;
 	}
@@ -123,6 +140,7 @@ public class Phase implements Serializable {
 		this.content = content;
 	}
 
+	@Column(name = "align_type", length = 16)
 	public String getAlignType() {
 		return alignType;
 	}
@@ -131,6 +149,7 @@ public class Phase implements Serializable {
 		this.alignType = alignType;
 	}
 
+	@Column(name = "editor", length = 64)
 	public String getEditor() {
 		return editor;
 	}
@@ -139,6 +158,9 @@ public class Phase implements Serializable {
 		this.editor = editor;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ctime")
 	public Date getCtime() {
 		return ctime;
 	}
@@ -147,6 +169,9 @@ public class Phase implements Serializable {
 		this.ctime = ctime;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "mtime")
 	public Date getMtime() {
 		return mtime;
 	}
@@ -155,6 +180,7 @@ public class Phase implements Serializable {
 		this.mtime = mtime;
 	}
 
+	@Column(name = "status")
 	public Integer getStatus() {
 		return status;
 	}

@@ -16,74 +16,66 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
- * 书
+ * 学习计划
  * @author dubiaoqi
- *
+ * 如果从选书发起自由学期学习计划，则主动添加
+ * 后续可能会存在同一学期的用户学习计划
+ * 用户学习计划，由此关联
  */
 @Entity
-@Table(name = "todos_book")
-public class Book implements Serializable{
-	
+@Table(name = "todos_learning_plan")
+public class LearningPlan implements Serializable{
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7060963338275045911L;
+	private static final long serialVersionUID = 5434095149782124944L;
 
 	/**
-	 * 主键
+	 * 主键ID
 	 */
 	private Long id;
 	
 	/**
-	 * 类型 1管理员创建 2用户上传发布
+	 * 图书ID
+	 */
+	private Long bookId;
+	
+	/**
+	 * 类型 1固定学期 2自由学期
 	 */
 	private Integer type;
 	
 	/**
-	 * 标签
-	 */
-	private String tags;
-	
-	/**
-	 * 书名
+	 * 学习计划名称
 	 */
 	private String name;
 
 	/**
-	 * 封面url
+	 * 创建人
 	 */
-	private String coverImageUrl;
+	private String creator;
 
 	/**
-	 * 作者
+	 * 开始时间
 	 */
-	private String author;
+	private Date startDate;
 
 	/**
-	 * 描述
+	 * 结束时间
 	 */
-	private String description;
-	
-	/**
-	 * 适合最小年龄
-	 */
-	private Integer minAge;
-	
-	/**
-	 * 适合最大年龄
-	 */
-	private Integer maxAge;
-	
+	private Date endDate;
+
 	/**
 	 * 创建时间
 	 */
 	private Date ctime;
-	
+
 	/**
 	 * 修改时间
 	 */
 	private Date mtime;
-	
+
 	/**
 	 * 状态 小于0无效
 	 */
@@ -100,6 +92,15 @@ public class Book implements Serializable{
 		this.id = id;
 	}
 
+	@Column(name = "book_id")
+	public Long getBookId() {
+		return bookId;
+	}
+
+	public void setBookId(Long bookId) {
+		this.bookId = bookId;
+	}
+
 	@Column(name = "type")
 	public Integer getType() {
 		return type;
@@ -109,16 +110,7 @@ public class Book implements Serializable{
 		this.type = type;
 	}
 
-	@Column(name = "tags")
-	public String getTags() {
-		return tags;
-	}
-
-	public void setTags(String tags) {
-		this.tags = tags;
-	}
-
-	@Column(name = "name", length = 128)
+	@Column(name = "name", length = 32)
 	public String getName() {
 		return name;
 	}
@@ -127,49 +119,35 @@ public class Book implements Serializable{
 		this.name = name;
 	}
 
-	@Column(name = "cover_image_url")
-	public String getCoverImageUrl() {
-		return coverImageUrl;
+	@Column(name = "creator", length = 64)
+	public String getCreator() {
+		return creator;
 	}
 
-	public void setCoverImageUrl(String coverImageUrl) {
-		this.coverImageUrl = coverImageUrl;
+	public void setCreator(String creator) {
+		this.creator = creator;
 	}
 
-	@Column(name = "author", length = 64)
-	public String getAuthor() {
-		return author;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
+	@Column(name = "start_date")
+	public Date getStartDate() {
+		return startDate;
 	}
 
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-	
-	@Column(name = "min_age")
-	public Integer getMinAge() {
-		return minAge;
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 
-	public void setMinAge(Integer minAge) {
-		this.minAge = minAge;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
+	@Column(name = "end_date")
+	public Date getEndDate() {
+		return endDate;
 	}
 
-	@Column(name = "max_age")
-	public Integer getMaxAge() {
-		return maxAge;
-	}
-
-	public void setMaxAge(Integer maxAge) {
-		this.maxAge = maxAge;
-	}
-
-	@Column(name = "description", length = 1024)
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
@@ -203,5 +181,4 @@ public class Book implements Serializable{
 		this.status = status;
 	}
 
-	
 }

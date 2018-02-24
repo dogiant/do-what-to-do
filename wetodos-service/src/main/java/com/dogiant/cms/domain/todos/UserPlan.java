@@ -1,10 +1,19 @@
 package com.dogiant.cms.domain.todos;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 用户学习计划
@@ -20,6 +29,11 @@ public class UserPlan implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 8703731133609702348L;
+	
+	/**
+	 * 主键ID
+	 */
+	private Long id;
 
 	/**
 	 * 用户openId
@@ -42,14 +56,24 @@ public class UserPlan implements Serializable {
 	private String avatarUrl;
 
 	/**
-	 * 学习计划名称
-	 */
-	private String name;
-
-	/**
 	 * 图书ID
 	 */
 	private Long bookId;
+	
+	/**
+	 * 学习计划ID
+	 */
+	private Long planId;
+	
+	/**
+	 * 学习计划类型 1固定学期 2自由学期
+	 */
+	private Integer planType;
+	
+	/**
+	 * 学习计划名称
+	 */
+	private String planName;
 
 	/**
 	 * 开始时间
@@ -75,7 +99,19 @@ public class UserPlan implements Serializable {
 	 * 状态 小于0无效
 	 */
 	private Integer status;
+	
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Column(name = "open_id")
 	public String getOpenId() {
 		return openId;
 	}
@@ -84,6 +120,7 @@ public class UserPlan implements Serializable {
 		this.openId = openId;
 	}
 
+	@Column(name = "union_id")
 	public String getUnionId() {
 		return unionId;
 	}
@@ -92,6 +129,7 @@ public class UserPlan implements Serializable {
 		this.unionId = unionId;
 	}
 
+	@Column(name = "nick_name", length = 64)
 	public String getNickName() {
 		return nickName;
 	}
@@ -100,6 +138,7 @@ public class UserPlan implements Serializable {
 		this.nickName = nickName;
 	}
 
+	@Column(name = "avatar_url", length = 256)
 	public String getAvatarUrl() {
 		return avatarUrl;
 	}
@@ -108,14 +147,34 @@ public class UserPlan implements Serializable {
 		this.avatarUrl = avatarUrl;
 	}
 
-	public String getName() {
-		return name;
+	@Column(name = "plan_id")
+	public Long getPlanId() {
+		return planId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPlanId(Long planId) {
+		this.planId = planId;
 	}
 
+	@Column(name = "plan_type")
+	public Integer getPlanType() {
+		return planType;
+	}
+
+	public void setPlanType(Integer planType) {
+		this.planType = planType;
+	}
+
+	@Column(name = "plan_name", length = 64)
+	public String getPlanName() {
+		return planName;
+	}
+
+	public void setPlanName(String planName) {
+		this.planName = planName;
+	}
+
+	@Column(name = "book_id")
 	public Long getBookId() {
 		return bookId;
 	}
@@ -124,6 +183,9 @@ public class UserPlan implements Serializable {
 		this.bookId = bookId;
 	}
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
+	@Column(name = "start_date")
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -132,6 +194,9 @@ public class UserPlan implements Serializable {
 		this.startDate = startDate;
 	}
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Temporal(TemporalType.DATE)
+	@Column(name = "end_date")
 	public Date getEndDate() {
 		return endDate;
 	}
@@ -140,6 +205,10 @@ public class UserPlan implements Serializable {
 		this.endDate = endDate;
 	}
 
+
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ctime")
 	public Date getCtime() {
 		return ctime;
 	}
@@ -148,6 +217,9 @@ public class UserPlan implements Serializable {
 		this.ctime = ctime;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "mtime")
 	public Date getMtime() {
 		return mtime;
 	}
@@ -156,6 +228,7 @@ public class UserPlan implements Serializable {
 		this.mtime = mtime;
 	}
 
+	@Column(name = "status")
 	public Integer getStatus() {
 		return status;
 	}
@@ -163,5 +236,5 @@ public class UserPlan implements Serializable {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
+	
 }

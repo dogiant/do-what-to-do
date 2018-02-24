@@ -1,10 +1,19 @@
 package com.dogiant.cms.domain.todos;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 用户每日任务完成情况详情
@@ -20,6 +29,11 @@ public class UserScheduleDetail implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 3568934308083827664L;
+	
+	/**
+	 * 主键ID
+	 */
+	private Long id;
 
 	/**
 	 * 用户openId
@@ -44,7 +58,7 @@ public class UserScheduleDetail implements Serializable {
 	/**
 	 * 每日时间表ID
 	 */
-	private Long scheduleId;
+	private Long userScheduleId;
 
 	/**
 	 * 任务完成情况 0未完成 1当天完成 2补录
@@ -76,6 +90,18 @@ public class UserScheduleDetail implements Serializable {
 	 */
 	private Integer status;
 
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Column(name = "open_id")
 	public String getOpenId() {
 		return openId;
 	}
@@ -84,6 +110,7 @@ public class UserScheduleDetail implements Serializable {
 		this.openId = openId;
 	}
 
+	@Column(name = "union_id")
 	public String getUnionId() {
 		return unionId;
 	}
@@ -92,6 +119,7 @@ public class UserScheduleDetail implements Serializable {
 		this.unionId = unionId;
 	}
 
+	@Column(name = "book_id")
 	public Long getBookId() {
 		return bookId;
 	}
@@ -100,6 +128,7 @@ public class UserScheduleDetail implements Serializable {
 		this.bookId = bookId;
 	}
 
+	@Column(name = "chapter_id")
 	public Long getChapterId() {
 		return chapterId;
 	}
@@ -108,14 +137,16 @@ public class UserScheduleDetail implements Serializable {
 		this.chapterId = chapterId;
 	}
 
-	public Long getScheduleId() {
-		return scheduleId;
+	@Column(name = "user_schedule_id")
+	public Long getUserScheduleId() {
+		return userScheduleId;
 	}
 
-	public void setScheduleId(Long scheduleId) {
-		this.scheduleId = scheduleId;
+	public void setUserScheduleId(Long userScheduleId) {
+		this.userScheduleId = userScheduleId;
 	}
 
+	@Column(name = "complete_status")
 	public Integer getCompleteStatus() {
 		return completeStatus;
 	}
@@ -124,6 +155,7 @@ public class UserScheduleDetail implements Serializable {
 		this.completeStatus = completeStatus;
 	}
 
+	@Column(name = "content_type", length = 16)
 	public String getContentType() {
 		return contentType;
 	}
@@ -132,6 +164,7 @@ public class UserScheduleDetail implements Serializable {
 		this.contentType = contentType;
 	}
 
+	@Column(name = "content", length = 1024)
 	public String getContent() {
 		return content;
 	}
@@ -140,6 +173,9 @@ public class UserScheduleDetail implements Serializable {
 		this.content = content;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ctime")
 	public Date getCtime() {
 		return ctime;
 	}
@@ -148,6 +184,9 @@ public class UserScheduleDetail implements Serializable {
 		this.ctime = ctime;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "mtime")
 	public Date getMtime() {
 		return mtime;
 	}
@@ -156,6 +195,7 @@ public class UserScheduleDetail implements Serializable {
 		this.mtime = mtime;
 	}
 
+	@Column(name = "status")
 	public Integer getStatus() {
 		return status;
 	}

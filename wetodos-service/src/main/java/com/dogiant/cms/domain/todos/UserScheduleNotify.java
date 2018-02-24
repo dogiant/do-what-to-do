@@ -1,10 +1,19 @@
 package com.dogiant.cms.domain.todos;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 学习计划时间表，每日任务通知设置 几点 几分 例如早上5点半 5:30
@@ -20,7 +29,12 @@ public class UserScheduleNotify implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 6842565784707680974L;
-
+	
+	/**
+	 * 主键ID
+	 */
+	private Long id;
+	
 	/**
 	 * 用户openId
 	 */
@@ -56,6 +70,18 @@ public class UserScheduleNotify implements Serializable {
 	 */
 	private Integer status;
 
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Column(name = "open_id")
 	public String getOpenId() {
 		return openId;
 	}
@@ -64,6 +90,7 @@ public class UserScheduleNotify implements Serializable {
 		this.openId = openId;
 	}
 
+	@Column(name = "union_id")
 	public String getUnionId() {
 		return unionId;
 	}
@@ -72,6 +99,7 @@ public class UserScheduleNotify implements Serializable {
 		this.unionId = unionId;
 	}
 
+	@Column(name = "hour")
 	public Integer getHour() {
 		return hour;
 	}
@@ -80,6 +108,7 @@ public class UserScheduleNotify implements Serializable {
 		this.hour = hour;
 	}
 
+	@Column(name = "minute")
 	public Integer getMinute() {
 		return minute;
 	}
@@ -88,6 +117,9 @@ public class UserScheduleNotify implements Serializable {
 		this.minute = minute;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ctime")
 	public Date getCtime() {
 		return ctime;
 	}
@@ -96,6 +128,9 @@ public class UserScheduleNotify implements Serializable {
 		this.ctime = ctime;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "mtime")
 	public Date getMtime() {
 		return mtime;
 	}
@@ -104,6 +139,7 @@ public class UserScheduleNotify implements Serializable {
 		this.mtime = mtime;
 	}
 
+	@Column(name = "status")
 	public Integer getStatus() {
 		return status;
 	}
@@ -111,5 +147,4 @@ public class UserScheduleNotify implements Serializable {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
 }

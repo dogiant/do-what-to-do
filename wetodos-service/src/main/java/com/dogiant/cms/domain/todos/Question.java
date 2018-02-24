@@ -1,10 +1,19 @@
 package com.dogiant.cms.domain.todos;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 章回文字问题
@@ -50,6 +59,9 @@ public class Question implements Serializable{
 	 */
 	private Integer status;
 
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
 		return id;
 	}
@@ -58,6 +70,7 @@ public class Question implements Serializable{
 		this.id = id;
 	}
 
+	@Column(name = "chapter_id")
 	public Long getChapterId() {
 		return chapterId;
 	}
@@ -66,6 +79,7 @@ public class Question implements Serializable{
 		this.chapterId = chapterId;
 	}
 
+	@Column(name = "content", length = 512)
 	public String getContent() {
 		return content;
 	}
@@ -74,6 +88,9 @@ public class Question implements Serializable{
 		this.content = content;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ctime")
 	public Date getCtime() {
 		return ctime;
 	}
@@ -82,6 +99,9 @@ public class Question implements Serializable{
 		this.ctime = ctime;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "mtime")
 	public Date getMtime() {
 		return mtime;
 	}
@@ -90,6 +110,7 @@ public class Question implements Serializable{
 		this.mtime = mtime;
 	}
 
+	@Column(name = "status")
 	public Integer getStatus() {
 		return status;
 	}

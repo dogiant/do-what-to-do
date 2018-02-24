@@ -1,10 +1,19 @@
 package com.dogiant.cms.domain.todos;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 每日一图
@@ -55,6 +64,9 @@ public class DailyBanner implements Serializable{
 	 */
 	private Integer status;
 
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
 		return id;
 	}
@@ -63,6 +75,7 @@ public class DailyBanner implements Serializable{
 		this.id = id;
 	}
 
+	@Column(name = "image_url", length = 256)
 	public String getImageUrl() {
 		return imageUrl;
 	}
@@ -71,6 +84,7 @@ public class DailyBanner implements Serializable{
 		this.imageUrl = imageUrl;
 	}
 
+	@Column(name = "text", length = 32)
 	public String getText() {
 		return text;
 	}
@@ -79,6 +93,7 @@ public class DailyBanner implements Serializable{
 		this.text = text;
 	}
 
+	@Column(name = "date", length = 16)
 	public String getDate() {
 		return date;
 	}
@@ -87,6 +102,9 @@ public class DailyBanner implements Serializable{
 		this.date = date;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ctime")
 	public Date getCtime() {
 		return ctime;
 	}
@@ -95,6 +113,9 @@ public class DailyBanner implements Serializable{
 		this.ctime = ctime;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "mtime")
 	public Date getMtime() {
 		return mtime;
 	}
@@ -103,6 +124,7 @@ public class DailyBanner implements Serializable{
 		this.mtime = mtime;
 	}
 
+	@Column(name = "status")
 	public Integer getStatus() {
 		return status;
 	}
@@ -110,6 +132,6 @@ public class DailyBanner implements Serializable{
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	
+
 	
 }

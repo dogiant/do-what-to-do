@@ -1,20 +1,30 @@
 package com.dogiant.cms.domain.todos;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 章节
+ * 
  * @author dubiaoqi
  *
  */
 @Entity
 @Table(name = "todos_chapter")
 public class Chapter implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -24,57 +34,60 @@ public class Chapter implements Serializable {
 	 * 主键ID
 	 */
 	private Long id;
-	
+
 	/**
 	 * 图书ID
 	 */
 	private Long bookId;
-	
+
 	/**
-	 * 内容类型 //古诗词，演讲，文章
+	 * 内容类型 //poem 古诗词，speech演讲，article文章
 	 */
 	private String contentType;
-	
+
 	/**
 	 * 标题
 	 */
 	private String title;
-	
+
 	/**
 	 * 子标题
 	 */
 	private String subTitle;
-	
+
 	/**
 	 * 字数统计
 	 */
 	private Integer wordCount;
-	
+
 	/**
 	 * 排序序号
 	 */
 	private Long order;
-	
+
 	/**
-	 * 阅后任务类型  //qa问答 audio语音 image图片
+	 * 阅后任务类型 //qa问答 audio语音 image图片
 	 */
 	private String taskType;
-	
+
 	/**
 	 * 创建时间
 	 */
 	private Date ctime;
-	
+
 	/**
 	 * 修改时间
 	 */
 	private Date mtime;
-	
+
 	/**
 	 * 状态 小于0无效
 	 */
 	private Integer status;
 
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
 		return id;
 	}
@@ -83,6 +96,7 @@ public class Chapter implements Serializable {
 		this.id = id;
 	}
 
+	@Column(name = "book_id")
 	public Long getBookId() {
 		return bookId;
 	}
@@ -91,6 +105,7 @@ public class Chapter implements Serializable {
 		this.bookId = bookId;
 	}
 
+	@Column(name = "content_type", length = 32)
 	public String getContentType() {
 		return contentType;
 	}
@@ -99,6 +114,7 @@ public class Chapter implements Serializable {
 		this.contentType = contentType;
 	}
 
+	@Column(name = "title", length = 32)
 	public String getTitle() {
 		return title;
 	}
@@ -107,6 +123,7 @@ public class Chapter implements Serializable {
 		this.title = title;
 	}
 
+	@Column(name = "sub_title", length = 64)
 	public String getSubTitle() {
 		return subTitle;
 	}
@@ -115,6 +132,7 @@ public class Chapter implements Serializable {
 		this.subTitle = subTitle;
 	}
 
+	@Column(name = "word_count")
 	public Integer getWordCount() {
 		return wordCount;
 	}
@@ -123,6 +141,7 @@ public class Chapter implements Serializable {
 		this.wordCount = wordCount;
 	}
 
+	@Column(name = "order")
 	public Long getOrder() {
 		return order;
 	}
@@ -131,6 +150,7 @@ public class Chapter implements Serializable {
 		this.order = order;
 	}
 
+	@Column(name = "task_type", length = 32)
 	public String getTaskType() {
 		return taskType;
 	}
@@ -139,6 +159,9 @@ public class Chapter implements Serializable {
 		this.taskType = taskType;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ctime")
 	public Date getCtime() {
 		return ctime;
 	}
@@ -147,6 +170,9 @@ public class Chapter implements Serializable {
 		this.ctime = ctime;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "mtime")
 	public Date getMtime() {
 		return mtime;
 	}
@@ -155,6 +181,7 @@ public class Chapter implements Serializable {
 		this.mtime = mtime;
 	}
 
+	@Column(name = "status")
 	public Integer getStatus() {
 		return status;
 	}
@@ -163,5 +190,5 @@ public class Chapter implements Serializable {
 		this.status = status;
 	}
 
-	
+
 }

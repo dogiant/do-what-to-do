@@ -1,10 +1,19 @@
 package com.dogiant.cms.domain.todos;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 用户表
@@ -85,6 +94,9 @@ public class User implements Serializable {
 	 */
 	private Integer status;
 
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	public Long getId() {
 		return id;
 	}
@@ -93,6 +105,7 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
+	@Column(name = "app_id", length = 64)
 	public String getAppId() {
 		return appId;
 	}
@@ -101,6 +114,7 @@ public class User implements Serializable {
 		this.appId = appId;
 	}
 
+	@Column(name = "open_id")
 	public String getOpenId() {
 		return openId;
 	}
@@ -109,6 +123,7 @@ public class User implements Serializable {
 		this.openId = openId;
 	}
 
+	@Column(name = "union_id")
 	public String getUnionId() {
 		return unionId;
 	}
@@ -117,6 +132,7 @@ public class User implements Serializable {
 		this.unionId = unionId;
 	}
 
+	@Column(name = "nick_name", length = 64)
 	public String getNickName() {
 		return nickName;
 	}
@@ -125,6 +141,7 @@ public class User implements Serializable {
 		this.nickName = nickName;
 	}
 
+	@Column(name = "avatar_url", length = 256)
 	public String getAvatarUrl() {
 		return avatarUrl;
 	}
@@ -133,6 +150,7 @@ public class User implements Serializable {
 		this.avatarUrl = avatarUrl;
 	}
 
+	@Column(name = "gender", length = 16)
 	public String getGender() {
 		return gender;
 	}
@@ -141,6 +159,7 @@ public class User implements Serializable {
 		this.gender = gender;
 	}
 
+	@Column(name = "country", length = 64)
 	public String getCountry() {
 		return country;
 	}
@@ -149,6 +168,7 @@ public class User implements Serializable {
 		this.country = country;
 	}
 
+	@Column(name = "province", length = 64)
 	public String getProvince() {
 		return province;
 	}
@@ -157,6 +177,7 @@ public class User implements Serializable {
 		this.province = province;
 	}
 
+	@Column(name = "city", length = 64)
 	public String getCity() {
 		return city;
 	}
@@ -165,6 +186,9 @@ public class User implements Serializable {
 		this.city = city;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ctime")
 	public Date getCtime() {
 		return ctime;
 	}
@@ -173,6 +197,9 @@ public class User implements Serializable {
 		this.ctime = ctime;
 	}
 
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "mtime")
 	public Date getMtime() {
 		return mtime;
 	}
@@ -181,6 +208,7 @@ public class User implements Serializable {
 		this.mtime = mtime;
 	}
 
+	@Column(name = "status")
 	public Integer getStatus() {
 		return status;
 	}
@@ -188,5 +216,6 @@ public class User implements Serializable {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
+	
 
 }
