@@ -63,7 +63,7 @@ public class Chapter implements Serializable {
 	/**
 	 * 排序序号
 	 */
-	private Long order;
+	private Long sortOrder;
 
 	/**
 	 * 阅后任务类型 //qa问答 audio语音 image图片
@@ -140,14 +140,14 @@ public class Chapter implements Serializable {
 	public void setWordCount(Integer wordCount) {
 		this.wordCount = wordCount;
 	}
-
-	@Column(name = "order")
-	public Long getOrder() {
-		return order;
+	
+	@Column(name = "sort_order")
+	public Long getSortOrder() {
+		return sortOrder;
 	}
 
-	public void setOrder(Long order) {
-		this.order = order;
+	public void setSortOrder(Long sortOrder) {
+		this.sortOrder = sortOrder;
 	}
 
 	@Column(name = "task_type", length = 32)

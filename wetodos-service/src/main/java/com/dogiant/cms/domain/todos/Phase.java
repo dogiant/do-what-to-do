@@ -47,7 +47,7 @@ public class Phase implements Serializable {
 	/**
 	 * 序号
 	 */
-	private Long order;
+	private Long sortOrder;
 	
 	/**
 	 * 展示的内容类型， text, image, audio, video?
@@ -113,13 +113,13 @@ public class Phase implements Serializable {
 		this.chapterId = chapterId;
 	}
 
-	@Column(name = "chapter_id")
-	public Long getOrder() {
-		return order;
+	@Column(name = "sort_order")
+	public Long getSortOrder() {
+		return sortOrder;
 	}
 
-	public void setOrder(Long order) {
-		this.order = order;
+	public void setSortOrder(Long sortOrder) {
+		this.sortOrder = sortOrder;
 	}
 
 	@Column(name = "content_type", length = 32)
