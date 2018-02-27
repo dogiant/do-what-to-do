@@ -75,6 +75,11 @@ public class Book implements Serializable{
 	private Integer maxAge;
 	
 	/**
+	 * 操作者
+	 */
+	private String operator;
+	
+	/**
 	 * 创建时间
 	 */
 	private Date ctime;
@@ -170,6 +175,15 @@ public class Book implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Column(name = "operator", length = 64)
+	public String getOperator() {
+		return operator;
+	}
+
+	public void setOperator(String operator) {
+		this.operator = operator;
 	}
 
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")

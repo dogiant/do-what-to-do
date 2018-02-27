@@ -44,6 +44,18 @@
         </li>
         
         <li class="accordion-group ">
+            <a data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#todos-nav">
+                <i class="icon-book icon-large"></i> 简道学习 <span
+                    class="label label-inverse pull-right">2</span>
+            </a>
+            <ul class="collapse  <c:if test="${requestScope.menu=='todos'}"> in</c:if>"  id="todos-nav">
+            	<li><a href="todos_book_list"><i class="icon-angle-right"></i> 学习资源管理</a></li>
+            	<li><a href="todos_learning_plan_list"><i class="icon-angle-right"></i> 学习计划管理</a></li>
+            </ul>
+        </li>  
+        
+        <!-- 
+        <li class="accordion-group ">
             <a data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#video-nav">
                 <i class="icon-film icon-large"></i> 视频管理 <span
                     class="label label-inverse pull-right">2</span>
@@ -54,6 +66,7 @@
                 <li><a href="videoList"><i class="icon-angle-right"></i> 视频列表</a></li>
             </ul>
         </li>
+         -->
         
         <c:if test="${requestScope.userName=='admin'}">
         <li class="accordion-group<c:if test="${requestScope.menu=='admin'}"> active</c:if> ">
