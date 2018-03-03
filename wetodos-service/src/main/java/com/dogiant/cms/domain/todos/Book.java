@@ -47,7 +47,7 @@ public class Book implements Serializable{
 	/**
 	 * 书名
 	 */
-	private String name;
+	private String title;
 
 	/**
 	 * 封面url
@@ -62,7 +62,7 @@ public class Book implements Serializable{
 	/**
 	 * 描述
 	 */
-	private String description;
+	private String digest;
 	
 	/**
 	 * 适合最小年龄
@@ -123,13 +123,13 @@ public class Book implements Serializable{
 		this.tags = tags;
 	}
 
-	@Column(name = "name", length = 128)
-	public String getName() {
-		return name;
+	@Column(name = "title", length = 128)
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	@Column(name = "cover_image_url")
@@ -168,13 +168,13 @@ public class Book implements Serializable{
 		this.maxAge = maxAge;
 	}
 
-	@Column(name = "description", length = 1024)
-	public String getDescription() {
-		return description;
+	@Column(name = "digest", length = 1024)
+	public String getDigest() {
+		return digest;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDigest(String digest) {
+		this.digest = digest;
 	}
 
 	@Column(name = "operator", length = 64)

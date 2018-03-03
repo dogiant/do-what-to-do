@@ -52,7 +52,7 @@
                                             <!-- /.toolbar -->
                                         </header>
                                         <div  id="div-1"  class="accordion-body collapse in body">
-                                            <table id="articleDataTable" class="table table-bordered table-condensed table-hover table-striped">
+                                            <table id="bookDataTable" class="table table-bordered table-condensed table-hover table-striped">
                                                 <thead>
                                                     <tr>
                                                     	<th>序号</th>
@@ -95,11 +95,11 @@
         
         <script type="text/javascript">
             $(function() {
-                /*----------- BEGIN articleDataTable CODE -------------------------*/
-            	$('#articleDataTable').dataTable({
+                /*----------- BEGIN bookDataTable CODE -------------------------*/
+            	$('#bookDataTable').dataTable({
                 	"processing": true,
                     "serverSide": true,
-                    "ajax": "api/article/list",
+                    "ajax": "api/todos/book/list",
                     "columns": [
                         { "data": "id" },
                         { "data": "messageShow"},
@@ -142,24 +142,24 @@
                     }
                 });
 
-                /*----------- END articleDataTable CODE -------------------------*/
-                $('#articleDataTable tbody').on( 'click', 'button.view', function () {
+                /*----------- END bookDataTable CODE -------------------------*/
+                $('#bookDataTable tbody').on( 'click', 'button.view', function () {
                 	var sFeatures = "height=480, width=320, scrollbars=yes, resizable=yes";
-                	var sUrl="article_preview?id="+$(this).attr("dataid");
+                	var sUrl="book_preview?id="+$(this).attr("dataid");
                 	window.open( sUrl, 'preview', sFeatures );
                 	return false;
                 }); 
             	
-                $('#articleDataTable tbody').on( 'click', 'button.edit', function () {
-                    location.href = "article_modify?id="+$(this).attr("dataid");
+                $('#bookDataTable tbody').on( 'click', 'button.edit', function () {
+                    location.href = "todos_book_modify?id="+$(this).attr("dataid");
                 }); 
-                $('#articleDataTable tbody').on( 'click', 'button.remove', function () {
+                $('#bookDataTable tbody').on( 'click', 'button.remove', function () {
                     var idsvalue = $(this).attr("dataid");
         			bootbox.confirm("您确定要删除操作吗?", function(result) {
             			if(result){
                         	$.ajax({
                         		type:'post',
-                        		url:'api/article/delete',
+                        		url:'api/todos/book/delete',
                         		data:{ids:idsvalue},
                         		dataType:'json',
                         		beforeSend: function(){
