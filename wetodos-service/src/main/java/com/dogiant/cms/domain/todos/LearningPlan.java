@@ -37,9 +37,9 @@ public class LearningPlan implements Serializable{
 	private Long id;
 	
 	/**
-	 * 图书ID
+	 * 图书IDS
 	 */
-	private Long bookId;
+	private String bookIds;
 	
 	/**
 	 * 类型 1固定学期 2自由学期
@@ -92,13 +92,13 @@ public class LearningPlan implements Serializable{
 		this.id = id;
 	}
 
-	@Column(name = "book_id")
-	public Long getBookId() {
-		return bookId;
+	@Column(name = "book_ids")
+	public String getBookIds() {
+		return bookIds;
 	}
 
-	public void setBookId(Long bookId) {
-		this.bookId = bookId;
+	public void setBookIds(String bookIds) {
+		this.bookIds = bookIds;
 	}
 
 	@Column(name = "type")

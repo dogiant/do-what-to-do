@@ -95,7 +95,7 @@
 	                                                <div class="control-group">
 	                                                    <label for="newsAuthor" class="control-label">作者</label>
 	                                                    <div class="controls with-tooltip">
-	                                                        <input type="text" id="articleAuthor" name="author" class="span6 input-tooltip" data-placement="top" />（选填）
+	                                                        <input type="text" id="articleAuthor" name="author" class="span3 input-tooltip" data-placement="top" />（选填）
 	                                                    </div>
 	                                                </div>
 	                                                <div class="control-group">
@@ -125,7 +125,7 @@
 	                                                <div class="control-group">
 	                                                    <label for="articleDigest" class="control-label">摘要</label>
 	                                                    <div class="controls">
-	                                                    	<textarea id="articleDigest" name="digest" class="span6" ></textarea>
+	                                                    	<textarea id="articleDigest" name="digest" class="span6"></textarea>
 	                                                    </div>
 	                                                </div>
 	                                                <div class="control-group">

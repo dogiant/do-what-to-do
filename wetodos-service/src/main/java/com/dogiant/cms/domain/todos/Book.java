@@ -12,7 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
+import com.dogiant.cms.config.ImageConfig;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
@@ -52,7 +54,7 @@ public class Book implements Serializable{
 	/**
 	 * 封面url
 	 */
-	private String coverImageUrl;
+	private String coverPicUrl;
 
 	/**
 	 * 作者
@@ -63,16 +65,6 @@ public class Book implements Serializable{
 	 * 描述
 	 */
 	private String digest;
-	
-	/**
-	 * 适合最小年龄
-	 */
-	private Integer minAge;
-	
-	/**
-	 * 适合最大年龄
-	 */
-	private Integer maxAge;
 	
 	/**
 	 * 操作者
@@ -132,13 +124,13 @@ public class Book implements Serializable{
 		this.title = title;
 	}
 
-	@Column(name = "cover_image_url")
-	public String getCoverImageUrl() {
-		return coverImageUrl;
+	@Column(name = "cover_pic_url")
+	public String getCoverPicUrl() {
+		return coverPicUrl;
 	}
 
-	public void setCoverImageUrl(String coverImageUrl) {
-		this.coverImageUrl = coverImageUrl;
+	public void setCoverPicUrl(String coverPicUrl) {
+		this.coverPicUrl = coverPicUrl;
 	}
 
 	@Column(name = "author", length = 64)
@@ -148,24 +140,6 @@ public class Book implements Serializable{
 
 	public void setAuthor(String author) {
 		this.author = author;
-	}
-	
-	@Column(name = "min_age")
-	public Integer getMinAge() {
-		return minAge;
-	}
-
-	public void setMinAge(Integer minAge) {
-		this.minAge = minAge;
-	}
-
-	@Column(name = "max_age")
-	public Integer getMaxAge() {
-		return maxAge;
-	}
-
-	public void setMaxAge(Integer maxAge) {
-		this.maxAge = maxAge;
 	}
 
 	@Column(name = "digest", length = 1024)
@@ -217,5 +191,51 @@ public class Book implements Serializable{
 		this.status = status;
 	}
 
+	@Transient
+	public String getBookShow() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<div class=\"thumbnail\" id=\"news_thumbnail\">");
+		sb.append("<h4 id=\"news_title\" >"+ getTitle() +"</h4>");
+		sb.append("<div id=\"cover_wrapper\">");
+		sb.append("<img src=\""+ImageConfig.imageUrlPrefix + getCoverPicUrl()+"\" id=\"news_cover\" onerror=\"this.style.display='none'\" />");
+		sb.append("<i>封面图片</i>");
+		sb.append("</div>");
+		sb.append("<div class=\"caption\">");
+		sb.append("<p id=\"news_digest\" >");
+		sb.append(getDigest());
+		sb.append("</p>");
+		sb.append("</div>");
+		sb.append("</div>");
+		return sb.toString();
+	}
 	
+	@Transient
+	public String getTypeDesc() {
+		if (this.getType() != null) {
+			return this.getType() == 1 ? "管理员录入" : "用户上传";
+		}
+		return "";
+	}
+	
+	/**
+	 * 返回状态描述
+	 * @return
+	 */
+	@Transient
+	public String getStatusDescription() {
+		switch(status){
+			case 0:
+				return "正常显示";
+			case 1:
+				return "审核通过";
+			case -1:
+				return "等待审核";
+			case -2:
+				return "自主删除";
+			case -3:
+				return "强制删除";
+			default:
+				return "未知状态";
+		}
+	}
 }

@@ -41,7 +41,7 @@ public class Chapter implements Serializable {
 	private Long bookId;
 
 	/**
-	 * 内容类型 //poem 古诗词，speech演讲，article文章
+	 * 内容类型 //poem古诗词，speech演讲，article文章
 	 */
 	private String contentType;
 
@@ -56,17 +56,7 @@ public class Chapter implements Serializable {
 	private String subTitle;
 
 	/**
-	 * 字数统计
-	 */
-	private Integer wordCount;
-
-	/**
-	 * 排序序号
-	 */
-	private Long sortOrder;
-
-	/**
-	 * 阅后任务类型 //qa问答 audio语音 image图片
+	 * 阅后任务类型 //choice选择 image图片 audio语音 vedio视频
 	 */
 	private String taskType;
 
@@ -131,25 +121,7 @@ public class Chapter implements Serializable {
 	public void setSubTitle(String subTitle) {
 		this.subTitle = subTitle;
 	}
-
-	@Column(name = "word_count")
-	public Integer getWordCount() {
-		return wordCount;
-	}
-
-	public void setWordCount(Integer wordCount) {
-		this.wordCount = wordCount;
-	}
 	
-	@Column(name = "sort_order")
-	public Long getSortOrder() {
-		return sortOrder;
-	}
-
-	public void setSortOrder(Long sortOrder) {
-		this.sortOrder = sortOrder;
-	}
-
 	@Column(name = "task_type", length = 32)
 	public String getTaskType() {
 		return taskType;

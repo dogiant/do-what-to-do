@@ -81,8 +81,7 @@ public class BookDaoImpl implements BookDao {
 
 				List<Predicate> list = new ArrayList<Predicate>();
 
-				list.add(paramCriteriaBuilder.ge(
-						paramRoot.get("status").as(Number.class), 0));
+				list.add(paramCriteriaBuilder.ge(paramRoot.get("status").as(Number.class), 0));
 				if (StringUtils.isNoneEmpty(searchValue))
 					list.add(paramCriteriaBuilder.like(paramRoot.get("title")
 							.as(String.class), "%" + searchValue + "%"));

@@ -120,6 +120,7 @@ public class TodosRestAPIController {
 		book.setCtime(bookFromDB.getCtime());
 		book.setMtime(now);
 		book.setOperator((String) request.getAttribute("userName"));
+		book.setType(1);
 		// 0 先发后审 -1先审后发
 		book.setStatus(0);
 

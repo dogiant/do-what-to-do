@@ -67,17 +67,18 @@
 		                                                </form>
 	                                                </div>
 	  												<div class="form-horizontal">
-	  												<form id="todosBookForm" action="api/todos/book/add" method="post" >
+	  												<form id="todosBookForm" action="api/todos/book/update" method="post" >
+	  												<input type="hidden" id="id" name="id" value="${book.id}" />
 	                                                <div class="control-group">
 	                                                    <label for="bookTitle" class="control-label">标题</label>
 	                                                    <div class="controls with-tooltip">
-	                                                        <input type="text" id="bookTitle" name="title" class="span6 input-tooltip" data-placement="top" />
+	                                                        <input type="text" id="bookTitle" name="title" class="span6 input-tooltip" data-placement="top" value="${book.title }"/>
 	                                                    </div>
 	                                                </div>
 	                                                <div class="control-group">
 	                                                    <label for="newsAuthor" class="control-label">作者</label>
 	                                                    <div class="controls with-tooltip">
-	                                                        <input type="text" id="bookAuthor" name="author" class="span3 input-tooltip" data-placement="top" />（选填）
+	                                                        <input type="text" id="bookAuthor" name="author" class="span3 input-tooltip" data-placement="top" value="${book.author }"/>（选填）
 	                                                    </div>
 	                                                </div>
 	                                                <div class="control-group">
@@ -88,7 +89,7 @@
                                                          		</div>
 	                                                             <span class="btn btn-file">
                                                                     <span onclick="uploadPicAjax.click()">选择图片</span>
-                                                                    <input id="coverPicUrl" type="hidden" name="coverPicUrl" />
+                                                                    <input id="coverPicUrl" type="hidden" name="coverPicUrl" value="${book.coverPicUrl }"/>
                                                                 </span>
 		                                                         
 		                                                         <p class="js_cover upload_preview" style="display: none;"><img id="cover_preview"  src="">
@@ -99,14 +100,14 @@
 	                                                <div class="control-group">
 	                                                    <label for="bookDigest" class="control-label">摘要</label>
 	                                                    <div class="controls">
-	                                                    	<textarea id="bookDigest" name="digest" class="span6" style="height:260px"></textarea>
+	                                                    	<textarea id="bookDigest" name="digest" class="span6" style="height:260px">${book.digest }</textarea>
 	                                                    </div>
 	                                                </div>
 
 	                                                <div class="control-group">
 	                                                    <label for="tags" class="control-label">标签</label>
 	                                                    <div class="controls with-tooltip">
-	                                                        <input type="text" id="bookTags" name="tags" class="span3 input-tooltip" data-placement="top"  />
+	                                                        <input type="text" id="bookTags" name="tags" class="span3 input-tooltip" data-placement="top"  value="${book.tags }" />
 	                                                    </div>
 	                                                </div>
 
@@ -120,14 +121,14 @@
                                         	
                                         	<div class="span5">
 	                                        	<div class="thumbnail" id="news_thumbnail">
-	                                        	  <h4 id="news_title" >标题</h4>
+	                                        	  <h4 id="news_title">${book.title }</h4>
 	                                        	  <div id="cover_wrapper">
 								                  	<img src="" id="news_cover" style="display:none;">
 								                  	<i>封面图片</i>                           	  
 	                                        	  </div>
 								                  <div class="caption">
 								                    <p id="news_digest" >
-								                    	摘要文字
+								                    	${book.digest }
 								                    </p>
 								                  </div>
 								                </div>  
@@ -236,7 +237,13 @@
 		
 		
 		$().ready(function() {
-			//$('#bookDigest').autosize();
+			var mCoverPicUrl = $("#coverPicUrl").val();
+			if(mCoverPicUrl!=''){
+				$("#news_cover").attr("src", STATIC_FILE_HOST + mCoverPicUrl);
+				$("#news_cover").css({"display":"block"});
+				$("#cover_preview").attr("src", STATIC_FILE_HOST + mCoverPicUrl);
+				$(".upload_preview").css({"display":"block"});
+			}
 
 			$("#bookTitle").keyup(function(){
 				$("#news_title").html($(this).val());
@@ -309,7 +316,7 @@
 		 	// post-submit callback 
 		 	function showResponse(data)  { 
 			 	if(data.success){
-					bootbox.alert('学习资源已成功录入' ,function(){
+					bootbox.alert('学习资源已成功修改' ,function(){
 						message_box.show('将跳转到学习资源管理界面!','success');
 						var page_list = function(){
 							location.href="todos_book_list";

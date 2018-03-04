@@ -102,7 +102,7 @@
                     "ajax": "api/todos/book/list",
                     "columns": [
                         { "data": "id" },
-                        { "data": "messageShow"},
+                        { "data": "bookShow"},
                         { "data": "typeDesc"},
                         { "data": "ctime" },
                         { "data": "mtime" },
@@ -111,7 +111,7 @@
                     "columnDefs": [  
                         { "bSortable": false, 
                         	"targets": [1],
-                        	"sWidth": "320px"
+                        	"sWidth": "256px"
                         },
                         //{ "visible": false,  "targets": [2] },
                         { "targets": [6],
@@ -144,8 +144,8 @@
 
                 /*----------- END bookDataTable CODE -------------------------*/
                 $('#bookDataTable tbody').on( 'click', 'button.view', function () {
-                	var sFeatures = "height=480, width=320, scrollbars=yes, resizable=yes";
-                	var sUrl="book_preview?id="+$(this).attr("dataid");
+                	var sFeatures = "height=480, width=360, scrollbars=yes, resizable=yes";
+                	var sUrl="todos_book_preview?id="+$(this).attr("dataid");
                 	window.open( sUrl, 'preview', sFeatures );
                 	return false;
                 }); 
