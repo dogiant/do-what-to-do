@@ -44,9 +44,18 @@
 					${book.digest }
 				</div>
             </div>
-            <!-- 章节开始 -->
-            <div >
-            
+            <!-- 章节管理开始 -->
+            <div class="chapter-manager">
+            	<div class="chapter">
+            		<div class="chapter-title">chapter 1</div>
+            		<div class="phase">
+            			<div class="text"></div>
+            			<div class="image"></div>
+            			<div><button>增加段落</button></div>
+            		</div>
+            		
+            	</div>
+            	<div><button>添加章节</button></div>
             </div>
           </div>
         </article>
