@@ -58,7 +58,7 @@ public class Chapter implements Serializable {
 	/**
 	 * 阅后任务类型 //choice选择 image图片 audio语音 vedio视频
 	 */
-	private String taskType;
+	private String taskTypes;
 
 	/**
 	 * 创建时间
@@ -122,13 +122,13 @@ public class Chapter implements Serializable {
 		this.subTitle = subTitle;
 	}
 	
-	@Column(name = "task_type", length = 32)
-	public String getTaskType() {
-		return taskType;
+	@Column(name = "task_types", length = 64)
+	public String getTaskTypes() {
+		return taskTypes;
 	}
 
-	public void setTaskType(String taskType) {
-		this.taskType = taskType;
+	public void setTaskTypes(String taskTypes) {
+		this.taskTypes = taskTypes;
 	}
 
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
