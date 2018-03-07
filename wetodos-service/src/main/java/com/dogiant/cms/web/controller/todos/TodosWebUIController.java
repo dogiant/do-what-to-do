@@ -1,5 +1,6 @@
 package com.dogiant.cms.web.controller.todos;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -12,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dogiant.cms.config.ImageConfig;
 import com.dogiant.cms.domain.todos.Book;
+import com.dogiant.cms.domain.todos.Chapter;
+import com.dogiant.cms.domain.todos.Phase;
 import com.dogiant.cms.service.BookService;
+import com.dogiant.cms.service.ChapterService;
+import com.dogiant.cms.service.PhaseSevice;
 
 @Controller
 public class TodosWebUIController {
@@ -21,6 +26,12 @@ public class TodosWebUIController {
 	
 	@Autowired
 	private BookService bookService;
+	
+	@Autowired
+	private ChapterService chapterService;
+	
+	@Autowired
+	private PhaseSevice phaseService;
 	
 	@RequestMapping(value = "/todos_book_list", method = RequestMethod.GET)
     public String todosBookList(Map<String, Object> model) {
@@ -57,6 +68,11 @@ public class TodosWebUIController {
 
 		Book book = bookService.getBook(id);
 		model.put("book", book);
+		
+		List<Chapter> chapterList = chapterService.findChaptersByBookId(id);
+		for(Chapter chapter : chapterList){
+			List<Phase> phases = phaseService.findPhasesByChapterid(chapter.getId());
+		}
 		
 		model.put("menu", "todos");
         return "todos_book_preview";

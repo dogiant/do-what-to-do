@@ -26,8 +26,10 @@ import com.dogiant.cms.domain.dto.HttpResult;
 import com.dogiant.cms.domain.dto.ServiceResponse;
 import com.dogiant.cms.domain.dto.ServiceResponse2HttpResult;
 import com.dogiant.cms.domain.todos.Book;
+import com.dogiant.cms.domain.todos.Chapter;
 import com.dogiant.cms.exception.ServiceExInfo;
 import com.dogiant.cms.service.BookService;
+import com.dogiant.cms.service.ChapterService;
 import com.dogiant.cms.utils.QueryStringParser;
 
 @RestController
@@ -37,6 +39,9 @@ public class TodosRestAPIController {
 
 	@Autowired
 	private BookService bookService;
+	
+	@Autowired
+	private ChapterService chapterService;
 
 	@ResponseBody
 	@RequestMapping(value = "/api/todos/book/add", method = RequestMethod.POST)
@@ -277,5 +282,30 @@ public class TodosRestAPIController {
 			return null;
 		}
 
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/chapter/save", method = RequestMethod.POST)
+	public HttpResult<?> chapterSave(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute Chapter chapter) {
+
+		Date now = new Date();
+		chapter.setCtime(now);
+		chapter.setMtime(now);
+		// 0 先发后审 -1先审后发
+		chapter.setStatus(0);
+
+		ServiceResponse<?> resp = ServiceResponse.successResponse();
+		try {
+			chapterService.save(chapter);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+		return ServiceResponse2HttpResult.transfer(resp);
 	}
 }

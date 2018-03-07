@@ -4,6 +4,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -59,6 +61,11 @@ public class Chapter implements Serializable {
 	 * 阅后任务类型 //choice选择 image图片 audio语音 vedio视频
 	 */
 	private String taskTypes;
+	
+	/**
+	 * 包含的章节列表
+	 */
+	private List<Phase> phases;
 
 	/**
 	 * 创建时间
@@ -129,6 +136,15 @@ public class Chapter implements Serializable {
 
 	public void setTaskTypes(String taskTypes) {
 		this.taskTypes = taskTypes;
+	}
+	
+	@Transient
+	public List<Phase> getPhases() {
+		return phases;
+	}
+
+	public void setPhases(List<Phase> phases) {
+		this.phases = phases;
 	}
 
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")

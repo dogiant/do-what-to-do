@@ -144,7 +144,7 @@
 
                 /*----------- END bookDataTable CODE -------------------------*/
                 $('#bookDataTable tbody').on( 'click', 'button.view', function () {
-                	var sFeatures = "height=480, width=360, scrollbars=yes, resizable=yes";
+                	var sFeatures = "height=480, width=750, scrollbars=yes, resizable=yes";
                 	var sUrl="todos_book_preview?id="+$(this).attr("dataid");
                 	window.open( sUrl, 'preview', sFeatures );
                 	return false;

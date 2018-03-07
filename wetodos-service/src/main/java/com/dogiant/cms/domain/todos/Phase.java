@@ -53,6 +53,11 @@ public class Phase implements Serializable {
 	 * 内容
 	 */
 	private String content;
+	
+	/**
+	 * 资源地址
+	 */
+	private String uri;
 
 	/**
 	 * 对齐方式 居 左中右
@@ -124,6 +129,15 @@ public class Phase implements Serializable {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	@Column(name = "uri")
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	@Column(name = "align_type", length = 16)
