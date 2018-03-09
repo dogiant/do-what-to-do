@@ -17,8 +17,13 @@ public class PhaseDaoImpl implements PhaseDao {
 	private PhaseRepo phaseRepo;
 
 	@Override
-	public List<Phase> findPhasesByChapterId(Long id) {
-		return phaseRepo.findPhasesByChapterId(id);
+	public List<Phase> findPhasesByChapterId(Long chapterId) {
+		return phaseRepo.findPhasesByChapterId(chapterId);
+	}
+
+	@Override
+	public List<Phase> findPhasesByBookId(Long bookId) {
+		return phaseRepo.findPhasesByBookId(bookId);
 	}
 
 }

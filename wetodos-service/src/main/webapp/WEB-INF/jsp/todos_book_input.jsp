@@ -86,12 +86,13 @@
 	                                                            <div id="uploadTips">
 									
                                                          		</div>
-	                                                             <span class="btn btn-file">
+	                                                            <span class="btn btn-file">
                                                                     <span onclick="uploadPicAjax.click()">选择图片</span>
                                                                     <input id="coverPicUrl" type="hidden" name="coverPicUrl" />
                                                                 </span>
 		                                                         
-		                                                         <p class="js_cover upload_preview" style="display: none;"><img id="cover_preview"  src="">
+		                                                         <p class="js_cover upload_preview" style="display: none;">
+		                                                         	<img id="cover_preview"  src="">
 																	<span><a id="removeCover" href="javascript:void(0);" >删除</a></span>
                													 </p>
 	                                                    </div>

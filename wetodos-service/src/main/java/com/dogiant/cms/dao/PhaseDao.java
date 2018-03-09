@@ -6,6 +6,8 @@ import com.dogiant.cms.domain.todos.Phase;
 
 public interface PhaseDao {
 
-	List<Phase> findPhasesByChapterId(Long id);
+	List<Phase> findPhasesByChapterId(Long chapterId);
+
+	List<Phase> findPhasesByBookId(Long bookId);
 
 }

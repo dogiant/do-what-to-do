@@ -16,9 +16,13 @@ public class PhaseServiceImpl implements PhaseSevice {
 	private PhaseDao phaseDao;
 
 	@Override
-	public List<Phase> findPhasesByChapterId(Long id) {
-		// TODO Auto-generated method stub
-		return phaseDao.findPhasesByChapterId(id);
+	public List<Phase> findPhasesByChapterId(Long chapterId) {
+		return phaseDao.findPhasesByChapterId(chapterId);
+	}
+
+	@Override
+	public List<Phase> findPhasesByBookId(Long bookId) {
+		return phaseDao.findPhasesByBookId(bookId);
 	}
 
 }

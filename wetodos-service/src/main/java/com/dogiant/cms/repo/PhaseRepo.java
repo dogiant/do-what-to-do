@@ -13,7 +13,11 @@ import com.dogiant.cms.domain.todos.Phase;
 public interface PhaseRepo extends JpaRepository<Phase, Long>, JpaSpecificationExecutor<Phase> {
 
 	@Transactional(readOnly = true)
-	@Query("select o from Phase o where o.chapterId =:chapterId and o.status>=0 order by o.id")
+	@Query("select o from Phase o where o.chapterId =:chapterId and o.status>=0 order by o.id asc")
 	List<Phase> findPhasesByChapterId(@Param("chapterId")Long chapterId);
+
+	@Transactional(readOnly = true)
+	@Query("select o from Phase o where o.bookId =:bookId and o.status>=0 order by o.id asc")
+	List<Phase> findPhasesByBookId(@Param("bookId")Long bookId);
 
 }

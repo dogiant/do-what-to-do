@@ -8,4 +8,6 @@ public interface PhaseSevice {
 
 	List<Phase> findPhasesByChapterId(Long id);
 
+	List<Phase> findPhasesByBookId(Long id);
+
 }

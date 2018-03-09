@@ -74,44 +74,35 @@
             <div class="chapter-container list-group">
             	<button id="addChapterButton1" type="button" class="btn btn-primary" data-toggle="modal" data-target="#chapterModal" data-operation="新建">
             	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加章节</button>
-            	<c:forEach items="${chapters}" var="chapter" varStatus="status">
-            	
+            	<c:forEach items="${chapterList}" var="chapter" varStatus="status">
+            		<div class="chapter list-group-item" data-id="${chapter.id }">
+	            		<h4>${chapter.title }</h4>
+	            		<c:if test="${not empty chapter.subTitle}">
+	            			<h5>${chapter.subTitle }</h5>
+	            		</c:if>
+	            		<div class="phase-container list-group">
+	            			<c:forEach items="${chapter.phases }" var="phase" varStatus="st">
+	            				<c:if test="${phase.contentType eq 'text' }">
+	            					<div class="phase text list-group-item">
+			            				<p>${phase.content }</p>
+			            				<span class="glyphicon glyphicon-remove delete" aria-hidden="true" data-id="${phase.id }"></span>
+			            			</div>
+	            				</c:if>
+	            				<c:if test="${phase.contentType eq 'image' }">
+	            					<div class="phase image list-group-item">
+			            				<img src="${phase.uri }"/>
+			            				<span class="glyphicon glyphicon-remove delete" aria-hidden="true"></span>
+			            			</div>
+	            				</c:if>
+	            			</c:forEach>
+	            			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#phaseModal" data-operation="新建">
+	            			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 增加段落
+	            			</button>
+	            		</div>
+	            		<span class="glyphicon glyphicon-edit edit" aria-hidden="true"></span>
+	            		<span class="glyphicon glyphicon-remove delete" aria-hidden="true"></span>
+            		</div>
             	</c:forEach>
-            	<div class="chapter list-group-item" data-id="1">
-            		<h4>chapter 1</h4>
-            		<h5>副标题</h5>
-            		<div class="phase-container list-group">
-            			<div class="phase text list-group-item">
-            				<p>文字段落</p>
-            				<span class="glyphicon glyphicon-remove delete" aria-hidden="true"></span>
-            			</div>
-            			<div class="phase image list-group-item">
-            				<img src="${fileHost }${book.coverPicUrl }"/>
-            				<span class="glyphicon glyphicon-remove delete" aria-hidden="true"></span>
-            			</div>
-            			<button type="button" class="btn btn-primary" class="addPhaseButton"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 增加段落</button>
-            		</div>
-            		<span class="glyphicon glyphicon-edit edit" aria-hidden="true"></span>
-            		<span class="glyphicon glyphicon-remove delete" aria-hidden="true"></span>
-            	</div>
-            	
-            	<div class="chapter list-group-item" data-id="2">
-            		<h4>chapter 2</h4>
-            		<h5>副标题</h5>
-            		<div class="phase-container list-group">
-            			<div class="phase text list-group-item">
-            				<p>文字段落</p>
-            				<span class="glyphicon glyphicon-remove delete" aria-hidden="true"></span>
-            			</div>
-            			<div class="phase image list-group-item">
-            				<img src="${fileHost }${book.coverPicUrl }"/>
-            				<span class="glyphicon glyphicon-remove delete" aria-hidden="true"></span>
-            			</div>
-            			<button type="button" class="btn btn-primary" class="addPhaseButton">增加段落</button>
-            		</div>
-            		<span class="glyphicon glyphicon-edit edit" aria-hidden="true"></span>
-            		<span class="glyphicon glyphicon-remove delete" aria-hidden="true"></span>
-            	</div>
             	
             	<button id="addChapterButton2" type="button" class="btn btn-primary" data-toggle="modal" data-target="#chapterModal" data-operation="新建">
             	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加章节</button>
@@ -176,7 +167,69 @@
 	    </div>
 	  </div>
 	</div>
+	
+    <div class="modal fade" id="phaseModal" tabindex="-1" role="dialog" aria-labelledby="phaseModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+          <form id="chapterForm" action="api/todos/phase/save" method="post">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel"><span id="operation"></span>段落</h4>
+	      </div>
+	      <div class="modal-body">
+	          <input type="hidden" id="id" name="id">
+	          <input type="hidden" id="bookId" name="bookId" value="${book.id }">
+	          <input type="hidden" id="chapterId" name="chapterId" >
+	          <div class="form-group">
+	          	<label for="contentType" class="control-label">内容类型:</label>
+	          	<div>
+					<label class="checkbox-inline">
+					  <input type="radio" id="inlineCheckbox1" name="contentType" value="text" checked="checked"> 文字 
+					</label>
+					<label class="checkbox-inline">
+					  <input type="radio" id="inlineCheckbox2" name="contentType" value="image" > 图片
+					</label>
+	          	</div>
+	          </div>
+	          
+	          <div class="form-group" id="textForm">
+	            <label for="content" class="control-label">内容:</label>
+	            <textarea class="form-control" id="content" name="content"></textarea>
+	          </div>
+	          <div class="form-group" id="imageForm">
+				  <label for="uri" class="control-label">图片</label>
+                  <div class="controls with-tooltip">
+                      <div id="uploadTips">
+
+                      </div>
+                      <span class="btn btn-file">
+                          <span onclick="uploadPicAjax.click()">选择图片</span>
+                          <input id="uri" type="hidden" name="uri" />
+                      </span>
+                        
+                      <p class="js_cover upload_preview" style="display: none;">
+                          <img id="pic_preview"  src="">
+						  <span><a id="removePic" href="javascript:void(0);" >删除</a></span>
+					  </p>
+                 </div>
+	          </div>
+
+	        
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        <button type="submit" class="btn btn-primary">保存提交</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
     
+    <div style="display: none;">
+		<form id="uploadPicAjaxForm" action="/upload/api"  enctype="multipart/form-data"  method="post" >
+            <input id="uploadPicAjax" name="uploads" type="file" onchange="uploadPicAjaxSubmit(this);"/>
+        </form>
+    </div>
 
     
     <!-- End: Main content -->

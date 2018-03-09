@@ -70,9 +70,12 @@ public class TodosWebUIController {
 		model.put("book", book);
 		
 		List<Chapter> chapterList = chapterService.findChaptersByBookId(id);
+		
 		for(Chapter chapter : chapterList){
-			List<Phase> phases = phaseService.findPhasesByChapterid(chapter.getId());
+			List<Phase> phases = phaseService.findPhasesByChapterId(chapter.getId());
+			chapter.setPhases(phases);
 		}
+		model.put("chapterList", chapterList);
 		
 		model.put("menu", "todos");
         return "todos_book_preview";

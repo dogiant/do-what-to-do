@@ -13,7 +13,7 @@ import com.dogiant.cms.domain.todos.Chapter;
 public interface ChapterRepo extends JpaRepository<Chapter, Long>, JpaSpecificationExecutor<Chapter> {
 
 	@Transactional(readOnly = true)
-	@Query("select o from Chapter o where o.bookId =:bookId and o.status>=0 order by o.id")
+	@Query("select o from Chapter o where o.bookId =:bookId and o.status>=0 order by o.id asc")
 	List<Chapter> findChaptersByBookId(@Param("bookId")Long bookId);
 
 }
