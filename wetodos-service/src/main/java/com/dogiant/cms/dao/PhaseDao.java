@@ -10,4 +10,8 @@ public interface PhaseDao {
 
 	List<Phase> findPhasesByBookId(Long bookId);
 
+	Phase save(Phase phase);
+
+	Phase findPhaseById(Long id);
+
 }

@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.dogiant.cms.dao.PhaseDao;
 import com.dogiant.cms.domain.todos.Phase;
-import com.dogiant.cms.service.PhaseSevice;
+import com.dogiant.cms.service.PhaseService;
 
 @Service("phaseSevice")
-public class PhaseServiceImpl implements PhaseSevice {
+public class PhaseServiceImpl implements PhaseService {
 	
 	@Autowired
 	private PhaseDao phaseDao;
@@ -23,6 +23,16 @@ public class PhaseServiceImpl implements PhaseSevice {
 	@Override
 	public List<Phase> findPhasesByBookId(Long bookId) {
 		return phaseDao.findPhasesByBookId(bookId);
+	}
+
+	@Override
+	public Phase save(Phase phase) {
+		return phaseDao.save(phase);
+	}
+
+	@Override
+	public Phase findPhaseById(Long id) {
+		return phaseDao.findPhaseById(id);
 	}
 
 }

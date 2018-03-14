@@ -27,9 +27,13 @@ import com.dogiant.cms.domain.dto.ServiceResponse;
 import com.dogiant.cms.domain.dto.ServiceResponse2HttpResult;
 import com.dogiant.cms.domain.todos.Book;
 import com.dogiant.cms.domain.todos.Chapter;
+import com.dogiant.cms.domain.todos.LearningPlan;
+import com.dogiant.cms.domain.todos.Phase;
 import com.dogiant.cms.exception.ServiceExInfo;
 import com.dogiant.cms.service.BookService;
 import com.dogiant.cms.service.ChapterService;
+import com.dogiant.cms.service.LearningPlanService;
+import com.dogiant.cms.service.PhaseService;
 import com.dogiant.cms.utils.QueryStringParser;
 
 @RestController
@@ -42,6 +46,12 @@ public class TodosRestAPIController {
 	
 	@Autowired
 	private ChapterService chapterService;
+	
+	@Autowired
+	private PhaseService phaseService;
+	
+	@Autowired
+	private LearningPlanService learningPlanService;
 
 	@ResponseBody
 	@RequestMapping(value = "/api/todos/book/add", method = RequestMethod.POST)
@@ -178,7 +188,7 @@ public class TodosRestAPIController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/api/todos/book/preview", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/todos/book/preview", method = {RequestMethod.GET,RequestMethod.POST})
 	public HttpResult<?> articlePreview(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "id", required = true) Long id) {
 
@@ -193,6 +203,7 @@ public class TodosRestAPIController {
 				return result;
 			}
 			resp.setData(book);
+			System.out.println(book);
 		} catch (Exception e) {
 			e.printStackTrace();
 			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
@@ -307,5 +318,153 @@ public class TodosRestAPIController {
 			return result;
 		}
 		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/phase/save", method = RequestMethod.POST)
+	public HttpResult<?> chapterSave(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute Phase phase) {
+
+		Date now = new Date();
+		phase.setEditor((String)request.getAttribute("userName"));
+		phase.setCtime(now);
+		phase.setMtime(now);
+		// 0 先发后审 -1先审后发
+		phase.setStatus(0);
+
+		ServiceResponse<?> resp = ServiceResponse.successResponse();
+		try {
+			phaseService.save(phase);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/chapter/delete", method = RequestMethod.POST)
+	public HttpResult<?> chapterDelete(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "ids", required = true) Long[] ids) {
+
+		ServiceResponse<List<Long>> resp = ServiceResponse.successResponse();
+		if (ids == null) {
+			resp = resp.setCode(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getCode());
+			resp = resp.setMsg(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+
+		List<Long> errorIds = new ArrayList<Long>();
+		for (Long id : ids) {
+			try {
+				Chapter chapter = chapterService.findChapterById(id);
+				if (chapter != null) {
+					chapter.setStatus(-3);
+					chapterService.save(chapter);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				errorIds.add(id);
+			}
+		}
+
+		if (CollectionUtils.isNotEmpty(errorIds)) {
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			resp.setData(errorIds);
+		}
+
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/phase/delete", method = RequestMethod.POST)
+	public HttpResult<?> phaseDelete(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "ids", required = true) Long[] ids) {
+
+		ServiceResponse<List<Long>> resp = ServiceResponse.successResponse();
+		if (ids == null) {
+			resp = resp.setCode(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getCode());
+			resp = resp.setMsg(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+
+		List<Long> errorIds = new ArrayList<Long>();
+		for (Long id : ids) {
+			try {
+				Phase phase = phaseService.findPhaseById(id);
+				if (phase != null) {
+					phase.setStatus(-3);
+					phaseService.save(phase);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				errorIds.add(id);
+			}
+		}
+
+		if (CollectionUtils.isNotEmpty(errorIds)) {
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			resp.setData(errorIds);
+		}
+
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "api/todos/plan/list", method = { RequestMethod.POST, RequestMethod.GET })
+	public DataTablesResult<LearningPlan> planList(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("请求进入");
+
+		String tranToken = request.getQueryString();
+		Map<String, String> params = QueryStringParser.queryStringParser(tranToken, "utf-8");
+
+		Integer draw = null;
+		Integer start = null;
+		Integer length = null;
+
+		try {
+			draw = Integer.parseInt(request.getParameter("draw"));
+			start = Integer.parseInt(request.getParameter("start"));
+			length = Integer.parseInt(request.getParameter("length"));
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+
+		String orderColumn = null;
+		String orderName = null;
+		String orderDir = null;
+		String searchValue = null;
+
+		orderColumn = params.get("order[0][column]");
+		orderDir = params.get("order[0][dir]");
+		searchValue = params.get("search[value]");
+		if (StringUtils.isNotEmpty(orderColumn)) {
+			orderName = params.get("columns[" + orderColumn + "][data]");
+		}
+
+		if (draw == null || start == null || length == null) {
+			return null;
+		}
+
+		try {
+			DataTablesResult<LearningPlan> dataTablesResult = learningPlanService.getLearningPlanDataTablesResult(start,
+					length, orderName, orderDir, searchValue);
+			dataTablesResult.setDraw(draw);
+			return dataTablesResult;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 }

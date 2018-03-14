@@ -10,4 +10,6 @@ public interface ChapterService {
 
 	List<Chapter> findChaptersByBookId(Long id);
 
+	Chapter findChapterById(Long id);
+
 }

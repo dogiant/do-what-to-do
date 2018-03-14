@@ -26,4 +26,9 @@ public class ChapterDaoImpl implements ChapterDao {
 		return chapterRepo.findChaptersByBookId(id);
 	}
 
+	@Override
+	public Chapter findChapterById(Long id) {
+		return chapterRepo.findOne(id);
+	}
+
 }

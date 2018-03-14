@@ -28,18 +28,18 @@
                                     <div class="box dark">
                                         <header>
                                             <div class="icons"><i class="icon-edit"></i></div>
-                                            <h5>学习资源管理</h5>
+                                            <h5>学习计划管理</h5>
                                             <!-- .toolbar -->
                                             <div class="toolbar">
                                                 <ul class="nav">
-                                                    <li><a href="todos_book_input">学习资源创建</a></li>
+                                                    <li><a href="todos_plan_input">学习计划创建</a></li>
                                                     <li class="dropdown">
                                                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                                             <i class="icon-th-large"></i>
                                                         </a>
                                                         <ul class="dropdown-menu">
-                                                        	<li><a href="todos_book_list">学习资源列表</a></li>
-                                                            <li><a href="todos_book_input">学习资源录入</a></li>
+                                                        	<li><a href="todos_plan_input">学习计划录入</a></li>
+                                                        	<li><a href="todos_plan_list">学习计划列表</a></li>
                                                         </ul>
                                                     </li>
                                                     <li>
@@ -52,12 +52,13 @@
                                             <!-- /.toolbar -->
                                         </header>
                                         <div  id="div-1"  class="accordion-body collapse in body">
-                                            <table id="bookDataTable" class="table table-bordered table-condensed table-hover table-striped">
+                                            <table id="planDataTable" class="table table-bordered table-condensed table-hover table-striped">
                                                 <thead>
                                                     <tr>
                                                     	<th>序号</th>
-                                                        <th>学习资源条目</th>
+                                                        <th>学习计划名称</th>
                                                         <th>类型</th>
+                                                        <th>资源明细</th>
                                                         <th>创建时间</th>
                                                         <th>修改时间</th>
                                                         <th>状态</th>
@@ -95,15 +96,16 @@
         
         <script type="text/javascript">
             $(function() {
-                /*----------- BEGIN bookDataTable CODE -------------------------*/
-            	$('#bookDataTable').dataTable({
+                /*----------- BEGIN planDataTable CODE -------------------------*/
+            	$('#planDataTable').dataTable({
                 	"processing": true,
                     "serverSide": true,
-                    "ajax": "api/todos/book/list",
+                    "ajax": "api/todos/plan/list",
                     "columns": [
                         { "data": "id" },
-                        { "data": "bookShow"},
+                        { "data": "name"},
                         { "data": "typeDesc"},
+                        { "data": "bookShow"},
                         { "data": "ctime" },
                         { "data": "mtime" },
                         { "data": "statusDescription" }
@@ -114,13 +116,13 @@
                         	"sWidth": "256px"
                         },
                         //{ "visible": false,  "targets": [2] },
-                        { "targets": [6],
+                        { "targets": [7],
                         "data": "id" ,
-                        "render": function(data, type, full) { return "<button class='btn view'  dataid='"+data+"'><i class='icon-search' ></i></button>  <button class='btn edit'  dataid='"+data+"'><i class='icon-edit' ></i></button>  <button class='btn btn-danger remove'  dataid='"+data+"'><i class='icon-remove'></i></button>"; } 
+                        "render": function(data, type, full) { return "<button class='btn edit'  dataid='"+data+"'><i class='icon-edit' ></i></button>  <button class='btn btn-danger remove'  dataid='"+data+"'><i class='icon-remove'></i></button>"; } 
                         } 
                     ],
                    
-                	"aaSorting": [[ 3, "desc" ]] ,
+                	"aaSorting": [[ 4, "desc" ]] ,
                     "sPaginationType": "bootstrap",
                    // "dom": '<"top"i>rt<"bottom"flp><"clear">',
                     "oLanguage": {
@@ -142,24 +144,18 @@
                     }
                 });
 
-                /*----------- END bookDataTable CODE -------------------------*/
-                $('#bookDataTable tbody').on( 'click', 'button.view', function () {
-                	var sFeatures = "height=480, width=750, scrollbars=yes, resizable=yes";
-                	var sUrl="todos_book_preview?id="+$(this).attr("dataid");
-                	window.open( sUrl, 'preview', sFeatures );
-                	return false;
-                }); 
+                /*----------- END planDataTable CODE -------------------------*/
             	
-                $('#bookDataTable tbody').on( 'click', 'button.edit', function () {
-                    location.href = "todos_book_modify?id="+$(this).attr("dataid");
+                $('#planDataTable tbody').on( 'click', 'button.edit', function () {
+                    location.href = "todos_plan_modify?id="+$(this).attr("dataid");
                 }); 
-                $('#bookDataTable tbody').on( 'click', 'button.remove', function () {
+                $('#planDataTable tbody').on( 'click', 'button.remove', function () {
                     var idsvalue = $(this).attr("dataid");
         			bootbox.confirm("您确定要删除操作吗?", function(result) {
             			if(result){
                         	$.ajax({
                         		type:'post',
-                        		url:'api/todos/book/delete',
+                        		url:'api/todos/plan/delete',
                         		data:{ids:idsvalue},
                         		dataType:'json',
                         		beforeSend: function(){

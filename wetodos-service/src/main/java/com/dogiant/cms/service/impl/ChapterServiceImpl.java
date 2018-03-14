@@ -25,4 +25,9 @@ public class ChapterServiceImpl implements ChapterService {
 		return chapterDao.findChaptersByBookId(id);
 	}
 
+	@Override
+	public Chapter findChapterById(Long id) {
+		return chapterDao.findChapterById(id);
+	}
+
 }

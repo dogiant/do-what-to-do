@@ -17,7 +17,7 @@ import com.dogiant.cms.domain.todos.Chapter;
 import com.dogiant.cms.domain.todos.Phase;
 import com.dogiant.cms.service.BookService;
 import com.dogiant.cms.service.ChapterService;
-import com.dogiant.cms.service.PhaseSevice;
+import com.dogiant.cms.service.PhaseService;
 
 @Controller
 public class TodosWebUIController {
@@ -31,7 +31,7 @@ public class TodosWebUIController {
 	private ChapterService chapterService;
 	
 	@Autowired
-	private PhaseSevice phaseService;
+	private PhaseService phaseService;
 	
 	@RequestMapping(value = "/todos_book_list", method = RequestMethod.GET)
     public String todosBookList(Map<String, Object> model) {
@@ -79,5 +79,22 @@ public class TodosWebUIController {
 		
 		model.put("menu", "todos");
         return "todos_book_preview";
+    }
+	
+	
+	@RequestMapping(value = "/todos_plan_list", method = RequestMethod.GET)
+    public String todosPlanList(Map<String, Object> model) {
+		logger.info("/todos_plan_list");
+		model.put("fileHost", ImageConfig.fileHost);
+		model.put("menu", "todos");
+        return "/todos_plan_list";
+    }
+	
+	@RequestMapping(value = "/todos_plan_input", method = RequestMethod.GET)
+    public String todosPlanInput(Map<String, Object> model) {
+		logger.info("/todos_plan_input");
+		model.put("fileHost", ImageConfig.fileHost);
+		model.put("menu", "todos");
+        return "/todos_plan_input";
     }
 }

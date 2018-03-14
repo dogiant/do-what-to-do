@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -65,6 +66,11 @@ public class LearningPlan implements Serializable{
 	 * 结束时间
 	 */
 	private Date endDate;
+	
+	/**
+	 * 学习天数
+	 */
+	private Integer days;
 
 	/**
 	 * 创建时间
@@ -100,6 +106,11 @@ public class LearningPlan implements Serializable{
 	public void setBookIds(String bookIds) {
 		this.bookIds = bookIds;
 	}
+	
+	@Transient
+	public String getBookShow(){
+		return "TODO_bookShow_"+getBookIds();
+	}
 
 	@Column(name = "type")
 	public Integer getType() {
@@ -108,6 +119,11 @@ public class LearningPlan implements Serializable{
 
 	public void setType(Integer type) {
 		this.type = type;
+	}
+	
+	@Transient
+	public String getTypeDesc(){
+		return "TODO_"+type;
 	}
 
 	@Column(name = "name", length = 32)
@@ -150,6 +166,15 @@ public class LearningPlan implements Serializable{
 		this.endDate = endDate;
 	}
 
+	@Column(name = "days")
+	public Integer getDays() {
+		return days;
+	}
+
+	public void setDays(Integer days) {
+		this.days = days;
+	}
+
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "ctime")
@@ -181,4 +206,25 @@ public class LearningPlan implements Serializable{
 		this.status = status;
 	}
 
+	/**
+	 * 返回状态描述
+	 * @return
+	 */
+	@Transient
+	public String getStatusDescription() {
+		switch(status){
+			case 0:
+				return "正常显示";
+			case 1:
+				return "审核通过";
+			case -1:
+				return "等待审核";
+			case -2:
+				return "自主删除";
+			case -3:
+				return "强制删除";
+			default:
+				return "未知状态";
+		}
+	}
 }

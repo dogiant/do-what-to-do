@@ -15,7 +15,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.dogiant.cms.config.ImageConfig;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 书
@@ -160,7 +159,6 @@ public class Book implements Serializable{
 		this.operator = operator;
 	}
 
-	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "ctime")
 	public Date getCtime() {
@@ -171,7 +169,6 @@ public class Book implements Serializable{
 		this.ctime = ctime;
 	}
 
-	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "mtime")
 	public Date getMtime() {

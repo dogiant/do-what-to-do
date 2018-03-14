@@ -50,7 +50,7 @@
             </a>
             <ul class="collapse  <c:if test="${requestScope.menu=='todos'}"> in</c:if>"  id="todos-nav">
             	<li><a href="todos_book_list"><i class="icon-angle-right"></i> 学习资源管理</a></li>
-            	<li><a href="todos_learning_plan_list"><i class="icon-angle-right"></i> 学习计划管理</a></li>
+            	<li><a href="todos_plan_list"><i class="icon-angle-right"></i> 学习计划管理</a></li>
             </ul>
         </li>  
         

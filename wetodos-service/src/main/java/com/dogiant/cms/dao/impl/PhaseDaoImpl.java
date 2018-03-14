@@ -26,4 +26,14 @@ public class PhaseDaoImpl implements PhaseDao {
 		return phaseRepo.findPhasesByBookId(bookId);
 	}
 
+	@Override
+	public Phase save(Phase phase) {
+		return phaseRepo.save(phase);
+	}
+
+	@Override
+	public Phase findPhaseById(Long id) {
+		return phaseRepo.findOne(id);
+	}
+
 }

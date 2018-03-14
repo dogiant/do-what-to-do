@@ -18,34 +18,19 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.dogiant.cms.dao.BookDao;
+import com.dogiant.cms.dao.LearningPlanDao;
 import com.dogiant.cms.domain.dto.QueryResult;
-import com.dogiant.cms.domain.todos.Book;
-import com.dogiant.cms.repo.BookRepo;
+import com.dogiant.cms.domain.todos.LearningPlan;
+import com.dogiant.cms.repo.LearningPlanRepo;
 
-@Service("bookDao")
-public class BookDaoImpl implements BookDao {
+@Service("learningPlanDao")
+public class LeaningPlanDaoImpl implements LearningPlanDao {
 	
 	@Resource
-	private BookRepo bookRepo;
+	private LearningPlanRepo learningPlanRepo;
 
 	@Override
-	public void addBook(Book book) {
-		bookRepo.save(book);
-	}
-
-	@Override
-	public Book getBook(Long id) {
-		return bookRepo.getOne(id);
-	}
-
-	@Override
-	public void updateBook(Book book) {
-		bookRepo.save(book);
-	}
-
-	@Override
-	public QueryResult<Book> getBookQueryResult(Integer start,
+	public QueryResult<LearningPlan> getLearningPlanQueryResult(Integer start,
 			Integer length, String orderName, String orderDir,
 			String searchValue) {
 		Sort sort = new Sort(Direction.DESC, "ctime");
@@ -60,20 +45,21 @@ public class BookDaoImpl implements BookDao {
 
 		int pageNo = (start / length) > 0 ? (start / length) - 1 : 0;
 		Pageable pageable = new PageRequest(pageNo, length, sort);
-		Specification<Book> spc = this
+		Specification<LearningPlan> spc = this
 				.getSearchSpecification(searchValue);
 
-		Page<Book> page = bookRepo.findAll(spc, pageable);
-		QueryResult<Book> queryResult = new QueryResult<Book>();
+		Page<LearningPlan> page = learningPlanRepo.findAll(spc, pageable);
+		QueryResult<LearningPlan> queryResult = new QueryResult<LearningPlan>();
 		queryResult.setRecordnum(page.getTotalElements());
 		queryResult.setResult(page.getContent());
 		return queryResult;
 	}
 
-	private Specification<Book> getSearchSpecification(String searchValue) {
-		return new Specification<Book>() {
+	private Specification<LearningPlan> getSearchSpecification(
+			String searchValue) {
+		return new Specification<LearningPlan>() {
 			@Override
-			public Predicate toPredicate(Root<Book> paramRoot,
+			public Predicate toPredicate(Root<LearningPlan> paramRoot,
 					CriteriaQuery<?> paramCriteriaQuery,
 					CriteriaBuilder paramCriteriaBuilder) {
 
@@ -81,7 +67,7 @@ public class BookDaoImpl implements BookDao {
 
 				list.add(paramCriteriaBuilder.ge(paramRoot.get("status").as(Number.class), 0));
 				if (StringUtils.isNoneEmpty(searchValue))
-					list.add(paramCriteriaBuilder.like(paramRoot.get("title")
+					list.add(paramCriteriaBuilder.like(paramRoot.get("name")
 							.as(String.class), "%" + searchValue + "%"));
 				Predicate[] p = new Predicate[list.size()];
 				return paramCriteriaBuilder.and(list.toArray(p));

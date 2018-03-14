@@ -10,4 +10,6 @@ public interface ChapterDao {
 
 	List<Chapter> findChaptersByBookId(Long id);
 
+	Chapter findChapterById(Long id);
+
 }
