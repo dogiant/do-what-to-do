@@ -12,4 +12,6 @@ public interface ChapterService {
 
 	Chapter findChapterById(Long id);
 
+	Integer getChpaterCountByBookIds(Long[] bookIds);
+
 }

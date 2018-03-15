@@ -9,4 +9,6 @@ public interface LearningPlanService {
 			Integer start, Integer length, String orderName, String orderDir,
 			String searchValue);
 
+	LearningPlan save(LearningPlan learningPlan);
+
 }

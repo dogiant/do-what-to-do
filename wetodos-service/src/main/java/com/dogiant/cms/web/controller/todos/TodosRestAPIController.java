@@ -1,9 +1,17 @@
 package com.dogiant.cms.web.controller.todos;
 
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +21,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomBooleanEditor;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +65,12 @@ public class TodosRestAPIController {
 	
 	@Autowired
 	private LearningPlanService learningPlanService;
+	
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+	}
 
 	@ResponseBody
 	@RequestMapping(value = "/api/todos/book/add", method = RequestMethod.POST)
@@ -203,7 +222,6 @@ public class TodosRestAPIController {
 				return result;
 			}
 			resp.setData(book);
-			System.out.println(book);
 		} catch (Exception e) {
 			e.printStackTrace();
 			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
@@ -423,7 +441,6 @@ public class TodosRestAPIController {
 	@ResponseBody
 	@RequestMapping(value = "api/todos/plan/list", method = { RequestMethod.POST, RequestMethod.GET })
 	public DataTablesResult<LearningPlan> planList(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("请求进入");
 
 		String tranToken = request.getQueryString();
 		Map<String, String> params = QueryStringParser.queryStringParser(tranToken, "utf-8");
@@ -466,5 +483,83 @@ public class TodosRestAPIController {
 			return null;
 		}
 
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/plan/add", method = RequestMethod.POST)
+	public HttpResult<?> planSave(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute LearningPlan learningPlan) {
+
+		Date now = new Date();
+		Integer days = 0;
+		if (StringUtils.isNotBlank(learningPlan.getBookIds())) {
+			StringTokenizer tokener = new StringTokenizer(learningPlan.getBookIds(), ",");
+	        Long[] result = new Long[tokener.countTokens()];
+	        int i=0;
+	        while( tokener.hasMoreElements() ){
+	        	result[i++] = Long.valueOf(tokener.nextToken());
+	        }
+			days = chapterService.getChpaterCountByBookIds(result);
+			learningPlan.setDays(days);
+		}
+		
+		if (learningPlan.getType() != null
+				&& learningPlan.getType().intValue() == 1) {
+			ZoneId zoneId = ZoneId.systemDefault();
+			
+			//如果是固定学期计划
+			Date startDate = learningPlan.getStartDate();
+			Instant instant = startDate.toInstant();
+		    // atZone()方法返回在指定时区从此Instant生成的ZonedDateTime。
+		    LocalDate startLocalDate = instant.atZone(zoneId).toLocalDate();
+		    
+		    LocalDate endLocalDate = startLocalDate.plusDays(days-1);
+	        ZonedDateTime zdt = endLocalDate.atStartOfDay(zoneId);
+	        Date endDate = Date.from(zdt.toInstant());
+	        
+	        learningPlan.setEndDate(endDate);
+		}
+
+		learningPlan.setCreator((String)request.getAttribute("userName"));
+		learningPlan.setCtime(now);
+		learningPlan.setMtime(now);
+		// 0 先发后审 -1先审后发
+		learningPlan.setStatus(0);
+
+		ServiceResponse<?> resp = ServiceResponse.successResponse();
+		try {
+			learningPlanService.save(learningPlan);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	public static void main(String[] args) {
+		
+		
+        Date date = new Date();
+        Instant instant = date.toInstant();
+        ZoneId zoneId = ZoneId.systemDefault();
+
+        // atZone()方法返回在指定时区从此Instant生成的ZonedDateTime。
+        LocalDate today = instant.atZone(zoneId).toLocalDate();
+        System.out.println("Date = " + date);
+        System.out.println("LocalDate = " + today);
+        
+        
+		//Get the Year, check if it's leap year
+		System.out.println("Year "+today.getYear()+" is Leap Year? "+today.isLeapYear());
+		//Compare two LocalDate for before and after
+		System.out.println("Today is before 01/01/2015? "+today.isBefore(LocalDate.of(2015,1,1)));
+		//Create LocalDateTime from LocalDate
+		System.out.println("Current Time="+today.atTime(LocalTime.now()));
+		//plus and minus operations
+		System.out.println("10 days after today will be "+today.plusDays(10));
 	}
 }

@@ -28,4 +28,10 @@ public class LearningPlanServiceImpl implements LearningPlanService {
 		return dataTableResult;
 	}
 
+	@Override
+	public LearningPlan save(LearningPlan learningPlan) {
+		return leaningPlanDao.save(learningPlan);
+		
+	}
+
 }

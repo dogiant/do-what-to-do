@@ -16,4 +16,8 @@ public interface ChapterRepo extends JpaRepository<Chapter, Long>, JpaSpecificat
 	@Query("select o from Chapter o where o.bookId =:bookId and o.status>=0 order by o.id asc")
 	List<Chapter> findChaptersByBookId(@Param("bookId")Long bookId);
 
+	@Transactional(readOnly = true)
+	@Query("select count(o) from Chapter o where o.bookId in :bookIds and o.status>=0")
+	Integer getChpaterCountByBookIds(@Param("bookIds")List<Long> bookIds);
+
 }

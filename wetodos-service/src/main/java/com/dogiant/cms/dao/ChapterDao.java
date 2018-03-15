@@ -12,4 +12,6 @@ public interface ChapterDao {
 
 	Chapter findChapterById(Long id);
 
+	Integer getChpaterCountByBookIds(Long[] bookIds);
+
 }

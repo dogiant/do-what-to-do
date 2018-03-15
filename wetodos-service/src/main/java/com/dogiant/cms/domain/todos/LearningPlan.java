@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
@@ -38,12 +39,12 @@ public class LearningPlan implements Serializable{
 	private Long id;
 	
 	/**
-	 * 图书IDS
+	 * 图书ID字符串
 	 */
 	private String bookIds;
 	
 	/**
-	 * 类型 1固定学期 2自由学期
+	 * 类型 0自由学期 1固定学期 
 	 */
 	private Integer type;
 	
@@ -60,6 +61,7 @@ public class LearningPlan implements Serializable{
 	/**
 	 * 开始时间
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
 
 	/**
@@ -97,7 +99,7 @@ public class LearningPlan implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	@Column(name = "book_ids")
 	public String getBookIds() {
 		return bookIds;
@@ -106,7 +108,7 @@ public class LearningPlan implements Serializable{
 	public void setBookIds(String bookIds) {
 		this.bookIds = bookIds;
 	}
-	
+
 	@Transient
 	public String getBookShow(){
 		return "TODO_bookShow_"+getBookIds();
@@ -144,6 +146,7 @@ public class LearningPlan implements Serializable{
 		this.creator = creator;
 	}
 
+	@JSONField(format="yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "start_date")
@@ -155,6 +158,7 @@ public class LearningPlan implements Serializable{
 		this.startDate = startDate;
 	}
 
+	@JSONField(format="yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "end_date")
@@ -175,6 +179,7 @@ public class LearningPlan implements Serializable{
 		this.days = days;
 	}
 
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "ctime")
@@ -186,6 +191,7 @@ public class LearningPlan implements Serializable{
 		this.ctime = ctime;
 	}
 
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "mtime")

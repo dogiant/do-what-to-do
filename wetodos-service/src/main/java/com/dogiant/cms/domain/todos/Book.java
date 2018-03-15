@@ -14,7 +14,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.dogiant.cms.config.ImageConfig;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 书
@@ -28,7 +30,7 @@ public class Book implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7060963338275045911L;
+	public static final long serialVersionUID = 7060963338275045911L;
 
 	/**
 	 * 主键
@@ -141,7 +143,7 @@ public class Book implements Serializable{
 		this.author = author;
 	}
 
-	@Column(name = "digest", length = 1024)
+	@Column(name = "digest")
 	public String getDigest() {
 		return digest;
 	}
@@ -159,6 +161,8 @@ public class Book implements Serializable{
 		this.operator = operator;
 	}
 
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "ctime")
 	public Date getCtime() {
@@ -169,6 +173,8 @@ public class Book implements Serializable{
 		this.ctime = ctime;
 	}
 
+	@JSONField(format="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "mtime")
 	public Date getMtime() {

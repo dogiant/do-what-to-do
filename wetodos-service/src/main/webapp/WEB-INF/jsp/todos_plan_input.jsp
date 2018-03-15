@@ -8,6 +8,8 @@
 <!--[if gt IE 8]><!-->  <html class="no-js">                        <!--<![endif]-->
     <head>
 		<%@ include file="common/html_head.jsp" %>
+		<link type="text/css" rel="stylesheet" href="assets/css/style_singlenews.css">
+        <link type="text/css" rel="stylesheet" href="assets/css/style_multinews.css">
     </head>
     <body>
         <!-- BEGIN WRAP -->
@@ -174,12 +176,32 @@
 																																												
 															</div>
 													        <div class="appmsg_add icon24_common">
-													          	<form id="multiNewsForm">
-													                <a onclick="return false;" id="js_add_appmsg" href="javascript:void(0);">
-													                		<span id="news_ids">
-													                		</span>
-													                    	<button class="btn btn-large" type="submit"  id="multiNewsAdd">完成学习计划（组合）提交</button>
-													                </a>
+													          	<form id="todosPlanForm" action="api/todos/plan/add" method="post">
+													          		<div class="control-group">
+					                                                    <label for="name" class="control-label">计划名称</label>
+					                                                    <div class="controls with-tooltip">
+					                                                        <input type="text" id="name" name="name" class="span12 input-tooltip" 
+					                                                        		data-original-title="请输入计划名称" data-placement="bottom" />
+					                                                    </div>
+					                                                </div>
+					                                                <div class="control-group">
+					                                                    <label for="name" class="control-label">计划类型</label>
+					                                                    <div class="controls controls-row">
+																			<input id="actTermRadio" class="uniform" type="radio" name="type" value="0" checked="checked">自由学期
+					                                                        <input id="fixTermRadio" class="uniform" type="radio" name="type" value="1" >固定学期  
+																		</div>
+					                                                </div>
+													          		<div class="control-group" id="datePanel" style="display: none;">
+					                                                    <label for="startDate" class="control-label">开始时间</label>
+					                                                    <div class="controls with-tooltip">
+					                                                        <input type="text" id="startDate" name="startDate" class="span6 input-tooltip" 
+					                                                        		data-original-title="请输入开始时间" data-placement="bottom" />
+					                                                    </div>
+					                                                </div>
+													                <span id="news_ids">
+													                	<input type="hidden" id="bookIds" name="bookIds" />
+													                </span>
+													                <button class="btn btn-large" type="submit"  id="multiNewsAdd">完成学习计划（组合）提交</button>
 													           	</form>
 													        </div>
 												        </div>
@@ -222,6 +244,7 @@
 		<%@ include file="common/footer_script.jsp" %>
         
         <script type="text/javascript">
+        	var STATIC_FILE_HOST = "${fileHost}";
             $(function() {
                 /*----------- BEGIN bookDataTable CODE -------------------------*/
             	$('#bookDataTable').dataTable({
@@ -321,37 +344,42 @@
                             			if(data.code==0){
 
                             				var repeat = false;
-                            				//判断id是否已经添加到多图文消息里
-                            				$("#news_ids input").each(function(){
-    									    	if($(this).val()==data.data.id){
-    									    		repeat = true;
-    									    		return false;
-    										    }
-    									 	});
-    									 	if(repeat){
-    										 	alert("您已经添加了此学习资源（图书），不能重复添加。");
-    										 	return false;
-    										}
-    									 	var len = $("#news_ids").children("input").length;
+                            				var bookIds = new Array(); //定义一数组 
+                            				
+                            				if($("#bookIds").val()!=''){
+                                				bookIds = $("#bookIds").val().split(","); //字符分割 
+                                				for (i=0; i<bookIds.length; i++ ) { 
+                                					if(bookIds[i]==data.data.id){
+                                						repeat = true;
+        									    		return false;
+                                					} 
+                                				} 
+        									 	if(repeat){
+        										 	alert("您已经添加了此学习资源（图书），不能重复添加。");
+        										 	return false;
+        										}
+                            				}
+                            				
+    									 	var len = bookIds.length;
     										if(len>4){
     											alert("学习资源（图书）项添加，不能超过4项。");
     											return false;
     										}
-                            				var input=$("<input type='hidden' name='articleItemIds'></input>").val(data.data.id);
-                            				input.appendTo($("#news_ids"));
-                            				len = $("#news_ids").children("input").length;
+                            				bookIds.push(data.data.id);
+                            				$("#bookIds").val(bookIds.join(","));
+                            				len = bookIds.length;
                             				//增加消息到旁边的多图文消息预览里
                             				if(len==1){
-                            					$("#appmsgItem1 .appmsg_title a").text(data.articleItem.title);
+                            					$("#appmsgItem1 .appmsg_title a").text(data.data.title);
                                 				$("#appmsgItem1 .js_appmsg_thumb").attr("src",STATIC_FILE_HOST+data.data.coverPicUrl);
                                 				$("#appmsgItem1 .js_appmsg_thumb").show();
                                 			}else if(len==2){
-                                				$("#appmsgItem2 .appmsg_title a").text(data.articleItem.title);
+                                				$("#appmsgItem2 .appmsg_title a").text(data.data.title);
                                 				$("#appmsgItem2 .js_appmsg_thumb").attr("src",STATIC_FILE_HOST+data.data.coverPicUrl);
                                 				$("#appmsgItem2 .js_appmsg_thumb").show();
                                 				$("#appmsgItem2 .default").hide();
                                     		}else{
-                                    			$("#appmsgItem"+len+" .appmsg_title a").text(data.articleItem.title);
+                                    			$("#appmsgItem"+len+" .appmsg_title a").text(data.data.title);
                                 				$("#appmsgItem"+len+" .js_appmsg_thumb").attr("src",STATIC_FILE_HOST+data.data.coverPicUrl);
                                 				$("#appmsgItem"+len+" .js_appmsg_thumb").show();
                                 				$("#appmsgItem"+len+" .default").hide();
@@ -375,12 +403,19 @@
                 //多图文已添加项删除动作
     			$(".js_del").click(function(){
     				var dataid= $(this).attr("data-id");
-    				$("#news_ids input").each(function(index, item){
-    			    	if((index+1)==dataid){
-    			    		$(this).remove();
-    			    		return false;
-    				    }
-    			 	});
+    				
+    				var bookIds = $("#bookIds").val().split(","); //字符分割 
+    				var bookIdsNew = new Array(); 
+    				for (i=0;i<bookIds.length;i++ ) { 
+    					if(bookIds[i]==dataid){
+    						//
+    					}else{
+    						bookIdsNew.push(bookIds[i]);
+    					}
+    				} 
+    				
+    				$("#bookIds").val(bookIdsNew.join(","))
+    				
     	    		if(dataid<3){
     					$("#appmsgItem"+dataid+" .appmsg_title a").text("书名");
         				$("#appmsgItem"+dataid+" .js_appmsg_thumb").attr("src","");
@@ -391,44 +426,80 @@
     				}
     			});
     			
-                $('#multiNewsAdd').click(function () {
-                	//var data = JSON.stringify($("#multiNewsForm").serializeArray());
-                	var data = $("#multiNewsForm").serialize();
-                	
-    				//判断提交数据的长度
-    				if(data.length==0){
-    					alert("您需要选择至少一个学习资源（图书），请点击勾选操作按钮添加!");
-    					return false;
+                
+    			$("#todosPlanForm").validate({
+    			       rules: {
+    			        	"name":  {
+    							required: true
+    						}
+    					},
+    					messages: {
+    						"name":{
+    							required:"请输入学习计划名称"
+    						}
+    					},
+    			        errorClass: 'help-block',
+    			        errorElement: 'span',
+    			        highlight: function(element, errorClass, validClass) {
+    			            $(element).parents('.control-group').removeClass('success').addClass('error');
+    			        },
+    			        unhighlight: function(element, errorClass, validClass) {
+    			            $(element).parents('.control-group').removeClass('error').addClass('success');
+    			        },
+    		            submitHandler: function (form) {
+    		            	var options = {
+    		            	   //target: '#showmsg',
+    		            	   beforeSubmit:showStart,
+    		            	   success:showResponse,
+    		            	   dataType:  'json'
+    		            	};
+    			            
+    		            	$(form).ajaxSubmit(options);
+    		                 	return false;
+    		            }
+    				});
+    				
+    			 	function showStart(){
+    			 		var len = $("#bookIds").val().split(",").length;
+        				//判断提交数据的长度
+        				if($("#bookIds").val()=='' || len==0){
+        					alert("您需要选择至少一个学习资源（图书），请点击勾选操作按钮添加!");
+        					return false;
+        				}
+    			 		
+    				    return true;
     				}
-        			bootbox.confirm("您确定要提交此学习计划吗?", function(result) {
-            			if(result){
-                        	$.ajax({
-                        		type:'post',
-                        		url:'api/news_add_multi.do',
-                        		data:data,
-                        		dataType:'json',
-                        		beforeSend: function(){
-                        		},
-                        		success:function(data){
-                        			if(data.success){
-                        				bootbox.alert('成功添加学习计划' ,function(){
-                    						message_box.show('将跳转到您的学习计划列表管理界面!','success');
-                    						var  page_list = function(){
-                    							location.href="todos_plan_list";
-                    						}
-                    						window.setTimeout(page_list, 1000); 
-                    			 		});
-                            		}
-                        		},
-                        		error:function(){
-                        			alert("出错了!");
-                        		}
-                        	});
-                		}
-        			});
-                }); 
+    			 	// post-submit callback 
+    			 	function showResponse(data)  { 
+    				 	if(data.success){
+    						bootbox.alert('学习计划已成功录入' ,function(){
+    							message_box.show('将跳转到学习计划管理界面!','success');
+    							var page_list = function(){
+    								location.href="todos_plan_list";
+    							}
+    							window.setTimeout(page_list, 1000); 
+    				 		});
+    					}else{
+    						alert('发布失败: '+ '\n\n 状态码: \n' + data.resultInfo.returnCode + '\n\n 提示信息: \n' + data.resultInfo.returnMsg +  '.'); 
+    					}
+    			 	}
                 
                 
+                
+                
+                $("#fixTermRadio").click(function(){
+                	$("#datePanel").show();
+                });
+                
+                $("#actTermRadio").click(function(){
+                	$("#datePanel").hide();
+                });
+                
+                $('#startDate').datepicker({
+                    //maxDate: 0  // 当前日期之后的 0 天，就是当天
+                    minDate: 0, // 当前日期之前的 5 天
+                    hideIfNoPrevNext: true   
+               })
                 
             });
         </script>

@@ -75,4 +75,9 @@ public class LeaningPlanDaoImpl implements LearningPlanDao {
 		};
 	}
 
+	@Override
+	public LearningPlan save(LearningPlan learningPlan) {
+		return learningPlanRepo.save(learningPlan);
+	}
+
 }
