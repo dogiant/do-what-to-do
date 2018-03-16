@@ -123,7 +123,7 @@
 		            			</button>
 	            			</div>
 	            		</div>
-	            		<span class="glyphicon glyphicon-edit edit chapterEditBtn" aria-hidden="true" data-id="${chapter.id }"></span>
+	            		<span class="glyphicon glyphicon-edit edit chapterEditBtn" aria-hidden="true" data-id="${chapter.id }" chapter-type="${chapter.contentType }" chapter-taskTypes="${chapter.taskTypes }"></span>
 	            		<span class="glyphicon glyphicon-remove delete chapterDelBtn" aria-hidden="true"  data-id="${chapter.id }"></span>
             		</div>
             	</c:forEach>
@@ -159,7 +159,7 @@
 	          </div>
 	          <div class="form-group">
 	          	<label for="contentType" class="control-label">内容类型:</label>
-	          	<select class="form-control" name="contentType">
+	          	<select class="form-control" name="contentType" id="contentType">
 				  <option value="article" selected="selected">文章</option>
 				  <option value="poem">古诗词</option>
 				  <option value="speech">演讲</option>
@@ -178,7 +178,7 @@
 					  <input type="checkbox" id="inlineCheckbox3" name="taskTypes" value="audio" checked="checked"> 语音 
 					</label>
 					<label class="checkbox-inline">
-					  <input type="checkbox" id="inlineCheckbox3" name="taskTypes" value="vedio" checked="checked"> 视频
+					  <input type="checkbox" id="inlineCheckbox3" name="taskTypes" value="video" checked="checked"> 视频
 					</label>
 	          	</div>
 	          </div>
@@ -477,6 +477,9 @@
 		   
 		   var subTitle = $(this).parent().find("h5").text();
 		   
+		   var contentType = $(this).attr("chapter-type");
+		   var taskTypes = $(this).attr("chapter-taskTypes");
+		   
 		   $('#chapterModal').modal('show');
 		   
 		   $('#operation').text("修改");
@@ -484,12 +487,32 @@
 		   $("#chapterForm").find("#id").val(id);
 		   $("#chapterForm").find("#title").val(title);
 		   $("#chapterForm").find("#subTitle").val(subTitle);
+		   $("#chapterForm").find("#contentType").val(contentType);
 		   
+		   //var types = new Array(); //定义一数组 
+		   if(taskTypes!=''){
+			   var types = taskTypes.split(","); //字符分割 
+			   
+			   $("#chapterForm").find(("[name='taskTypes']")).each(function () {  
+	                if (types.contains($(this).val())) {  
+	                	$(this).attr("checked",true); 
+	                }else{
+	                	$(this).attr("checked",false); 
+	                } 
+	           });  
+				
+			}
 		   
 	   });
 	   
     });
     
+    Array.prototype.contains = function ( needle ) {
+    	  for (i in this) {
+    	    if (this[i] == needle) return true;
+    	  }
+    	  return false;
+    	}
     
     var maxsize = 2*1024*1024;//2M  
     var errMsg = "上传的文件不能超过2M！！！";  
