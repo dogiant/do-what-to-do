@@ -32,7 +32,6 @@ public class ChapterServiceImpl implements ChapterService {
 
 	@Override
 	public Integer getChpaterCountByBookIds(Long[] bookIds) {
-		// TODO Auto-generated method stub
 		return chapterDao.getChpaterCountByBookIds(bookIds);
 	}
 

@@ -59,8 +59,12 @@
                                                         <th>学习计划名称</th>
                                                         <th>类型</th>
                                                         <th>资源明细</th>
+                                                        <th>开始日期</th>
+                                                        <th>结束日期</th>
+                                                        <th>学习天数</th>
                                                         <th>创建时间</th>
                                                         <th>修改时间</th>
+                                                        <th>创建人</th>
                                                         <th>状态</th>
                                                         <th>操作</th>
                                                     </tr>
@@ -106,8 +110,12 @@
                         { "data": "name"},
                         { "data": "typeDesc"},
                         { "data": "bookShow"},
+                        { "data": "startDate"},
+                        { "data": "endDate"},
+                        { "data": "days"},
                         { "data": "ctime" },
                         { "data": "mtime" },
+                        { "data": "creator" },
                         { "data": "statusDescription" }
                     ],
                     "columnDefs": [  
@@ -115,14 +123,20 @@
                         	"targets": [1],
                         	"sWidth": "256px"
                         },
+                        { "bSortable": false, 
+                        	"targets": [2,3,10]
+                        },
+                        { "targets": [7,8],
+                        	"sWidth": "106px"
+                        },
                         //{ "visible": false,  "targets": [2] },
-                        { "targets": [7],
+                        { "targets": [11],
                         "data": "id" ,
                         "render": function(data, type, full) { return "<button class='btn edit'  dataid='"+data+"'><i class='icon-edit' ></i></button>  <button class='btn btn-danger remove'  dataid='"+data+"'><i class='icon-remove'></i></button>"; } 
                         } 
                     ],
                    
-                	"aaSorting": [[ 4, "desc" ]] ,
+                	"aaSorting": [[ 8, "desc" ]] ,
                     "sPaginationType": "bootstrap",
                    // "dom": '<"top"i>rt<"bottom"flp><"clear">',
                     "oLanguage": {

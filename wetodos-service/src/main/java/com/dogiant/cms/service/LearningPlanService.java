@@ -11,4 +11,7 @@ public interface LearningPlanService {
 
 	LearningPlan save(LearningPlan learningPlan);
 
+	LearningPlan findLearningPlanById(Long id);
+
+
 }

@@ -62,6 +62,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		FastJsonConfig fastJsonConfig = new FastJsonConfig();
 
 		fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
+		fastJsonConfig.setSerializerFeatures(SerializerFeature.WriteMapNullValue,
+		            SerializerFeature.WriteNullStringAsEmpty);
 
 		//在转换器中添加配置信息
 		fastConverter.setFastJsonConfig(fastJsonConfig);

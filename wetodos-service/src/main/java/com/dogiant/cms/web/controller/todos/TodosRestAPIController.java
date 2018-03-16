@@ -7,7 +7,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomBooleanEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -528,6 +525,111 @@ public class TodosRestAPIController {
 		learningPlan.setStatus(0);
 
 		ServiceResponse<?> resp = ServiceResponse.successResponse();
+		try {
+			learningPlanService.save(learningPlan);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/plan/delete", method = RequestMethod.POST)
+	public HttpResult<?> planDelete(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "ids", required = true) Long[] ids) {
+
+		ServiceResponse<List<Long>> resp = ServiceResponse.successResponse();
+		if (ids == null) {
+			resp = resp.setCode(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getCode());
+			resp = resp.setMsg(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+
+		List<Long> errorIds = new ArrayList<Long>();
+		for (Long id : ids) {
+			try {
+				LearningPlan learningPlan = learningPlanService.findLearningPlanById(id);
+				if (learningPlan != null) {
+					learningPlan.setStatus(-3);
+					learningPlanService.save(learningPlan);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				errorIds.add(id);
+			}
+		}
+
+		if (CollectionUtils.isNotEmpty(errorIds)) {
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			resp.setData(errorIds);
+		}
+
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/plan/update", method = RequestMethod.POST)
+	public HttpResult<?> planUpdate(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute LearningPlan learningPlan) {
+		
+		ServiceResponse<?> resp = ServiceResponse.successResponse();
+		
+		LearningPlan learningPlanFromDB = learningPlanService.findLearningPlanById(learningPlan.getId());
+		if (learningPlanFromDB == null) {
+			resp = resp.setCode(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getCode());
+			resp = resp.setMsg(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+
+		Date now = new Date();
+		Integer days = 0;
+		if (StringUtils.isNotBlank(learningPlan.getBookIds())) {
+			StringTokenizer tokener = new StringTokenizer(learningPlan.getBookIds(), ",");
+	        Long[] result = new Long[tokener.countTokens()];
+	        int i=0;
+	        while( tokener.hasMoreElements() ){
+	        	result[i++] = Long.valueOf(tokener.nextToken());
+	        }
+			days = chapterService.getChpaterCountByBookIds(result);
+			learningPlan.setDays(days);
+		}
+		
+		if (learningPlan.getType() != null
+				&& learningPlan.getType().intValue() == 1) {
+			ZoneId zoneId = ZoneId.systemDefault();
+			
+			//如果是固定学期计划
+			Date startDate = learningPlan.getStartDate();
+			Instant instant = startDate.toInstant();
+		    // atZone()方法返回在指定时区从此Instant生成的ZonedDateTime。
+		    LocalDate startLocalDate = instant.atZone(zoneId).toLocalDate();
+		    
+		    LocalDate endLocalDate = startLocalDate.plusDays(days-1);
+	        ZonedDateTime zdt = endLocalDate.atStartOfDay(zoneId);
+	        Date endDate = Date.from(zdt.toInstant());
+	        
+	        learningPlan.setEndDate(endDate);
+		}else{
+			learningPlan.setStartDate(null);
+			learningPlan.setEndDate(null);
+		}
+
+		learningPlan.setCreator((String)request.getAttribute("userName"));
+		learningPlan.setCtime(learningPlanFromDB.getCtime());
+		learningPlan.setMtime(now);
+		// 0 先发后审 -1先审后发
+		learningPlan.setStatus(0);
+
 		try {
 			learningPlanService.save(learningPlan);
 		} catch (Exception e) {

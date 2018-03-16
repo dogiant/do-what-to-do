@@ -89,4 +89,9 @@ public class BookDaoImpl implements BookDao {
 		};
 	}
 
+	@Override
+	public List<Book> getBookListByIds(Long[] ids) {
+		return bookRepo.getBookListByIds(ids);
+	}
+
 }

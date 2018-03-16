@@ -2,7 +2,9 @@ package com.dogiant.cms.web.controller.todos;
 
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dogiant.cms.config.ImageConfig;
 import com.dogiant.cms.domain.todos.Book;
 import com.dogiant.cms.domain.todos.Chapter;
+import com.dogiant.cms.domain.todos.LearningPlan;
 import com.dogiant.cms.domain.todos.Phase;
 import com.dogiant.cms.service.BookService;
 import com.dogiant.cms.service.ChapterService;
+import com.dogiant.cms.service.LearningPlanService;
 import com.dogiant.cms.service.PhaseService;
 
 @Controller
@@ -32,6 +36,9 @@ public class TodosWebUIController {
 	
 	@Autowired
 	private PhaseService phaseService;
+	
+	@Autowired
+	private LearningPlanService learningPlanService;
 	
 	@RequestMapping(value = "/todos_book_list", method = RequestMethod.GET)
     public String todosBookList(Map<String, Object> model) {
@@ -96,5 +103,27 @@ public class TodosWebUIController {
 		model.put("fileHost", ImageConfig.fileHost);
 		model.put("menu", "todos");
         return "/todos_plan_input";
+    }
+	
+	@RequestMapping(value = "/todos_plan_modify", method = RequestMethod.GET)
+    public String todosPlanModify(@RequestParam(value = "id", required = true) Long id,Map<String, Object> model) {
+		logger.info("/todos_plan_modify");
+		model.put("fileHost", ImageConfig.fileHost);
+		model.put("menu", "todos");
+		
+		LearningPlan learningPlan = learningPlanService.findLearningPlanById(id);
+		if(learningPlan!=null && StringUtils.isNotBlank(learningPlan.getBookIds())){
+			StringTokenizer tokener = new StringTokenizer(learningPlan.getBookIds(), ",");
+	        Long[] result = new Long[tokener.countTokens()];
+	        int i=0;
+	        while( tokener.hasMoreElements() ){
+	        	result[i++] = Long.valueOf(tokener.nextToken());
+	        }
+			List<Book> bookList = bookService.getBookListByIds(result);
+			learningPlan.setBooks(bookList);
+		}
+		model.put("learningPlan", learningPlan);
+		
+        return "/todos_plan_modify";
     }
 }

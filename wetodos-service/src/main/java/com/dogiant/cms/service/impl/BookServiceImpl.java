@@ -1,5 +1,7 @@
 package com.dogiant.cms.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +43,11 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public void updateBook(Book book) {
 		bookDao.updateBook(book);
+	}
 
+	@Override
+	public List<Book> getBookListByIds(Long[] ids) {
+		return bookDao.getBookListByIds(ids);
 	}
 
 }

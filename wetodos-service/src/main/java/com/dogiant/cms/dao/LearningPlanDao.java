@@ -11,4 +11,6 @@ public interface LearningPlanDao {
 
 	LearningPlan save(LearningPlan learningPlan);
 
+	LearningPlan findLearningPlanById(Long id);
+
 }

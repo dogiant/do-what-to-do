@@ -80,4 +80,9 @@ public class LeaningPlanDaoImpl implements LearningPlanDao {
 		return learningPlanRepo.save(learningPlan);
 	}
 
+	@Override
+	public LearningPlan findLearningPlanById(Long id) {
+		return learningPlanRepo.findOne(id);
+	}
+
 }

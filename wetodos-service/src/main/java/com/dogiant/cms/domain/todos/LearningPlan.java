@@ -4,6 +4,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,6 +43,16 @@ public class LearningPlan implements Serializable{
 	 * 图书ID字符串
 	 */
 	private String bookIds;
+	
+	/**
+	 * 图书列表
+	 */
+	private List<Book> books;
+	
+	/**
+	 * 学习计划包含的图书展示
+	 */
+	private String bookShow;
 	
 	/**
 	 * 类型 0自由学期 1固定学期 
@@ -110,8 +121,21 @@ public class LearningPlan implements Serializable{
 	}
 
 	@Transient
-	public String getBookShow(){
-		return "TODO_bookShow_"+getBookIds();
+	public List<Book> getBooks() {
+		return books;
+	}
+
+	public void setBooks(List<Book> books) {
+		this.books = books;
+	}
+
+	@Transient
+	public String getBookShow() {
+		return bookShow;
+	}
+
+	public void setBookShow(String bookShow) {
+		this.bookShow = bookShow;
 	}
 
 	@Column(name = "type")
@@ -125,7 +149,14 @@ public class LearningPlan implements Serializable{
 	
 	@Transient
 	public String getTypeDesc(){
-		return "TODO_"+type;
+		switch(type){
+		case 0:
+			return "自由学期";
+		case 1:
+			return "固定学期";
+		default:
+			return "未知状态";
+	}
 	}
 
 	@Column(name = "name", length = 32)
@@ -233,4 +264,6 @@ public class LearningPlan implements Serializable{
 				return "未知状态";
 		}
 	}
+	
+
 }
