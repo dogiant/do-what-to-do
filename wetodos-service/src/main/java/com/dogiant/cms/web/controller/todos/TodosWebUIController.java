@@ -126,4 +126,21 @@ public class TodosWebUIController {
 		
         return "/todos_plan_modify";
     }
+	
+	
+	@RequestMapping(value = "/todos_banner_list", method = RequestMethod.GET)
+    public String todosBannerList(Map<String, Object> model) {
+		logger.info("/todos_banner_list");
+		model.put("fileHost", ImageConfig.fileHost);
+		model.put("menu", "todos");
+        return "/todos_banner_list";
+    }
+	
+	@RequestMapping(value = "/todos_banner_input", method = RequestMethod.GET)
+    public String todosBannerInput(Map<String, Object> model) {
+		logger.info("/todos_plan_input");
+		model.put("fileHost", ImageConfig.fileHost);
+		model.put("menu", "todos");
+        return "/todos_banner_input";
+    }
 }

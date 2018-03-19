@@ -23,6 +23,12 @@
 #cover_wrapper i{
 	display:block;color: #c0c0c0;text-align: center;line-height: 327px;font-weight: 400;font-style: normal;background-color: #ececec;font-size: 22px;	
 }
+#banner_wrapper{
+	height: 116px;overflow: hidden;
+}
+#banner_wrapper i{
+	display:block;color: #c0c0c0;text-align: center;line-height: 116px;font-weight: 400;font-style: normal;background-color: #ececec;font-size: 22px;	
+}
 #news_digest{
 	padding: 5px 0 10px;word-wrap: break-word;word-break: break-all;
 }

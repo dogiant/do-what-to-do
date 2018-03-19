@@ -37,11 +37,13 @@ import com.dogiant.cms.domain.dto.ServiceResponse;
 import com.dogiant.cms.domain.dto.ServiceResponse2HttpResult;
 import com.dogiant.cms.domain.todos.Book;
 import com.dogiant.cms.domain.todos.Chapter;
+import com.dogiant.cms.domain.todos.DailyBanner;
 import com.dogiant.cms.domain.todos.LearningPlan;
 import com.dogiant.cms.domain.todos.Phase;
 import com.dogiant.cms.exception.ServiceExInfo;
 import com.dogiant.cms.service.BookService;
 import com.dogiant.cms.service.ChapterService;
+import com.dogiant.cms.service.DailyBannerService;
 import com.dogiant.cms.service.LearningPlanService;
 import com.dogiant.cms.service.PhaseService;
 import com.dogiant.cms.utils.QueryStringParser;
@@ -62,6 +64,9 @@ public class TodosRestAPIController {
 	
 	@Autowired
 	private LearningPlanService learningPlanService;
+	
+	@Autowired
+	private DailyBannerService dailyBannerService;
 	
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -640,6 +645,114 @@ public class TodosRestAPIController {
 			return result;
 		}
 		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/banner/add", method = RequestMethod.POST)
+	public HttpResult<?> bannerAdd(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute DailyBanner dailyBanner) {
+
+		Date now = new Date();
+		dailyBanner.setCtime(now);
+		dailyBanner.setMtime(now);
+		// 0 先发后审 -1先审后发
+		dailyBanner.setStatus(0);
+
+		ServiceResponse<?> resp = ServiceResponse.successResponse();
+		try {
+			dailyBannerService.addDailyBanner(dailyBanner);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/banner/delete", method = RequestMethod.POST)
+	public HttpResult<?> bannerDelete(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "ids", required = true) Long[] ids) {
+
+		ServiceResponse<List<Long>> resp = ServiceResponse.successResponse();
+		if (ids == null) {
+			resp = resp.setCode(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getCode());
+			resp = resp.setMsg(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+
+		List<Long> errorIds = new ArrayList<Long>();
+		for (Long id : ids) {
+			try {
+				DailyBanner dailyBanner = dailyBannerService.getDailyBanner(id);
+				if (dailyBanner != null) {
+					dailyBanner.setStatus(-3);
+					dailyBannerService.updateDailyBanner(dailyBanner);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				errorIds.add(id);
+			}
+		}
+
+		if (CollectionUtils.isNotEmpty(errorIds)) {
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			resp.setData(errorIds);
+		}
+
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/banner/list", method = { RequestMethod.POST, RequestMethod.GET })
+	public DataTablesResult<DailyBanner> bannerList(HttpServletRequest request, HttpServletResponse response) {
+
+		String tranToken = request.getQueryString();
+		Map<String, String> params = QueryStringParser.queryStringParser(tranToken, "utf-8");
+
+		Integer draw = null;
+		Integer start = null;
+		Integer length = null;
+
+		try {
+			draw = Integer.parseInt(request.getParameter("draw"));
+			start = Integer.parseInt(request.getParameter("start"));
+			length = Integer.parseInt(request.getParameter("length"));
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+
+		String orderColumn = null;
+		String orderName = null;
+		String orderDir = null;
+		String searchValue = null;
+
+		orderColumn = params.get("order[0][column]");
+		orderDir = params.get("order[0][dir]");
+		searchValue = params.get("search[value]");
+		if (StringUtils.isNotEmpty(orderColumn)) {
+			orderName = params.get("columns[" + orderColumn + "][data]");
+		}
+
+		if (draw == null || start == null || length == null) {
+			return null;
+		}
+
+		try {
+			DataTablesResult<DailyBanner> dataTablesResult = dailyBannerService.getDailyBannerDataTablesResult(start,
+					length, orderName, orderDir, searchValue);
+			dataTablesResult.setDraw(draw);
+			return dataTablesResult;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 	
 	public static void main(String[] args) {
