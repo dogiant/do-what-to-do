@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dogiant.cms.config.ImageConfig;
 import com.dogiant.cms.domain.todos.Book;
 import com.dogiant.cms.domain.todos.Chapter;
+import com.dogiant.cms.domain.todos.DailyBanner;
 import com.dogiant.cms.domain.todos.LearningPlan;
 import com.dogiant.cms.domain.todos.Phase;
 import com.dogiant.cms.service.BookService;
 import com.dogiant.cms.service.ChapterService;
+import com.dogiant.cms.service.DailyBannerService;
 import com.dogiant.cms.service.LearningPlanService;
 import com.dogiant.cms.service.PhaseService;
 
@@ -39,6 +41,9 @@ public class TodosWebUIController {
 	
 	@Autowired
 	private LearningPlanService learningPlanService;
+	
+	@Autowired
+	private DailyBannerService dailyBannerService;
 	
 	@RequestMapping(value = "/todos_book_list", method = RequestMethod.GET)
     public String todosBookList(Map<String, Object> model) {
@@ -138,9 +143,21 @@ public class TodosWebUIController {
 	
 	@RequestMapping(value = "/todos_banner_input", method = RequestMethod.GET)
     public String todosBannerInput(Map<String, Object> model) {
-		logger.info("/todos_plan_input");
+		logger.info("/todos_banner_input");
 		model.put("fileHost", ImageConfig.fileHost);
 		model.put("menu", "todos");
         return "/todos_banner_input";
+    }
+	
+	@RequestMapping(value = "/todos_banner_modify", method = RequestMethod.GET)
+    public String bannerModify(@RequestParam(value = "id", required = true) Long id,Map<String, Object> model) {
+		logger.info("/todos_banner_modify");
+		model.put("fileHost", ImageConfig.fileHost);
+		
+		DailyBanner dailyBanner = dailyBannerService.getDailyBanner(id);
+		model.put("dailyBanner", dailyBanner);
+		
+		model.put("menu", "todos");
+        return "todos_banner_modify";
     }
 }
