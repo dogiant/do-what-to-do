@@ -63,7 +63,8 @@
 		                                                </form>
 	                                                </div>
 	  												<div class="form-horizontal">
-	  												<form id="todosBannerForm" action="api/todos/banner/add" method="post" >
+	  												<form id="todosBannerForm" action="api/todos/banner/update" method="post" >
+	  												<input id="id" type="hidden" name="id" value="${dailyBanner.id}"/>
 	                                                <div class="control-group">
 	                                                    <label for="coverPicUrl" class="control-label">每日一图</label>
 	                                                    <div class="controls with-tooltip">
@@ -72,7 +73,7 @@
                                                          		</div>
 	                                                            <span class="btn btn-file">
                                                                     <span onclick="uploadPicAjax.click()">选择图片</span>
-                                                                    <input id="imageUrl" type="hidden" name="imageUrl" />
+                                                                    <input id="imageUrl" type="hidden" name="imageUrl"  value="${dailyBanner.imageUrl}"/>
                                                                 </span>
 		                                                         
 		                                                         <p class="js_cover upload_preview" style="display: none;">
@@ -84,14 +85,14 @@
 	                                                <div class="control-group">
 	                                                    <label for="text" class="control-label">文字</label>
 	                                                    <div class="controls">
-	                                                    	<textarea id="text" name="text" class="span6" style="height:260px"></textarea>
+	                                                    	<textarea id="text" name="text" class="span6" style="height:260px">${dailyBanner.text }</textarea>
 	                                                    </div>
 	                                                </div>
 
 	                                                <div class="control-group">
 	                                                    <label for="date" class="control-label">日期</label>
 	                                                    <div class="controls with-tooltip">
-	                                                        <input type="text" id="date" name="date" class="span3 input-tooltip" data-placement="top"  />
+	                                                        <input type="text" id="date" name="date" class="span3 input-tooltip" data-placement="top" value="${dailyBanner.date}"/>
 	                                                    </div>
 	                                                </div>
 
