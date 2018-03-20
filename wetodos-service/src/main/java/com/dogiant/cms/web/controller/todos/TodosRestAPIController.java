@@ -709,6 +709,39 @@ public class TodosRestAPIController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/api/todos/banner/update", method = RequestMethod.POST)
+	public HttpResult<?> bannerUpdate(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute DailyBanner dailyBanner) {
+
+		ServiceResponse<?> resp = ServiceResponse.successResponse();
+
+		DailyBanner dailyBannerFromDB = dailyBannerService.getDailyBanner(dailyBanner.getId());
+		if (dailyBannerFromDB == null) {
+			resp = resp.setCode(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getCode());
+			resp = resp.setMsg(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+
+		Date now = new Date();
+		dailyBanner.setCtime(dailyBannerFromDB.getCtime());
+		dailyBanner.setMtime(now);
+		// 0 先发后审 -1先审后发
+		dailyBanner.setStatus(0);
+
+		try {
+			dailyBannerService.addDailyBanner(dailyBanner);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/api/todos/banner/list", method = { RequestMethod.POST, RequestMethod.GET })
 	public DataTablesResult<DailyBanner> bannerList(HttpServletRequest request, HttpServletResponse response) {
 

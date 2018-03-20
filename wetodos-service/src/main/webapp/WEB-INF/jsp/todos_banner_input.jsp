@@ -84,7 +84,7 @@
 	                                                <div class="control-group">
 	                                                    <label for="text" class="control-label">文字</label>
 	                                                    <div class="controls">
-	                                                    	<textarea id="text" name="text" class="span6" style="height:260px"></textarea>
+	                                                    	<textarea id="text" name="text" class="span6"></textarea>
 	                                                    </div>
 	                                                </div>
 

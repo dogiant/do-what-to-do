@@ -85,7 +85,7 @@
 	                                                <div class="control-group">
 	                                                    <label for="text" class="control-label">文字</label>
 	                                                    <div class="controls">
-	                                                    	<textarea id="text" name="text" class="span6" style="height:260px">${dailyBanner.text }</textarea>
+	                                                    	<textarea id="text" name="text" class="span6">${dailyBanner.text }</textarea>
 	                                                    </div>
 	                                                </div>
 
@@ -111,7 +111,7 @@
 								                  	<i>每日一图</i>                           	  
 	                                        	  </div>
 								                  <div class="caption">
-								                    <p id="banner_text" >
+								                    <p id="banner_text" style="word-wrap: break-word;">
 								                    	文字
 								                    </p>
 								                  </div>
@@ -190,6 +190,15 @@
 		
 		
 		$().ready(function() {
+			
+			var mImageUrl = $("#imageUrl").val();
+			if(mImageUrl!=''){
+				$("#news_cover").attr("src", STATIC_FILE_HOST + mImageUrl);
+				$("#news_cover").css({"display":"block"});
+				$("#cover_preview").attr("src", STATIC_FILE_HOST + mImageUrl);
+				$(".upload_preview").css({"display":"block"});
+				$("#banner_text").html($("#text").val());
+			}
 
 			$("#text").keyup(function(){
 				$("#banner_text").html($(this).val());
@@ -213,7 +222,8 @@
 						required: true
 					},
 					"text":  {
-						required: true
+						required: true,
+						maxlength: 32
 					}
 				},
 				messages: {
@@ -224,7 +234,8 @@
 						required:"请上传每日一图"
 					},
 					"text":{
-						required:"请输入文字说明"
+						required:"请输入文字说明",
+						maxlength:"文字最长不能超过32个字"
 					}
 				},
 		        errorClass: 'help-block',
@@ -254,7 +265,7 @@
 		 	// post-submit callback 
 		 	function showResponse(data)  { 
 			 	if(data.success){
-					bootbox.alert('每日一图已成功录入' ,function(){
+					bootbox.alert('每日一图已成功修改' ,function(){
 						message_box.show('将跳转到每日一图管理界面!','success');
 						var page_list = function(){
 							location.href="todos_banner_list";
