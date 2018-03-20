@@ -43,11 +43,21 @@ public class Answer implements Serializable {
 	 * A B C D
 	 */
 	private String serial;
+	
+	/**
+	 * 展示的内容类型， text, image, audio, video?
+	 */
+	private String contentType;
 
 	/**
 	 * 答案内容
 	 */
 	private String content;
+	
+	/**
+	 * 资源地址
+	 */
+	private String uri;
 
 	/**
 	 * 是否正确答案
@@ -98,13 +108,31 @@ public class Answer implements Serializable {
 		this.serial = serial;
 	}
 
-	@Column(name = "content", nullable = false)
+	@Column(name = "content_type", length = 32)
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	@Column(name = "content")
 	public String getContent() {
 		return content;
 	}
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	@Column(name = "uri")
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	@Column(name = "is_correct", nullable = false)

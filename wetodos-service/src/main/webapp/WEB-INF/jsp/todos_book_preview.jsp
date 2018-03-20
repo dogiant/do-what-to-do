@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 	<head>
@@ -22,6 +23,15 @@
             position: absolute;
             top: 20px;
             right: -13px;
+            width: 50px;
+            height: 50px;
+            display: none;
+        }
+        
+        .chapter .choice {
+            position: absolute;
+            top: 20px;
+            right: 100px;
             width: 50px;
             height: 50px;
             display: none;
@@ -123,6 +133,9 @@
 		            			</button>
 	            			</div>
 	            		</div>
+	            		<c:if test="${fn:contains(chapter.taskTypes,'choice')}">
+					    	<span class="glyphicon glyphicon-question-sign choice chapterQuestionBtn" aria-hidden="true"  data-id="${chapter.id }"></span>
+					    </c:if>
 	            		<span class="glyphicon glyphicon-edit edit chapterEditBtn" aria-hidden="true" data-id="${chapter.id }" chapter-type="${chapter.contentType }" chapter-taskTypes="${chapter.taskTypes }"></span>
 	            		<span class="glyphicon glyphicon-remove delete chapterDelBtn" aria-hidden="true"  data-id="${chapter.id }"></span>
             		</div>
@@ -259,7 +272,70 @@
 			<input id="uploadPicAjax" name="uploads" type="file" onchange="uploadPicAjaxSubmit(this);"/>
 		</form>
 	</div>
+	
 
+    <div class="modal fade" id="questionModal" tabindex="-1" role="dialog" aria-labelledby="questionModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">添加选择题</h4>
+	      </div>
+	      <div class="modal-body">
+	          <input type="hidden" id="id" name="id">
+	          <input type="hidden" id="questionChapterId" name="chapterId" >
+	          <div class="form-group">
+	          	<label for="contentType" class="control-label">问题内容类型:</label>
+	          	<div>
+					<label class="checkbox-inline">
+					  <input type="radio" id="questionTextRadio" name="contentType" value="text" checked="checked"> 文字 
+					</label>
+					<label class="checkbox-inline">
+					  <input type="radio" id="questionImageRadio" name="contentType" value="image" > 图片
+					</label>
+	          	</div>
+	          </div>
+	          
+	          <div class="form-group" id="questionTextForm">
+	            <label for="questionContent" class="control-label">内容:</label>
+	            <textarea class="form-control" id="questionContent" name="content"></textarea>
+	          </div>
+	          <div class="form-group" id="questionImageForm" style="display: none">
+				  <label for="uri" class="control-label">图片</label>
+                  <div class="controls with-tooltip">
+
+                      <div id="uploadQuestionPicTips">
+
+                      </div>
+
+                      <span class="btn btn-file">
+							<span onclick="uploadQuestionPicAjax.click()">选择图片</span>
+			 			  
+                          	<input id="questionUri" type="hidden" name="uri" />
+                      </span>
+                        
+                      <p class="js_cover question_pic_upload_preview" style="display: none;">
+                          <img id="question_pic_preview"  src="">
+						  <span><a id="removeQuestionPic" href="javascript:void(0);" >删除</a></span>
+					  </p>
+                 </div>
+	          </div>
+
+	        
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="submit" class="btn btn-primary">保存提交</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div style="display: none;">
+		<form id="uploadQuestionPicAjaxForm" action="/upload/api"  enctype="multipart/form-data"  method="post" >
+			<input id="uploadQuestionPicAjax" name="uploads" type="file" onchange="uploadQuestionPicAjaxSubmit(this);"/>
+		</form>
+	</div>
     
     <!-- End: Main content -->
 	<%@ include file="common/footer_script_preview.jsp" %>
@@ -268,11 +344,13 @@
     $(function() {
     	
     	 $(".chapter").mouseenter(function () {
+    		 $(this).find(".choice").show();
              $(this).find(".delete").show();
              $(this).find(".edit").show();
          });
 
          $(".chapter").mouseleave(function () {
+        	 $(this).find(".choice").hide();
              $(this).find(".delete").hide();
              $(this).find(".edit").hide();
          });
@@ -410,6 +488,27 @@
                	return false;
 	            }
 		});
+	   
+	   
+        $('#questionModal').on('show.bs.modal', function (event) {
+	   	  $("#questionImageRadio").click(function(){
+	   			$("#questionImageForm").show();
+			  	$("#questionTextForm").hide();
+	   	  });
+	   	  
+	   	  $("#questionTextRadio").click(function(){
+	 		  $("#questionImageForm").hide();
+	 		  $("#questionTextForm").show();
+	 	  });
+	   	  
+		  $("#removeQuestionPic").click(function(){
+				$("#questionUri").val("");
+				$("#question_pic_preview").attr("src", "");
+				$("#question_pic_preview").css({"display":"none"});
+				$(".question_pic_upload_preview").css({"display":"none"});
+		  });
+	   	  
+	   });
 
 
 	   $(".addChapterButton").click(function(){
@@ -505,6 +604,12 @@
 		   
 	   });
 	   
+	   $(".chapterQuestionBtn").click(function(){
+		   var id = $(this).attr("data-id");
+		   $('#questionModal').modal('show');
+		   $("#questionChapterId").val(id);
+	   });
+	   
     });
     
     Array.prototype.contains = function ( needle ) {
@@ -517,40 +622,74 @@
     var maxsize = 2*1024*1024;//2M  
     var errMsg = "上传的文件不能超过2M！！！";  
 
-		var STATIC_FILE_HOST = "${fileHost}";
-		function uploadPicAjaxSubmit(o) {
-			var ajaxForm = $('#uploadPicAjaxForm'), $file = $(o).clone();
-			
-			var byteSize = o.files[0].size;
-			if(byteSize>maxsize){
-				return alert(errMsg);
-			}
-
-			var options = {
-				dataType : "json",
-				data : {type:"json","channel":"news",genThumbnails:true,"sizes":"360,null,_360;200,null,_200",uploads:$file.val()},
-				beforeSubmit : function() {
-					$("#uploadTips").show();
-					$("#uploadTips").html("正在上传图片，请稍候……");
-				},
-				success : function(data) {
-					if (data.success) {
-						$("#uploadTips").hide();
-						$("#uri").val(data.result[0]);
-						$("#pic_preview").attr("src", STATIC_FILE_HOST + data.result[0]);
-						$("#pic_preview").css({"display":"block"});
-						$(".upload_preview").css({"display":"block"});
-					}else{
-						alert(data);
-					}
-				},
-				error : function(data) {
-
-				}
-			};
-			ajaxForm.ajaxSubmit(options);
-			return false;
+	var STATIC_FILE_HOST = "${fileHost}";
+	function uploadPicAjaxSubmit(o) {
+		var ajaxForm = $('#uploadPicAjaxForm'), $file = $(o).clone();
+		
+		var byteSize = o.files[0].size;
+		if(byteSize>maxsize){
+			return alert(errMsg);
 		}
+
+		var options = {
+			dataType : "json",
+			data : {type:"json","channel":"news",genThumbnails:true,"sizes":"360,null,_360;200,null,_200",uploads:$file.val()},
+			beforeSubmit : function() {
+				$("#uploadTips").show();
+				$("#uploadTips").html("正在上传图片，请稍候……");
+			},
+			success : function(data) {
+				if (data.success) {
+					$("#uploadTips").hide();
+					$("#uri").val(data.result[0]);
+					$("#pic_preview").attr("src", STATIC_FILE_HOST + data.result[0]);
+					$("#pic_preview").css({"display":"block"});
+					$(".upload_preview").css({"display":"block"});
+				}else{
+					alert(data);
+				}
+			},
+			error : function(data) {
+
+			}
+		};
+		ajaxForm.ajaxSubmit(options);
+		return false;
+	}
+	
+	function uploadQuestionPicAjaxSubmit(o) {
+		var ajaxForm = $('#uploadQuestionPicAjaxForm'), $file = $(o).clone();
+		
+		var byteSize = o.files[0].size;
+		if(byteSize>maxsize){
+			return alert(errMsg);
+		}
+
+		var options = {
+			dataType : "json",
+			data : {type:"json","channel":"news",genThumbnails:true,"sizes":"360,null,_360;200,null,_200",uploads:$file.val()},
+			beforeSubmit : function() {
+				$("#uploadQuestionPicTips").show();
+				$("#uploadQuestionPicTips").html("正在上传图片，请稍候……");
+			},
+			success : function(data) {
+				if (data.success) {
+					$("#uploadQuestionPicTips").hide();
+					$("#questionUri").val(data.result[0]);
+					$("#question_pic_preview").attr("src", STATIC_FILE_HOST + data.result[0]);
+					$("#question_pic_preview").css({"display":"block"});
+					$(".question_pic_upload_preview").css({"display":"block"});
+				}else{
+					alert(data);
+				}
+			},
+			error : function(data) {
+
+			}
+		};
+		ajaxForm.ajaxSubmit(options);
+		return false;
+	}
 
 	</script>
   </body>

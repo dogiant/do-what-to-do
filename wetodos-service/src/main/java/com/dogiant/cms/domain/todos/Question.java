@@ -40,9 +40,19 @@ public class Question implements Serializable{
 	private Long chapterId;
 	
 	/**
+	 * 展示的内容类型， text, image, audio, video?
+	 */
+	private String contentType;
+	
+	/**
 	 * 问题内容
 	 */
 	private String content;
+	
+	/**
+	 * 资源地址
+	 */
+	private String uri;
 	
 	/**
 	 * 创建时间
@@ -78,6 +88,15 @@ public class Question implements Serializable{
 	public void setChapterId(Long chapterId) {
 		this.chapterId = chapterId;
 	}
+	
+	@Column(name = "content_type", length = 32)
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
 
 	@Column(name = "content", length = 512)
 	public String getContent() {
@@ -86,6 +105,15 @@ public class Question implements Serializable{
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	@Column(name = "uri")
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
