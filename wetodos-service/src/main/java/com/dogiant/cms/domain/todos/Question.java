@@ -4,6 +4,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -53,6 +55,11 @@ public class Question implements Serializable{
 	 * 资源地址
 	 */
 	private String uri;
+	
+	/**
+	 * 回答列表
+	 */
+	private List<Answer> answers;
 	
 	/**
 	 * 创建时间
@@ -114,6 +121,15 @@ public class Question implements Serializable{
 
 	public void setUri(String uri) {
 		this.uri = uri;
+	}
+	
+	@Transient
+	public List<Answer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
 	}
 
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")

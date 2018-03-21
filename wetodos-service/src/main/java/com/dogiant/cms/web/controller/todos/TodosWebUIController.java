@@ -14,16 +14,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dogiant.cms.config.ImageConfig;
+import com.dogiant.cms.domain.todos.Answer;
 import com.dogiant.cms.domain.todos.Book;
 import com.dogiant.cms.domain.todos.Chapter;
 import com.dogiant.cms.domain.todos.DailyBanner;
 import com.dogiant.cms.domain.todos.LearningPlan;
 import com.dogiant.cms.domain.todos.Phase;
+import com.dogiant.cms.domain.todos.Question;
+import com.dogiant.cms.service.AnswerService;
 import com.dogiant.cms.service.BookService;
 import com.dogiant.cms.service.ChapterService;
 import com.dogiant.cms.service.DailyBannerService;
 import com.dogiant.cms.service.LearningPlanService;
 import com.dogiant.cms.service.PhaseService;
+import com.dogiant.cms.service.QuestionService;
 
 @Controller
 public class TodosWebUIController {
@@ -44,6 +48,12 @@ public class TodosWebUIController {
 	
 	@Autowired
 	private DailyBannerService dailyBannerService;
+	
+	@Autowired
+	private QuestionService questionService;
+	
+	@Autowired
+	private AnswerService answerService;
 	
 	@RequestMapping(value = "/todos_book_list", method = RequestMethod.GET)
     public String todosBookList(Map<String, Object> model) {
@@ -86,7 +96,14 @@ public class TodosWebUIController {
 		for(Chapter chapter : chapterList){
 			List<Phase> phases = phaseService.findPhasesByChapterId(chapter.getId());
 			chapter.setPhases(phases);
+			List<Question> questions = questionService.getQuestionsByChapterId(chapter.getId());
+			chapter.setQuestions(questions);
+			for(Question question : questions){
+				List<Answer> answers = answerService.getAnswersByQuestionId(question.getId());
+				question.setAnswers(answers);
+			}
 		}
+		
 		model.put("chapterList", chapterList);
 		
 		model.put("menu", "todos");

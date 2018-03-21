@@ -35,17 +35,21 @@ import com.dogiant.cms.domain.dto.DataTablesResult;
 import com.dogiant.cms.domain.dto.HttpResult;
 import com.dogiant.cms.domain.dto.ServiceResponse;
 import com.dogiant.cms.domain.dto.ServiceResponse2HttpResult;
+import com.dogiant.cms.domain.todos.Answer;
 import com.dogiant.cms.domain.todos.Book;
 import com.dogiant.cms.domain.todos.Chapter;
 import com.dogiant.cms.domain.todos.DailyBanner;
 import com.dogiant.cms.domain.todos.LearningPlan;
 import com.dogiant.cms.domain.todos.Phase;
+import com.dogiant.cms.domain.todos.Question;
 import com.dogiant.cms.exception.ServiceExInfo;
+import com.dogiant.cms.service.AnswerService;
 import com.dogiant.cms.service.BookService;
 import com.dogiant.cms.service.ChapterService;
 import com.dogiant.cms.service.DailyBannerService;
 import com.dogiant.cms.service.LearningPlanService;
 import com.dogiant.cms.service.PhaseService;
+import com.dogiant.cms.service.QuestionService;
 import com.dogiant.cms.utils.QueryStringParser;
 
 @RestController
@@ -67,6 +71,12 @@ public class TodosRestAPIController {
 	
 	@Autowired
 	private DailyBannerService dailyBannerService;
+	
+	@Autowired
+	private QuestionService questionService;
+	
+	@Autowired
+	private AnswerService answerService;
 	
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
@@ -787,6 +797,158 @@ public class TodosRestAPIController {
 		}
 
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/question/save", method = RequestMethod.POST)
+	public HttpResult<?> questionAdd(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute Question question) {
+		
+		ServiceResponse<?> resp = ServiceResponse.successResponse();
+		
+		Date now = new Date();
+		question.setCtime(now);
+		question.setMtime(now);
+		// 0 先发后审 -1先审后发
+		question.setStatus(0);
+		
+		if (question.getId() != null) {
+			Question questionFromDB = questionService.getQuestionById(question.getId());
+			if (questionFromDB == null) {
+				resp = resp.setCode(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getCode());
+				resp = resp.setMsg(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getMessage());
+				HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+				return result;
+			}else{
+				question.setCtime(questionFromDB.getCtime());
+			}
+		}
+		
+		try {
+			questionService.saveQuestion(question);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/answer/save", method = RequestMethod.POST)
+	public HttpResult<?> answerAdd(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute Answer answer) {
+
+		Date now = new Date();
+		answer.setCtime(now);
+		answer.setMtime(now);
+		// 0 先发后审 -1先审后发
+		answer.setStatus(0);
+
+		ServiceResponse<?> resp = ServiceResponse.successResponse();
+		
+		
+		if (answer.getId() != null) {
+			Answer answerFromDB = answerService.getAnswerById(answer.getId());
+			if (answerFromDB == null) {
+				resp = resp.setCode(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getCode());
+				resp = resp.setMsg(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getMessage());
+				HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+				return result;
+			}else{
+				answer.setCtime(answerFromDB.getCtime());
+			}
+		}
+		
+		try {
+			answerService.saveAnswer(answer);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/question/delete", method = RequestMethod.POST)
+	public HttpResult<?> questionDelete(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "ids", required = true) Long[] ids) {
+
+		ServiceResponse<List<Long>> resp = ServiceResponse.successResponse();
+		if (ids == null) {
+			resp = resp.setCode(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getCode());
+			resp = resp.setMsg(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+
+		List<Long> errorIds = new ArrayList<Long>();
+		for (Long id : ids) {
+			try {
+				Question question = questionService.getQuestionById(id);
+				if (question != null) {
+					question.setStatus(-3);
+					questionService.saveQuestion(question);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				errorIds.add(id);
+			}
+		}
+
+		if (CollectionUtils.isNotEmpty(errorIds)) {
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			resp.setData(errorIds);
+		}
+
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/api/todos/answer/delete", method = RequestMethod.POST)
+	public HttpResult<?> answerDelete(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(value = "ids", required = true) Long[] ids) {
+
+		ServiceResponse<List<Long>> resp = ServiceResponse.successResponse();
+		if (ids == null) {
+			resp = resp.setCode(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getCode());
+			resp = resp.setMsg(ServiceExInfo.PARAMETER_ERROR_EXCEPTION.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+
+		List<Long> errorIds = new ArrayList<Long>();
+		for (Long id : ids) {
+			try {
+				Answer answer = answerService.getAnswerById(id);
+				if (answer != null) {
+					answer.setStatus(-3);
+					answerService.saveAnswer(answer);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+
+				errorIds.add(id);
+			}
+		}
+
+		if (CollectionUtils.isNotEmpty(errorIds)) {
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			resp.setData(errorIds);
+		}
+
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
 	
 	public static void main(String[] args) {
 		

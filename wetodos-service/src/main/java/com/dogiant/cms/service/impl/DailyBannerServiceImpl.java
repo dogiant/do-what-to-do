@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import com.dogiant.cms.dao.DailyBannerDao;
 import com.dogiant.cms.domain.dto.DataTablesResult;
 import com.dogiant.cms.domain.dto.QueryResult;
-import com.dogiant.cms.domain.todos.Book;
 import com.dogiant.cms.domain.todos.DailyBanner;
 import com.dogiant.cms.service.DailyBannerService;
 

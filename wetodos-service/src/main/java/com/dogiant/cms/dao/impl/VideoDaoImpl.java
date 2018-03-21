@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import com.dogiant.cms.dao.VideoDao;
 import com.dogiant.cms.domain.dto.QueryResult;
-import com.dogiant.cms.domain.website.ArticleItem;
 import com.dogiant.cms.domain.website.Video;
 import com.dogiant.cms.repo.VideoRepo;
 

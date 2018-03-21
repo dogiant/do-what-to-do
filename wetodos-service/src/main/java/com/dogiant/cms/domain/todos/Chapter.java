@@ -66,6 +66,11 @@ public class Chapter implements Serializable {
 	 * 包含的章节列表
 	 */
 	private List<Phase> phases;
+	
+	/**
+	 * 问题列表
+	 */
+	private List<Question> questions;
 
 	/**
 	 * 创建时间
@@ -145,6 +150,15 @@ public class Chapter implements Serializable {
 
 	public void setPhases(List<Phase> phases) {
 		this.phases = phases;
+	}
+	
+	@Transient
+	public List<Question> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
 	}
 
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")

@@ -132,6 +132,49 @@
 		            			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 增加段落
 		            			</button>
 	            			</div>
+	            			<hr/>
+	            			<c:forEach items="${chapter.questions }" var="question" varStatus="st">
+	            				<c:if test="${question.contentType eq 'text' }">
+	            					<div class="question text list-group-item">
+			            				<p><span><b>问题${st.index+1 } : </b></span>${question.content }</p>
+			            				<span class="glyphicon glyphicon-remove delete questionDelBtn" aria-hidden="true" data-id="${question.id }"></span>
+			            			</div>
+	            				</c:if>
+	            				<c:if test="${question.contentType eq 'image' }">
+	            					<div class="question image list-group-item">
+	            						<div><span><b>问题${st.index+1 } : </b></span></div>
+			            				<img src="${fileHost }${question.uri }" width="640"/>
+			            				<span class="glyphicon glyphicon-remove delete questionDelBtn" aria-hidden="true" data-id="${question.id }"></span>
+			            			</div>
+	            				</c:if>
+	            				<c:forEach items="${question.answers }" var="answer" varStatus="st">
+		            				<c:if test="${answer.contentType eq 'text' }">
+		            					<div class="answer text list-group-item">
+				            				<p><span>${answer.serial } : </span>${answer.content } <span>    ${answer.isCorrect } </span></p>
+				            				<span class="glyphicon glyphicon-remove delete answerDelBtn" aria-hidden="true" data-id="${answer.id }"></span>
+				            			</div>
+		            				</c:if>
+		            				<c:if test="${answer.contentType eq 'image' }">
+		            					<div class="answer image list-group-item">
+		            						<div><span>${answer.serial } : </span> <span>    ${answer.isCorrect } </span></div>
+				            				<img src="${fileHost }${answer.uri }" width="640"/>
+				            				<span class="glyphicon glyphicon-remove delete answerDelBtn" aria-hidden="true" data-id="${answer.id }"></span>
+				            			</div>
+		            				</c:if>
+	            				</c:forEach>
+	            				<div class="buttonDiv">
+			            			<button type="button" class="btn btn-primary addAnswerButton" data-question="${question.id }">
+			            			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 增加答案
+			            			</button>
+	            				</div>
+	            			</c:forEach>
+	            			<c:if test="${fn:contains(chapter.taskTypes,'choice')}">
+	            			<div class="buttonDiv">
+		            			<button type="button" class="btn btn-primary addQuestionButton" data-chapter="${chapter.id }">
+		            			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 增加问题
+		            			</button>
+	            			</div>
+	            			</c:if>
 	            		</div>
 	            		<c:if test="${fn:contains(chapter.taskTypes,'choice')}">
 					    	<span class="glyphicon glyphicon-question-sign choice chapterQuestionBtn" aria-hidden="true"  data-id="${chapter.id }"></span>
@@ -277,6 +320,7 @@
     <div class="modal fade" id="questionModal" tabindex="-1" role="dialog" aria-labelledby="questionModalLabel">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
+	    <form id="questionForm" action="api/todos/question/save" method="post">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	        <h4 class="modal-title" id="exampleModalLabel">添加选择题</h4>
@@ -303,14 +347,11 @@
 	          <div class="form-group" id="questionImageForm" style="display: none">
 				  <label for="uri" class="control-label">图片</label>
                   <div class="controls with-tooltip">
-
                       <div id="uploadQuestionPicTips">
 
                       </div>
-
                       <span class="btn btn-file">
 							<span onclick="uploadQuestionPicAjax.click()">选择图片</span>
-			 			  
                           	<input id="questionUri" type="hidden" name="uri" />
                       </span>
                         
@@ -320,13 +361,13 @@
 					  </p>
                  </div>
 	          </div>
-
 	        
 	      </div>
 	      <div class="modal-footer">
 	      	<button type="submit" class="btn btn-primary">保存提交</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 	      </div>
+	      </form>
 	    </div>
 	  </div>
 	</div>
@@ -334,6 +375,82 @@
 	<div style="display: none;">
 		<form id="uploadQuestionPicAjaxForm" action="/upload/api"  enctype="multipart/form-data"  method="post" >
 			<input id="uploadQuestionPicAjax" name="uploads" type="file" onchange="uploadQuestionPicAjaxSubmit(this);"/>
+		</form>
+	</div>
+	
+	
+    <div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="answerModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	    <form id="answerForm" action="api/todos/answer/save" method="post">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="exampleModalLabel">添加答案</h4>
+	      </div>
+	      <div class="modal-body">
+	          <input type="hidden" id="id" name="id">
+	          <input type="hidden" id="answerQuestionId" name="questionId" >
+	          <div class="form-group">
+	          	<label for="contentType" class="control-label">回答内容类型:</label>
+	          	<div>
+					<label class="checkbox-inline">
+					  <input type="radio" id="answerTextRadio" name="contentType" value="text" checked="checked"> 文字 
+					</label>
+					<label class="checkbox-inline">
+					  <input type="radio" id="answerImageRadio" name="contentType" value="image" > 图片
+					</label>
+	          	</div>
+	          </div>
+	          
+	          <div class="form-group" id="answerTextForm">
+	            <label for="answerContent" class="control-label">内容:</label>
+	            <textarea class="form-control" id="answerContent" name="content"></textarea>
+	          </div>
+	          <div class="form-group" id="answerImageForm" style="display: none">
+				  <label for="uri" class="control-label">图片</label>
+                  <div class="controls with-tooltip">
+                      <div id="uploadAnswerPicTips">
+
+                      </div>
+                      <span class="btn btn-file">
+							<span onclick="uploadAnswerPicAjax.click()">选择图片</span>
+                          	<input id="answerUri" type="hidden" name="uri" />
+                      </span>
+                        
+                      <p class="js_cover answer_pic_upload_preview" style="display: none;">
+                          <img id="answer_pic_preview"  src="">
+						  <span><a id="removeAnswerPic" href="javascript:void(0);" >删除</a></span>
+					  </p>
+                 </div>
+	          </div>
+	          <div class="form-group" id="answerTextForm">
+	            <label for="answerSerial" class="control-label">序号（ABCD）:</label>
+	            <input type="text" class="form-control" id="answerSerial" name="serial"></input>
+	          </div>
+	          <div class="form-group">
+	          	<label for="contentType" class="control-label">正确与否:</label>
+	          	<div>
+					<label class="checkbox-inline">
+					  <input type="radio" id="answerIsCorrectRadio" name="isCorrect" value="false" checked="checked"> F
+					</label>
+					<label class="checkbox-inline">
+					  <input type="radio" id="answerIsCorrectRadio" name="isCorrect" value="true" > T
+					</label>
+	          	</div>
+	          </div>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="submit" class="btn btn-primary">保存提交</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	      </form>
+	    </div>
+	  </div>
+	</div>
+	
+	<div style="display: none;">
+		<form id="uploadAnswerPicAjaxForm" action="/upload/api"  enctype="multipart/form-data"  method="post" >
+			<input id="uploadAnswerPicAjax" name="uploads" type="file" onchange="uploadAnswerPicAjaxSubmit(this);"/>
 		</form>
 	</div>
     
@@ -509,6 +626,26 @@
 		  });
 	   	  
 	   });
+        
+       $('#answerModal').on('show.bs.modal', function (event) {
+  	   	  $("#answerImageRadio").click(function(){
+  	   			$("#answerImageForm").show();
+  			  	$("#answerTextForm").hide();
+  	   	  });
+  	   	  
+  	   	  $("#answerTextRadio").click(function(){
+  	 		  $("#answerImageForm").hide();
+  	 		  $("#answerTextForm").show();
+  	 	  });
+  	   	  
+  		  $("#removeAnswerPic").click(function(){
+  				$("#answerUri").val("");
+  				$("#answer_pic_preview").attr("src", "");
+  				$("#answer_pic_preview").css({"display":"none"});
+  				$(".answer_pic_upload_preview").css({"display":"none"});
+  		  });
+  	   	  
+  	   });
 
 
 	   $(".addChapterButton").click(function(){
@@ -521,6 +658,7 @@
 		   var chapterId = $(this).attr("data-chapter");
 		   $('#chapterId').val(chapterId);
 	   });
+
 
 	   $(".phaseDelBtn").click(function(){
 		   var idsValue = $(this).attr("data-id");
@@ -610,6 +748,128 @@
 		   $("#questionChapterId").val(id);
 	   });
 	   
+	   $(".addQuestionButton").click(function(){
+		   $('#questionModal').modal('show');
+		   var chapterId = $(this).attr("data-chapter");
+		   $("#questionChapterId").val(chapterId);
+	   });
+	   
+	   $("#questionForm").validate({
+	        rules: {
+	        	"contentType":  {
+					required: true
+				}
+			},
+			messages: {
+				"contentType":{
+					required:"请选择内容类型"
+				}
+			},
+	        errorClass: 'help-block',
+	        errorElement: 'span',
+	        highlight: function(element, errorClass, validClass) {
+	            $(element).parents('.control-group').removeClass('success').addClass('error');
+	        },
+	        unhighlight: function(element, errorClass, validClass) {
+	            $(element).parents('.control-group').removeClass('error').addClass('success');
+	        },
+           submitHandler: function (form) {
+           	var options = {
+           	   //target: '#showmsg',
+           	   beforeSubmit:showStart,
+           	   success:showResponse,
+           	   dataType:'json'
+           	};
+	            
+           	$(form).ajaxSubmit(options);
+          	return false;
+           }
+		});
+	   
+	   $(".addAnswerButton").click(function(){
+		   $('#answerModal').modal('show');
+		   var questionId = $(this).attr("data-question");
+		   $("#answerQuestionId").val(questionId);
+	   });
+	   
+	   $("#answerForm").validate({
+	        rules: {
+	        	"contentType":  {
+					required: true
+				}
+			},
+			messages: {
+				"contentType":{
+					required:"请选择内容类型"
+				}
+			},
+	        errorClass: 'help-block',
+	        errorElement: 'span',
+	        highlight: function(element, errorClass, validClass) {
+	            $(element).parents('.control-group').removeClass('success').addClass('error');
+	        },
+	        unhighlight: function(element, errorClass, validClass) {
+	            $(element).parents('.control-group').removeClass('error').addClass('success');
+	        },
+           submitHandler: function (form) {
+           	var options = {
+           	   //target: '#showmsg',
+           	   beforeSubmit:showStart,
+           	   success:showResponse,
+           	   dataType:'json'
+           	};
+	            
+           	$(form).ajaxSubmit(options);
+          	return false;
+           }
+		});
+	   
+	   $(".questionDelBtn").click(function(){
+		   var idsValue = $(this).attr("data-id");
+		   if (confirm("确定要删除这个问题吗？")){
+			   $.ajax({
+	           		type:'post',
+	           		url:'api/todos/question/delete',
+	           		data:{ids:idsValue},
+	           		dataType:'json',
+	           		beforeSend: function(){
+	           		},
+	           		success:function(data){
+	           			if(data.success){
+	               			alert("删除成功");
+	           				window.location.reload(); 
+	               		}
+	           		},
+	           		error:function(){
+	           			alert("删除出错!");
+	           		}
+           		});
+		   }
+	   });
+	   
+	   $(".answerDelBtn").click(function(){
+		   var idsValue = $(this).attr("data-id");
+		   if (confirm("确定要删除这个答案吗？")){
+			   $.ajax({
+	           		type:'post',
+	           		url:'api/todos/answer/delete',
+	           		data:{ids:idsValue},
+	           		dataType:'json',
+	           		beforeSend: function(){
+	           		},
+	           		success:function(data){
+	           			if(data.success){
+	               			alert("删除成功");
+	           				window.location.reload(); 
+	               		}
+	           		},
+	           		error:function(){
+	           			alert("删除出错!");
+	           		}
+           		});
+		   }
+	   });
+	   
     });
     
     Array.prototype.contains = function ( needle ) {
@@ -679,6 +939,40 @@
 					$("#question_pic_preview").attr("src", STATIC_FILE_HOST + data.result[0]);
 					$("#question_pic_preview").css({"display":"block"});
 					$(".question_pic_upload_preview").css({"display":"block"});
+				}else{
+					alert(data);
+				}
+			},
+			error : function(data) {
+
+			}
+		};
+		ajaxForm.ajaxSubmit(options);
+		return false;
+	}
+	
+	function uploadAnswerPicAjaxSubmit(o) {
+		var ajaxForm = $('#uploadAnswerPicAjaxForm'), $file = $(o).clone();
+		
+		var byteSize = o.files[0].size;
+		if(byteSize>maxsize){
+			return alert(errMsg);
+		}
+
+		var options = {
+			dataType : "json",
+			data : {type:"json","channel":"news",genThumbnails:true,"sizes":"360,null,_360;200,null,_200",uploads:$file.val()},
+			beforeSubmit : function() {
+				$("#uploadAnswerPicTips").show();
+				$("#uploadAnswerPicTips").html("正在上传图片，请稍候……");
+			},
+			success : function(data) {
+				if (data.success) {
+					$("#uploadAnswerPicTips").hide();
+					$("#answerUri").val(data.result[0]);
+					$("#answer_pic_preview").attr("src", STATIC_FILE_HOST + data.result[0]);
+					$("#answer_pic_preview").css({"display":"block"});
+					$(".answer_pic_upload_preview").css({"display":"block"});
 				}else{
 					alert(data);
 				}
