@@ -44,4 +44,10 @@ public class DailyBannerServiceImpl implements DailyBannerService {
 		return dataTableResult;
 	}
 
+	@Override
+	public DailyBanner getDailyBannerByDate(String date) {
+		return dailyBannerDao.getDailyBannerByDate(date);
+	}
+
+	
 }

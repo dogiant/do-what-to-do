@@ -30,7 +30,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(new LoginInterceptor())
 				.addPathPatterns("/**")
 				.excludePathPatterns("/assets/**", "/login", "/login**",
-						"/api/login**", "/**/*.html", "/hello", "/error");
+						"/api/login**", "/**/*.html", "/hello", "/error", "/todos/data/api/**");
 		super.addInterceptors(registry);
 	}
 

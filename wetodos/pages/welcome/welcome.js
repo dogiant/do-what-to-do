@@ -23,6 +23,15 @@ Page({
    */
   onLoad: function (options) {
     console.log("加载");
+    wx.request({
+      url: 'https://www.dogiant.cn/todos/data/api/getDailyBanner', 
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res) {
+        console.log(res.data)
+      }
+    })
   },
 
   /**

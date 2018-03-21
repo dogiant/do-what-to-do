@@ -1,10 +1,11 @@
 {
   "pages": [
+    "pages/welcome/welcome",
     "pages/schedule/schedule",
     "pages/profile/index",
     "pages/question/question",
     "pages/myprofile/myprofile",
-    "pages/welcome/welcome",
+
 
     "pages/calendar/index",
     "pages/task/task",

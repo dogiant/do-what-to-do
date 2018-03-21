@@ -15,4 +15,6 @@ public interface DailyBannerService {
 			Integer length, String orderName, String orderDir,
 			String searchValue);
 
+	DailyBanner getDailyBannerByDate(String date);
+
 }
