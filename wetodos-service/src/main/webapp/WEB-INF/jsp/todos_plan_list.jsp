@@ -58,6 +58,8 @@
                                                     	<th>序号</th>
                                                         <th>学习计划名称</th>
                                                         <th>类型</th>
+                                                        <th>封面图片</th>
+                                                        <th>简介</th>
                                                         <th>资源明细</th>
                                                         <th>开始日期</th>
                                                         <th>结束日期</th>
@@ -99,6 +101,7 @@
 		<%@ include file="common/footer_script.jsp" %>
         
         <script type="text/javascript">
+    		var STATIC_FILE_HOST = "${fileHost}";
             $(function() {
                 /*----------- BEGIN planDataTable CODE -------------------------*/
             	$('#planDataTable').dataTable({
@@ -109,6 +112,8 @@
                         { "data": "id" },
                         { "data": "name"},
                         { "data": "typeDesc"},
+                        { "data": "coverPicUrl"},
+                        { "data": "digest"},
                         { "data": "bookShow"},
                         { "data": "startDate"},
                         { "data": "endDate"},
@@ -120,23 +125,27 @@
                     ],
                     "columnDefs": [  
                         { "bSortable": false, 
-                        	"targets": [1],
-                        	"sWidth": "256px"
+                        	"targets": [1,3,4,5],
+                        	"sWidth": "166px"
                         },
                         { "bSortable": false, 
-                        	"targets": [2,3,10]
+                        	"targets": [2,3,4,5,12]
                         },
-                        { "targets": [7,8],
+                        { "targets": [9,10],
                         	"sWidth": "106px"
                         },
                         //{ "visible": false,  "targets": [2] },
-                        { "targets": [11],
+                        { "targets": [13],
                         "data": "id" ,
                         "render": function(data, type, full) { return "<button class='btn edit'  dataid='"+data+"'><i class='icon-edit' ></i></button>  <button class='btn btn-danger remove'  dataid='"+data+"'><i class='icon-remove'></i></button>"; } 
-                        } 
+                        },
+                        { "targets": [3],
+                            "data": "coverPicUrl" ,
+                            "render": function(data, type, full) { return "<img src="+STATIC_FILE_HOST+data+" width=166 />"; } 
+                            } 
                     ],
                    
-                	"aaSorting": [[ 8, "desc" ]] ,
+                	"aaSorting": [[ 10, "desc" ]] ,
                     "sPaginationType": "bootstrap",
                    // "dom": '<"top"i>rt<"bottom"flp><"clear">',
                     "oLanguage": {

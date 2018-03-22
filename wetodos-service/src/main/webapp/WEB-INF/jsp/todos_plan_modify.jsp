@@ -74,6 +74,29 @@
 	                                                        <input id="fixTermRadio" class="uniform" type="radio" name="type" value="1" <c:if test="${learningPlan.type==1}"> checked="checked" </c:if>>固定学期  
 														</div>
 	                                                </div>
+													<div class="control-group">
+	                                                    <label for="coverPicUrl" class="control-label">封面</label>
+	                                                    <div class="controls with-tooltip">
+	                                                            <div id="uploadTips">
+									
+                                                         		</div>
+	                                                            <span class="btn btn-file">
+                                                                    <span onclick="uploadPicAjax.click()">选择图片</span>
+                                                                    <input id="coverPicUrl" type="hidden" name="coverPicUrl" value="${learningPlan.coverPicUrl }"/>
+                                                                </span>
+		                                                         
+		                                                         <p class="js_cover upload_preview" style="display: none;">
+		                                                         	<img id="cover_preview"  src="">
+																	<span><a id="removeCover" href="javascript:void(0);" >删除</a></span>
+               													 </p>
+	                                                    </div>
+	                                                </div>
+	                                                <div class="control-group">
+	                                                    <label for="planDigest" class="control-label">摘要</label>
+	                                                    <div class="controls">
+	                                                    	<textarea id="planDigest" name="digest" class="span6" style="height:260px">${learningPlan.digest }</textarea>
+	                                                    </div>
+	                                                </div>
 	                                                <div class="control-group" id="datePanel" style="display: none;">
 	                                                    <label for="startDate" class="control-label">开始时间</label>
 	                                                    <div class="controls with-tooltip">
@@ -95,7 +118,7 @@
 													<div class="thumbnail" id="news_thumbnail">
 		                                        	  <h4 id="news_title">${book.title }</h4>
 		                                        	  <div id="cover_wrapper">
-									                  	<img src="${fileHost }${book.coverPicUrl }" id="news_cover" >
+									                  	<img src="${fileHost }${book.coverPicUrl }" >
 									                  	<i>封面图片</i>                           	  
 		                                        	  </div>
 									                  <div class="caption">
@@ -138,10 +161,53 @@
 		<%@ include file="common/footer_script.jsp" %>
 		
         <script type="text/javascript">
-	
-		
-		$().ready(function() {
+    	var maxsize = 2*1024*1024;//2M  
+    	var errMsg = "上传的文件不能超过2M！！！";  
+    	var STATIC_FILE_HOST = "${fileHost}";
+		function uploadPicAjaxSubmit(o) {
+			var ajaxForm = $('#uploadPicAjaxForm'), $file = $(o).clone();
+			
+			var byteSize = o.files[0].size;
+			if(byteSize>maxsize){
+				return alert(errMsg);
+			}
 
+			var options = {
+				dataType : "json",
+				data : {type:"json","channel":"todos",genThumbnails:true,"sizes":"360,null,_360;200,null,_200",uploads:$file.val()},
+				beforeSubmit : function() {
+					$("#uploadTips").show();
+					$("#uploadTips").html("正在上传封面，请稍候……");
+				},
+				success : function(data) {
+					if (data.success) {
+						$("#uploadTips").hide();
+						$("#coverPicUrl").val(data.result[0]);
+						$("#cover_preview").attr("src", STATIC_FILE_HOST + data.result[0]);
+						$(".upload_preview").css({"display":"block"});
+					}else{
+						alert(data);
+					}
+				},
+				error : function(data) {
+
+				}
+			};
+			ajaxForm.ajaxSubmit(options);
+			return false;
+		}
+		$().ready(function() {
+			var mCoverPicUrl = $("#coverPicUrl").val();
+			if(mCoverPicUrl!=''){
+				$("#cover_preview").attr("src", STATIC_FILE_HOST + mCoverPicUrl);
+				$(".upload_preview").css({"display":"block"});
+			}
+
+   			$("#removeCover").click(function(){
+				$("#coverPicUrl").val("");
+				$("#cover_preview").attr("src", "");
+				$(".upload_preview").css({"display":"none"});
+			});
 			  
 			$("#todosPlanForm").validate({
 		       rules: {

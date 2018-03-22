@@ -63,6 +63,21 @@ public class LearningPlan implements Serializable{
 	 * 学习计划名称
 	 */
 	private String name;
+	
+	/**
+	 * 封面url
+	 */
+	private String coverPicUrl;
+
+	/**
+	 * 描述
+	 */
+	private String digest;
+	
+	/**
+	 * 价格
+	 */
+	private Integer price;
 
 	/**
 	 * 创建人
@@ -166,6 +181,33 @@ public class LearningPlan implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Column(name = "cover_pic_url")
+	public String getCoverPicUrl() {
+		return coverPicUrl;
+	}
+
+	public void setCoverPicUrl(String coverPicUrl) {
+		this.coverPicUrl = coverPicUrl;
+	}
+
+	@Column(name = "digest")
+	public String getDigest() {
+		return digest;
+	}
+
+	public void setDigest(String digest) {
+		this.digest = digest;
+	}
+
+	@Column(name = "price")
+	public Integer getPrice() {
+		return price;
+	}
+
+	public void setPrice(Integer price) {
+		this.price = price;
 	}
 
 	@Column(name = "creator", length = 64)

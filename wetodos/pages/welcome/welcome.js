@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    inThePlan:true
+    inThePlan:false
   },
   todayReadTask : function(e){
     wx.navigateTo({
