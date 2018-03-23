@@ -71,7 +71,7 @@
 									
                                                          		</div>
 	                                                            <span class="btn btn-file">
-                                                                    <span onclick="uploadPicAjax.click()">选择图片</span>
+                                                                    <span onclick="uploadPicAjax.click()">选择图片(750px*270px)</span>
                                                                     <input id="imageUrl" type="hidden" name="imageUrl" />
                                                                 </span>
 		                                                         

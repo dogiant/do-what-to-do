@@ -1,37 +1,22 @@
-// pages/welcome/welcome.js
+var base64 = require("/images/base64");
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    inThePlan:false
-  },
-  todayReadTask : function(e){
-    wx.navigateTo({
-      url: '/pages/content/content'
-    })
-  },
-  createReadTask: function (e) {
-    wx.navigateTo({
-      url: '/pages/plan/index'
-    })
+
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("加载");
-    wx.request({
-      url: 'https://www.dogiant.cn/todos/data/api/getDailyBanner', 
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      success: function (res) {
-        console.log(res.data)
-      }
-    })
+    this.setData({
+      icon20: base64.icon20,
+      icon60: base64.icon60
+    });
   },
 
   /**
@@ -81,5 +66,28 @@ Page({
    */
   onShareAppMessage: function () {
   
+  },
+
+  showInput: function () {
+    this.setData({
+      inputShowed: true
+    });
+  },
+  hideInput: function () {
+    this.setData({
+      inputVal: "",
+      inputShowed: false
+    });
+  },
+  clearInput: function () {
+    this.setData({
+      inputVal: ""
+    });
+  },
+  inputTyping: function (e) {
+    this.setData({
+      inputVal: e.detail.value
+    });
   }
+
 })
