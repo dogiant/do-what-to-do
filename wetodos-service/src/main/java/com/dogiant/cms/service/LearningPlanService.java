@@ -13,5 +13,8 @@ public interface LearningPlanService {
 
 	LearningPlan findLearningPlanById(Long id);
 
+	DataTablesResult<LearningPlan> getLearningPlanDataTablesResultSimple(
+			Integer start, Integer length, String keyword);
+
 
 }

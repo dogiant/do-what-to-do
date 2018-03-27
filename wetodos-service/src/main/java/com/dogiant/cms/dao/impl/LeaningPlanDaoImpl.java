@@ -66,7 +66,7 @@ public class LeaningPlanDaoImpl implements LearningPlanDao {
 				List<Predicate> list = new ArrayList<Predicate>();
 
 				list.add(paramCriteriaBuilder.ge(paramRoot.get("status").as(Number.class), 0));
-				if (StringUtils.isNoneEmpty(searchValue))
+				if (StringUtils.isNotEmpty(searchValue))
 					list.add(paramCriteriaBuilder.like(paramRoot.get("name")
 							.as(String.class), "%" + searchValue + "%"));
 				Predicate[] p = new Predicate[list.size()];

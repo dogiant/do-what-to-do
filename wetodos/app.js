@@ -34,6 +34,7 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    imageHost: "https://file.dogiant.cn"
   }
 })

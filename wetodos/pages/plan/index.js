@@ -1,5 +1,3 @@
-var base64 = require("/images/base64");
-
 Page({
 
   /**
@@ -13,9 +11,25 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.setData({
-      icon20: base64.icon20,
-      icon60: base64.icon60
+    var self = this;
+    wx.request({
+      url: 'https://www.dogiant.cn/todos/data/api/getLearningPlans',
+      method: 'POST',
+      data:{
+        start:1,
+        length:10,
+        keyword:""
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      success: function (res) {
+        console.log(res.data)
+        self.setData({
+          learningPlans : res.data.result.data
+        })
+
+      }
     });
   },
 

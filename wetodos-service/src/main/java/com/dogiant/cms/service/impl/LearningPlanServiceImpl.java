@@ -35,7 +35,7 @@ public class LearningPlanServiceImpl implements LearningPlanService {
 			if(StringUtils.isNotBlank(learningPlan.getBookIds())){
 				StringTokenizer tokener = new StringTokenizer(learningPlan.getBookIds(), ",");
 		        Long[] result = new Long[tokener.countTokens()];
-		        int i=0;
+				int i = 0;
 		        while( tokener.hasMoreElements() ){
 		        	result[i++] = Long.valueOf(tokener.nextToken());
 		        }
@@ -70,6 +70,18 @@ public class LearningPlanServiceImpl implements LearningPlanService {
 	@Override
 	public LearningPlan findLearningPlanById(Long id) {
 		return leaningPlanDao.findLearningPlanById(id);
+	}
+
+	@Override
+	public DataTablesResult<LearningPlan> getLearningPlanDataTablesResultSimple(
+			Integer start, Integer length, String keyword) {
+		QueryResult<LearningPlan> queryResult = leaningPlanDao.getLearningPlanQueryResult(start, length, "id", "desc", keyword);
+		
+		DataTablesResult<LearningPlan> dataTableResult = new DataTablesResult<LearningPlan>();
+		dataTableResult.setData(queryResult.getResult());
+		dataTableResult.setRecordsTotal(queryResult.getRecordnum());
+		dataTableResult.setRecordsFiltered(queryResult.getRecordnum());
+		return dataTableResult;
 	}
 
 }

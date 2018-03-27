@@ -12,15 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dogiant.cms.domain.dto.DataTablesResult;
 import com.dogiant.cms.domain.dto.HttpResult;
+import com.dogiant.cms.domain.dto.PagedQuery;
 import com.dogiant.cms.domain.dto.ServiceResponse;
 import com.dogiant.cms.domain.dto.ServiceResponse2HttpResult;
 import com.dogiant.cms.domain.todos.DailyBanner;
+import com.dogiant.cms.domain.todos.LearningPlan;
 import com.dogiant.cms.exception.ServiceExInfo;
 import com.dogiant.cms.service.AnswerService;
 import com.dogiant.cms.service.BookService;
@@ -85,5 +89,40 @@ public class TodosDataAPIController {
 		return ServiceResponse2HttpResult.transfer(resp);
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/getUsersPlan", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json;charset=UTF-8")
+	public HttpResult<?> getUsersOngoingLearningPlan(HttpServletRequest request, HttpServletResponse response) {
+		ServiceResponse<LearningPlan> resp = ServiceResponse.successResponse();
+		try {
+			
+			resp.setData(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+
+	
+	@ResponseBody
+	@RequestMapping(value = "/getLearningPlans", method = {RequestMethod.POST}, produces = "application/json;charset=UTF-8")
+	public HttpResult<?> getLearningPlans(HttpServletRequest request, HttpServletResponse response, @RequestBody PagedQuery pagedQuery) {
+		ServiceResponse<DataTablesResult<LearningPlan>> resp = ServiceResponse.successResponse();
+		try {
+			DataTablesResult<LearningPlan> result = learningPlanService.getLearningPlanDataTablesResultSimple(pagedQuery.getStart(), pagedQuery.getLength(), pagedQuery.getKeyword());
+			resp.setData(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());
+			resp = resp.setMsg(ServiceExInfo.SYSTEM_ERROR.getMessage());
+			HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+			return result;
+		}
+		return ServiceResponse2HttpResult.transfer(resp);
+	}
+	
 
 }

@@ -8,7 +8,7 @@ public class ServiceResponse2HttpResult {
 		if (response.isSuccess()) {
 			return HttpResult.newSuccessResult(response.getData());
 		} else {
-			return HttpResult.newResult(response.getCode(), response.getMsg(), response.getData(), response.getPrompt());
+			return HttpResult.newResult(response.getCode(), response.getMsg(), response.getData());
 		}
 	}
 

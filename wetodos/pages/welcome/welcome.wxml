@@ -1,7 +1,7 @@
 <view class="welcome">
 
   <view class="index-head">
-    <image class="index-banner" src="resources/pic/1.jpg"></image>
+    <image class="index-banner" src="{{bannerUrl}}"></image>
     <text class="index-text">不积跬步 无以至千里</text>
   </view>
 

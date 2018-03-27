@@ -1,11 +1,14 @@
 // pages/welcome/welcome.js
+const app = getApp()
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    inThePlan:false
+    inThePlan:false,
+    bannerUrl: "resources/pic/1.jpg"
   },
   todayReadTask : function(e){
     wx.navigateTo({
@@ -22,7 +25,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("加载");
+    var self = this;
     wx.request({
       url: 'https://www.dogiant.cn/todos/data/api/getDailyBanner', 
       header: {
@@ -30,8 +33,11 @@ Page({
       },
       success: function (res) {
         console.log(res.data)
+        var bannerUrl = app.globalData.imageHost + res.data.result.imageUrl;
+        self.setData({ bannerUrl : bannerUrl})
       }
-    })
+    });
+    
   },
 
   /**
