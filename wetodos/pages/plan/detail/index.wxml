@@ -1,0 +1,19 @@
+<view class="container">
+  <scroll-view class="plan" scroll-y="true">
+    <view class="plan-container">
+      <view class="plan-cover">
+        <image class="plan-cover-image" src="{{item.cover}}" mode="aspectFill"></image>
+      </view>
+      <view class="plan-name">
+          <text>{{item.name}}</text>
+      </view>
+      <view class="plan-digest">
+          <text>{{item.digest}}</text>
+      </view>
+      <view class="plan-meta">
+            <view class="meta">共100天</view><view class="meta-extra">5.8万人正在学</view>
+      </view>
+    </view>
+
+  </scroll-view>
+</view>

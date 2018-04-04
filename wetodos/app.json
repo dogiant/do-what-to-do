@@ -1,14 +1,14 @@
 {
   "pages": [
-
-    "pages/plan/index",
+    "pages/plan/detail/index",
+    "pages/task/task",
     "pages/welcome/welcome",
+    "pages/plan/index",
     "pages/schedule/schedule",
     "pages/profile/index",
     "pages/question/question",
     "pages/myprofile/myprofile",
     "pages/calendar/index",
-    "pages/task/task",
     "pages/logs/logs",
     "pages/content/content",
     "pages/upload/upload"
