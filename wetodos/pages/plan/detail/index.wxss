@@ -1,1 +1,17 @@
 /* pages/plan/detail/index.wxss */
+
+.plan-meta{
+  display: flex;
+  flex-direction: row;
+  margin-top:15px;
+  padding-bottom:5px;
+  font-size:13px;
+  color:grey;
+  line-height:1em;
+  overflow:hidden;
+}
+.meta-extra{
+  border-left:1px solid #cecece;
+  margin-left: 10px;
+  padding-left: 10px;
+}

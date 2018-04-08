@@ -8,7 +8,8 @@
           <text>{{item.name}}</text>
       </view>
       <view class="plan-digest">
-          <text>{{item.digest}}</text>
+          <text></text>
+
       </view>
       <view class="plan-meta">
             <view class="meta">共100天</view><view class="meta-extra">5.8万人正在学</view>
@@ -16,4 +17,7 @@
     </view>
 
   </scroll-view>
+  <view>
+    <button>免费加入学习</button>
+  </view>
 </view>
