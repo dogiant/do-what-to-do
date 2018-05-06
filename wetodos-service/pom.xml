@@ -182,6 +182,12 @@
 		</dependency>
 		
 		<dependency>
+		     <groupId>org.bouncycastle</groupId>
+		     <artifactId>bcprov-jdk15on</artifactId>
+		     <version>1.57</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.3.2</version>
