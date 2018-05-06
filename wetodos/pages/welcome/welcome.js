@@ -7,7 +7,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    inThePlan:false,
+    inThePlan:true,
     bannerUrl: "resources/pic/1.jpg"
   },
   todayReadTask : function(e){
@@ -51,7 +51,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+
   },
 
   /**

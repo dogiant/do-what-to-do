@@ -12,7 +12,8 @@
 
       </view>
       <view class="plan-meta">
-            <view class="meta">共100天</view><view class="meta-extra">5.8万人正在学</view>
+            <view class="meta">共100天</view>
+            <view class="meta-extra">5.8万人正在学</view>
       </view>
     </view>
 

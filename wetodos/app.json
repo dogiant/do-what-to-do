@@ -1,8 +1,9 @@
 {
   "pages": [
-    "pages/plan/detail/index",
-    "pages/task/task",
+
     "pages/welcome/welcome",
+        "pages/plan/detail/index",
+        "pages/task/task",
     "pages/plan/index",
     "pages/schedule/schedule",
     "pages/profile/index",
