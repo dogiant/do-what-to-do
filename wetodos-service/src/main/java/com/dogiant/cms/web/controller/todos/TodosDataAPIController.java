@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.dogiant.cms.domain.dto.DataTablesResult;
 import com.dogiant.cms.domain.dto.HttpResult;
 import com.dogiant.cms.domain.dto.PagedQuery;
@@ -36,7 +37,6 @@ import com.dogiant.cms.service.DailyBannerService;
 import com.dogiant.cms.service.LearningPlanService;
 import com.dogiant.cms.service.PhaseService;
 import com.dogiant.cms.service.QuestionService;
-import com.dogiant.cms.utils.HttpUtil;
 import com.dogiant.cms.utils.WeChatUtil;
 
 import net.sf.json.JSONObject;
@@ -89,7 +89,8 @@ public class TodosDataAPIController {
 		try {
 			Map<String,String> resultMap = new HashMap<String,String>();
 			JSONObject jsonObject = WeChatUtil.httpRequest(requestUrl, "GET", null);
-			if(jsonObject!=null){
+			if (jsonObject != null) {
+				logger.info(JSON.toJSONString(jsonObject, true));
 				resultMap.put("openid", jsonObject.getString("openid"));
 				resultMap.put("session_key", jsonObject.getString("session_key"));
 			}
