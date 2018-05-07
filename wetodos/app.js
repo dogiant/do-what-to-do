@@ -9,25 +9,26 @@ App({
     // 登录
     wx.login({
       success: res => {
-        console.log("scode:" + res.code) //这里只是为了在微信小程序客户端好查看结果，找寻问题
+        console.log("jscode:" + res.code) //这里只是为了在微信小程序客户端好查看结果，找寻问题
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
           wx.request({
             method: "GET",
-            url: this.globalData.apiHost +'/todos/data/api/getOpenId', 
+            url: this.globalData.apiHost +'/todos/data/api/login', 
             data: {
-              scode: res.code   // 使用wx.login得到的登陆凭证，用于换取openid
+              jscode: res.code // 使用wx.login得到的登陆凭证，用于换取openid
             },
             header: {
               'content-type': 'application/json' // 默认值
             },
             success: (res) => {
-              console.log("openid:" + res.data.result.openid);
-              this.globalData.openid = res.data.result.openid;
+              console.log("sessionid:" + res.data.result.sessionid);
+              this.globalData.sessionid = res.data.result.sessionid;
             }
           })
           
       }
     })
+
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -50,7 +51,7 @@ App({
     })
   },
   globalData: {
-    openid : null,
+    sessionid : null,
     userInfo: null,
     imageHost: "https://file.dogiant.cn",
     apiHost: "https://www.dogiant.cn"

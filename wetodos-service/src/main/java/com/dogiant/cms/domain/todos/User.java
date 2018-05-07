@@ -40,12 +40,12 @@ public class User implements Serializable {
 	private String appId;
 	
 	/**
-	 * 用户openId
+	 * 微信用户openId
 	 */
 	private String openId;
 	
 	/**
-	 * 微信用户唯一标识
+	 * 微信用户联合唯一标识
 	 */
 	private String unionId;
 	

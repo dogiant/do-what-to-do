@@ -4,12 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.dogiant.cms.domain.dto.BusinessErrorCode;
 import com.dogiant.cms.domain.dto.DataTablesResult;
 import com.dogiant.cms.domain.dto.HttpResult;
 import com.dogiant.cms.domain.dto.PagedQuery;
@@ -37,6 +41,7 @@ import com.dogiant.cms.service.DailyBannerService;
 import com.dogiant.cms.service.LearningPlanService;
 import com.dogiant.cms.service.PhaseService;
 import com.dogiant.cms.service.QuestionService;
+import com.dogiant.cms.utils.OSCacheManager;
 import com.dogiant.cms.utils.WeChatUtil;
 
 import net.sf.json.JSONObject;
@@ -45,8 +50,8 @@ import net.sf.json.JSONObject;
 @RequestMapping("/todos/data/api")
 public class TodosDataAPIController {
 
-	protected final Log logger = LogFactory.getLog(getClass());
-
+	protected final Logger logger = LoggerFactory.getLogger(TodosDataAPIController.class);
+	
 	@Autowired
 	private BookService bookService;
 	
@@ -75,13 +80,13 @@ public class TodosDataAPIController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getOpenId", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json;charset=UTF-8")
-	public HttpResult<?> getOpenId(HttpServletRequest request, HttpServletResponse response, @RequestParam("scode")String scode) {
+	@RequestMapping(value = "/login", method = {RequestMethod.GET, RequestMethod.POST}, produces = "application/json;charset=UTF-8")
+	public HttpResult<?> getOpenId(HttpServletRequest request, HttpServletResponse response, @RequestParam("jscode")String jscode) {
 		
 		String appId ="wxee2aaaf21711ce97";
 		String appSecret = "3e93c6d0779e26904e0cdc69bd5acf0a";
 		
-		String requestUrl = String.format("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code", appId, appSecret, scode);
+		String requestUrl = String.format("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code", appId, appSecret, jscode);
 		logger.info(requestUrl);
 		
 		ServiceResponse<Map<String,String>> resp = ServiceResponse.successResponse();
@@ -91,8 +96,27 @@ public class TodosDataAPIController {
 			JSONObject jsonObject = WeChatUtil.httpRequest(requestUrl, "GET", null);
 			if (jsonObject != null) {
 				logger.info(JSON.toJSONString(jsonObject, true));
-				resultMap.put("openid", jsonObject.getString("openid"));
-				resultMap.put("session_key", jsonObject.getString("session_key"));
+				if (jsonObject.containsKey("errcode")) {
+					String errcode = jsonObject.getString("errcode");
+					logger.info("微信返回的错误码{}", errcode);
+				}else if(jsonObject.containsKey("session_key")){
+					//调用成功
+					String openId = jsonObject.getString("openid");
+					//TODO 查询User中是否有此用户，没有则新增保存
+					
+					//处理session_key ==> sessionId
+					String sessionId = UUID.randomUUID().toString();
+					
+					OSCacheManager.putInCache(sessionId, jsonObject);
+					//OSCacheManager.getObjectFromCache(sessionId, jsonObject, 24*3600);
+					resultMap.put("sessionId", sessionId);
+				}
+			}else{
+				//网络超时
+				resp = resp.setCode(BusinessErrorCode.RPC_CALL_FAIL.getCode());
+				resp = resp.setMsg(BusinessErrorCode.RPC_CALL_FAIL.getMsg());
+				HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+				return result;
 			}
 			resp.setData(resultMap);
 		} catch (Exception e) {
