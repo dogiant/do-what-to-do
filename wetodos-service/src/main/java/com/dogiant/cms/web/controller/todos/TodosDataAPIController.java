@@ -9,8 +9,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dogiant.cms.domain.dto.BusinessErrorCode;
 import com.dogiant.cms.domain.dto.DataTablesResult;
 import com.dogiant.cms.domain.dto.HttpResult;
@@ -33,6 +33,7 @@ import com.dogiant.cms.domain.dto.ServiceResponse;
 import com.dogiant.cms.domain.dto.ServiceResponse2HttpResult;
 import com.dogiant.cms.domain.todos.DailyBanner;
 import com.dogiant.cms.domain.todos.LearningPlan;
+import com.dogiant.cms.domain.todos.User;
 import com.dogiant.cms.exception.ServiceExInfo;
 import com.dogiant.cms.service.AnswerService;
 import com.dogiant.cms.service.BookService;
@@ -41,10 +42,10 @@ import com.dogiant.cms.service.DailyBannerService;
 import com.dogiant.cms.service.LearningPlanService;
 import com.dogiant.cms.service.PhaseService;
 import com.dogiant.cms.service.QuestionService;
+import com.dogiant.cms.service.UserService;
+import com.dogiant.cms.utils.HttpUtil;
 import com.dogiant.cms.utils.OSCacheManager;
 import com.dogiant.cms.utils.WeChatUtil;
-
-import net.sf.json.JSONObject;
 
 @RestController
 @RequestMapping("/todos/data/api")
@@ -73,6 +74,9 @@ public class TodosDataAPIController {
 	@Autowired
 	private AnswerService answerService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -90,35 +94,60 @@ public class TodosDataAPIController {
 		logger.info(requestUrl);
 		
 		ServiceResponse<Map<String,String>> resp = ServiceResponse.successResponse();
-		
+		System.out.println("==============11111111111=====");
 		try {
 			Map<String,String> resultMap = new HashMap<String,String>();
-			JSONObject jsonObject = WeChatUtil.httpRequest(requestUrl, "GET", null);
-			if (jsonObject != null) {
-				logger.info(JSON.toJSONString(jsonObject, true));
-				if (jsonObject.containsKey("errcode")) {
-					String errcode = jsonObject.getString("errcode");
-					logger.info("微信返回的错误码{}", errcode);
-				}else if(jsonObject.containsKey("session_key")){
-					//调用成功
-					String openId = jsonObject.getString("openid");
-					//TODO 查询User中是否有此用户，没有则新增保存
-					
-					//处理session_key ==> sessionId
-					String sessionId = UUID.randomUUID().toString();
-					
-					OSCacheManager.putInCache(sessionId, jsonObject);
-					//OSCacheManager.getObjectFromCache(sessionId, jsonObject, 24*3600);
-					resultMap.put("sessionId", sessionId);
+			System.out.println("==============2222222222=====");
+//			JSONObject jsonObject = WeChatUtil.httpRequest(requestUrl, "GET", null);
+			String text = HttpUtil.doGet(requestUrl);
+			if(StringUtils.isNotEmpty(text)){
+				JSONObject jsonObject = JSON.parseObject(text);
+				if (jsonObject != null) {
+					logger.info(JSON.toJSONString(jsonObject, true));
+					if (jsonObject.containsKey("errcode")) {
+						String errcode = jsonObject.getString("errcode");
+						logger.info("微信返回的错误码{}", errcode);
+						resp = resp.setCode(BusinessErrorCode.RPC_CALL_DATA_NULL.getCode());
+						resp = resp.setMsg(BusinessErrorCode.RPC_CALL_DATA_NULL.getMsg());
+						HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+						return result;
+					}else if(jsonObject.containsKey("session_key")){
+						//调用成功
+						String openId = jsonObject.getString("openid");
+						logger.info("openId:{}",openId);
+						//查询User中是否有此用户,没有则新增保存,有则更新最新登录时间
+						User user = userService.findUserByOpenId(openId);
+						Date now = new Date();
+						if (user == null) {
+							user = new User();
+							user.setAppId(appId);
+							user.setOpenId(openId);
+							user.setCtime(now);
+							user.setMtime(now);
+							user.setStatus(1);
+						}
+						user.setLastLoginTime(now);
+						userService.save(user);
+						logger.info("user:{}",user);
+						//处理session_key ==> sessionId
+						String sessionId = UUID.randomUUID().toString();
+						
+						OSCacheManager.putInCache(sessionId, JSON.toJSONString(jsonObject));
+						//OSCacheManager.getObjectFromCache(sessionId, jsonObject, 24*3600);
+						resultMap.put("sessionId", sessionId);
+						logger.info("resultMap:{}",resultMap);
+					}
+				}else{
+					//网络超时
+					resp = resp.setCode(BusinessErrorCode.RPC_CALL_FAIL.getCode());
+					resp = resp.setMsg(BusinessErrorCode.RPC_CALL_FAIL.getMsg());
+					HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
+					return result;
 				}
-			}else{
-				//网络超时
-				resp = resp.setCode(BusinessErrorCode.RPC_CALL_FAIL.getCode());
-				resp = resp.setMsg(BusinessErrorCode.RPC_CALL_FAIL.getMsg());
-				HttpResult<?> result = ServiceResponse2HttpResult.transfer(resp);
-				return result;
 			}
+			
 			resp.setData(resultMap);
+			logger.info("resp:{}",resp);
 		} catch (Exception e) {
 			e.printStackTrace();
 			resp = resp.setCode(ServiceExInfo.SYSTEM_ERROR.getCode());

@@ -90,6 +90,11 @@ public class User implements Serializable {
 	private Date mtime;
 	
 	/**
+	 * 最新登录时间
+	 */
+	private Date lastLoginTime;
+	
+	/**
 	 * 状态 小于0无效
 	 */
 	private Integer status;
@@ -206,6 +211,17 @@ public class User implements Serializable {
 
 	public void setMtime(Date mtime) {
 		this.mtime = mtime;
+	}
+	
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "last_login_time")
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
 	}
 
 	@Column(name = "status")

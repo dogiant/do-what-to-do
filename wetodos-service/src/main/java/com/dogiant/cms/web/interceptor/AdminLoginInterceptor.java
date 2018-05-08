@@ -12,9 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.dogiant.cms.cookie.AdminUserInfo;
 import com.dogiant.cms.cookie.CookieUtil;
 
-public class LoginInterceptor implements HandlerInterceptor {
+public class AdminLoginInterceptor implements HandlerInterceptor {
 
-	protected final static Logger logger = Logger.getLogger(LoginInterceptor.class);
+	protected final static Logger logger = Logger.getLogger(AdminLoginInterceptor.class);
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
